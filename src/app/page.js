@@ -39,6 +39,7 @@ export default function Home() {
             />
           </div>
         </Link>
+
         {/* Middle Screen Size */}
         <div className="hidden lg:flex xl:hidden fixed inset-y-0 left-25 items-center justify-center pointer-events-none z-10">
           <div className="flex flex-col items-center gap-6 pointer-events-auto">
@@ -83,6 +84,7 @@ export default function Home() {
             className="pointer-events-auto w-[40vw] max-w-554 h-auto"
           />
         </div>
+        
         {/* Large Screen Size */}
         <div className="hidden xl:flex fixed inset-y-0 left-25 items-center justify-center pointer-events-none z-10">
           <div className="flex flex-col items-center gap-6 pointer-events-auto">
