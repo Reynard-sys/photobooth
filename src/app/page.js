@@ -18,9 +18,9 @@ export default function Home() {
             className="pointer-events-auto w-[70vw] max-w-140 h-auto"
           />
         </div>
-        <Link href="/timer" className="lg:hidden relative group">
+        <Link href="/select" className="lg:hidden relative group">
           <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-1 sm:translate-x-2 translate-y-1 sm:translate-y-2 group-active:bg-[#F2AEBD] transition-colors"></div>
-          <div className="relative bg-[#F2DDDC] border-1 sm:border-2 border-[#3D568F] rounded-xl py-3 sm:py-3 md:py-4 px-7 sm:px-10 md:px-12 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
+          <div className="relative bg-[#F2DDDC] border sm:border-2 border-[#3D568F] rounded-xl py-3 sm:py-3 md:py-4 px-7 sm:px-10 md:px-12 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
             <Image
               src="/def_start.png"
               alt="Start Button"
@@ -50,7 +50,7 @@ export default function Home() {
               priority
               className="pointer-events-auto w-[40vw] max-w-530 h-auto"
             />
-            <Link href="/timer" className="hidden lg:flex xl:hidden relative group">
+            <Link href="/select" className="hidden lg:flex xl:hidden relative group">
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
               <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 lg:py-4 px-6 lg:px-10 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
                 <Image
@@ -94,7 +94,7 @@ export default function Home() {
               priority
               className="pointer-events-auto w-[40vw] max-w-800 h-auto"
             />
-            <Link href="/timer"className="hidden xl:flex relative group">
+            <Link href="/select" className="hidden xl:flex relative group">
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-3 translate-y-3 group-hover:bg-[#F2AEBD] transition-colors"></div>
               <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 lg:py-6 px-6 lg:px-15 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
                 <Image
