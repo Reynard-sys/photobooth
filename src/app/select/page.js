@@ -87,7 +87,7 @@ export default function SelectPage() {
 
           {/* Next Button */}
           <Link
-            href="/capture"
+            href={`/capture?t=${selectedTimer}&s=${selectedShot}`}
             className="relative inline-block group mt-10"
           >
             <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] transition-colors"></div>
@@ -175,7 +175,7 @@ export default function SelectPage() {
             </div>
 
             {/* Next Button */}
-            <Link href="/capture" className="relative inline-block group mt-15">
+            <Link href={`/capture?t=${selectedTimer}&s=${selectedShot}`} className="relative inline-block group mt-15">
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] transition-colors"></div>
               <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-7 px-18 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
                 <Image
@@ -272,7 +272,7 @@ export default function SelectPage() {
             </div>
 
             {/* Next Button */}
-            <Link href="/capture" className="relative inline-block group mt-20">
+            <Link href={`/capture?t=${selectedTimer}&s=${selectedShot}`} className="relative inline-block group mt-20">
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
               <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-7 px-20 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
                 <Image
