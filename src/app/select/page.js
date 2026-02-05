@@ -106,7 +106,7 @@ export default function SelectPage() {
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-auto w-[13vw] h-auto hidden group-active:block"
+                className="pointer-events-none w-[13vw] h-auto hidden group-active:block"
               />
             </div>
           </Link>
