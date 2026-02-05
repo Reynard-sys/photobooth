@@ -192,7 +192,7 @@ export default function CapturePage() {
 
     setIsRunning(false);
 
-    router.push("/retake");
+    router.push("/check");
   }
 
   function resetAll() {

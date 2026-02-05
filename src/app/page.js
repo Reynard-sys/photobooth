@@ -10,7 +10,7 @@ export default function Home() {
         {/* Small Screen Size */}
         <div className="flex lg:hidden inset-0 items-center justify-center pointer-events-none z-10 pt-20 mb-8">
           <Image
-            src="/mobile_booth.png"
+            src="/cute_booth.png"
             alt="Photobooth Small"
             width={600}
             height={300.948}
