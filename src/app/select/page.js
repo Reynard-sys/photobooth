@@ -198,7 +198,7 @@ export default function SelectPage() {
             </Link>
           </div>
         </div>
-        <div className="hidden lg:flex xl:hidden fixed inset-y-0 right-[calc(4.5vw+1rem)] items-center justify-center pointer-events-none z-10 mt-10">
+        <div className="hidden lg:flex xl:hidden fixed inset-y-0 right-[calc(4.5vw+1rem)] items-center justify-center pointer-events-none z-10">
           <Image
             src="/cute_booth.png"
             alt="Photobooth Large"
