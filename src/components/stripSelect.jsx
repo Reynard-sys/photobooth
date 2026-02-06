@@ -26,6 +26,60 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
       hoverIcon: "hover_wanted.png",
       alt: "Wanted",
     },
+    {
+      id: "Frame5",
+      icon: "blue_rose.png",
+      hoverIcon: "hover_blue_rose.png",
+      alt: "Blue Rose",
+    },
+    {
+      id: "Frame6",
+      icon: "ado.png",
+      hoverIcon: "hover_ado.png",
+      alt: "Ado",
+    },
+    {
+      id: "Frame7",
+      icon: "frog.png",
+      hoverIcon: "hover_frog.png",
+      alt: "Frog",
+    },
+    {
+      id: "Frame8",
+      icon: "stardew.png",
+      hoverIcon: "hover_stardew.png",
+      alt: "Stardew",
+    },
+    {
+      id: "Frame9",
+      icon: "chopper.png",
+      hoverIcon: "hover_chopper.png",
+      alt: "Chopper",
+    },
+    {
+      id: "Frame10",
+      icon: "valentines.png",
+      hoverIcon: "hover_valentines.png",
+      alt: "Valentines",
+    },
+    {
+      id: "Frame11",
+      icon: "valentines2.png",
+      hoverIcon: "hover_valentines2.png",
+      alt: "Valentines 2",
+    },
+    {
+      id: "Frame12",
+      icon: "cats.png",
+      hoverIcon: "hover_cats.png",
+      alt: "Cats",
+    },
+    {
+      id: "Frame13",
+      icon: "op.png",
+      hoverIcon: "hover_op.png",
+      alt: "One Piece",
+    },
   ];
 
   return (

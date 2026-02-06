@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
-import PhotoStripComposite from "../../components/photostrip3";
+import PhotoStripComposite3 from "../../components/photostrip3";
 import StripSelect from "../../components/stripSelect";
 import Border from "../../components/border";
 import Image from "next/image";
@@ -205,7 +205,7 @@ export default function FinalExportPage() {
                     transformOrigin: "top left",
                   }}
                 >
-                  <PhotoStripComposite
+                  <PhotoStripComposite3
                     ref={stripRef}
                     shots={shots}
                     template={template}
@@ -302,7 +302,7 @@ export default function FinalExportPage() {
                     transformOrigin: "top left",
                   }}
                 >
-                  <PhotoStripComposite
+                  <PhotoStripComposite3
                     ref={stripRef}
                     shots={shots}
                     template={template}
