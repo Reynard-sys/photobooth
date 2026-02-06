@@ -13,7 +13,6 @@ export default function CapturePage() {
   const searchParams = useSearchParams();
 
   const timerParam = Number(searchParams.get("t"));
-
   const shotParam = Number(searchParams.get("s"));
 
   const cooldown = useMemo(() => {
@@ -29,41 +28,62 @@ export default function CapturePage() {
   const [isRunning, setIsRunning] = useState(false);
 
   const [shots, setShots] = useState([]);
+  const [currentCameraId, setCurrentCameraId] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
+
+  const handleCameraStateChange = ({ isMobile, currentCameraIndex }) => {
+    setIsMobile(isMobile);
+    setCurrentCameraIndex(currentCameraIndex);
+  };
+
+  // Function to start/switch camera
+  async function startCamera(deviceId = null) {
+    try {
+      // Stop existing stream
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+        streamRef.current = null;
+      }
+
+      const constraints = {
+        video: deviceId
+          ? {
+              deviceId: { exact: deviceId },
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            }
+          : {
+              facingMode: "user",
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            },
+        audio: false,
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play().catch(() => {});
+      }
+    } catch (e) {
+      setError(
+        e?.name === "NotAllowedError"
+          ? "Camera permission denied. Please allow camera access in your browser settings."
+          : `Camera error: ${e?.message || String(e)}`,
+      );
+    }
+  }
 
   // Start camera on mount
   useEffect(() => {
     let isMounted = true;
 
-    async function startCamera() {
-      try {
-        const constraints = {
-          video: {
-            facingMode: "user",
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
-          },
-          audio: false,
-        };
-
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        if (!isMounted) return;
-
-        streamRef.current = stream;
-
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play().catch(() => {});
-        }
-      } catch (e) {
-        setError(
-          e?.name === "NotAllowedError"
-            ? "Camera permission denied. Please allow camera access in your browser settings."
-            : `Camera error: ${e?.message || String(e)}`,
-        );
-      }
+    if (isMounted) {
+      startCamera();
     }
-
-    startCamera();
 
     return () => {
       isMounted = false;
@@ -74,6 +94,12 @@ export default function CapturePage() {
       streamRef.current = null;
     };
   }, []);
+
+  // Handle camera switch
+  const handleCameraSwitch = (deviceId) => {
+    setCurrentCameraId(deviceId);
+    startCamera(deviceId);
+  };
 
   // Capture a single frame -> returns blob URL
   function captureFrameUrl() {
@@ -97,9 +123,7 @@ export default function CapturePage() {
     if (currentAspect < targetAspect) {
       sourceHeight = w / targetAspect;
       sourceY = (h - sourceHeight) / 2;
-    }
-    // Crop left and right if camera is wider
-    else if (currentAspect > targetAspect) {
+    } else if (currentAspect > targetAspect) {
       sourceWidth = h * targetAspect;
       sourceX = (w - sourceWidth) / 2;
     }
@@ -116,8 +140,10 @@ export default function CapturePage() {
     if (!ctx) return null;
 
     // mirror selfie so output matches preview
-    ctx.translate(canvasWidth, 0);
-    ctx.scale(-1, 1);
+    if (!(isMobile && currentCameraIndex === 1)) {
+      ctx.translate(canvasWidth, 0);
+      ctx.scale(-1, 1);
+    }
 
     // Draw the cropped portion of the video
     ctx.drawImage(
@@ -209,30 +235,34 @@ export default function CapturePage() {
 
   return (
     <>
-      <Border />
-      <main className="flex flex-col justify-start min-h-screen items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
-        <div className="flex mt-15 lg:-mt-15 mb-5 text-center">
-          <Image
-            src="/smile_title.png"
-            alt="Smile"
-            width={240}
-            height={60}
-            className="mx-auto"
+      <div className="h-dvh overflow-hidden bg-[#FDFDF5]">
+        <Border />
+        <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none justify-start h-full items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
+          <div className="flex mt-15 lg:-mt-15 mb-5 text-center">
+            <Image
+              src="/smile_title.png"
+              alt="Smile"
+              width={240}
+              height={60}
+              className="mx-auto"
+            />
+          </div>
+          <CameraCapture
+            videoRef={videoRef}
+            countdown={countdown}
+            shots={shots}
+            shotParam={shotParam}
+            shotIndex={shotIndex}
+            cooldown={cooldown}
+            isRunning={isRunning}
+            error={error}
+            onStartSession={startSession}
+            onReset={resetAll}
+            onCameraSwitch={handleCameraSwitch}
+            onCameraStateChange={handleCameraStateChange}
           />
-        </div>
-        <CameraCapture
-          videoRef={videoRef}
-          countdown={countdown}
-          shots={shots}
-          shotParam={shotParam}
-          shotIndex={shotIndex}
-          cooldown={cooldown}
-          isRunning={isRunning}
-          error={error}
-          onStartSession={startSession}
-          onReset={resetAll}
-        />
-      </main>
+        </main>
+      </div>
     </>
   );
 }

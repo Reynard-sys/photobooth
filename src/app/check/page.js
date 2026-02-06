@@ -71,18 +71,18 @@ export default function RetakePage() {
             ))}
           </div>
           <Link
-            href={`/edit`}
+            href={`/stripSelect?s=${shotParam}`}
             className="relative inline-block group mt-5 mb-5"
           >
-            <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] transition-colors"></div>
-            <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 px-10 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
+            <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 xl:translate-x-3 translate-y-2 xl:translate-y-3 group-active:bg-[#F2AEBD] transition-colors"></div>
+            <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 xl:py-10 px-10 xl:px-40 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
               <Image
                 src="/next_button.png"
                 alt="Next Button"
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-none w-[10vw] max-w-15 h-auto group-active:hidden"
+                className="pointer-events-none w-[10vw] max-w-15 xl:max-w-30 h-auto group-active:hidden"
               />
               <Image
                 src="/hover_next.png"
@@ -90,7 +90,7 @@ export default function RetakePage() {
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-none w-[10vw] h-auto hidden group-active:block"
+                className="pointer-events-none w-[10vw] max-w-15 xl:max-w-30 h-auto hidden group-active:block"
               />
             </div>
           </Link>

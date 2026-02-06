@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function CameraCapture({
   videoRef,
@@ -14,7 +15,55 @@ export default function CameraCapture({
   error,
   onStartSession,
   onReset,
+  onCameraSwitch,
+  onCameraStateChange,
 }) {
+  const [availableCameras, setAvailableCameras] = useState([]);
+  const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+
+    const getCameras = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(
+          (device) => device.kind === "videoinput",
+        );
+        setAvailableCameras(videoDevices);
+      } catch (err) {
+        console.error("Error getting cameras:", err);
+      }
+    };
+
+    getCameras();
+  }, []);
+
+  useEffect(() => {
+    if (onCameraStateChange) {
+      onCameraStateChange({ isMobile, currentCameraIndex });
+    }
+  }, [isMobile, currentCameraIndex, onCameraStateChange]);
+
+  const handleCameraSwitch = () => {
+    if (availableCameras.length <= 1) return;
+
+    const nextIndex = (currentCameraIndex + 1) % availableCameras.length;
+    setCurrentCameraIndex(nextIndex);
+
+    if (onCameraSwitch) {
+      onCameraSwitch(availableCameras[nextIndex].deviceId);
+    }
+  };
+
+  const getCameraButtonText = () => {
+    if (isMobile) {
+      return currentCameraIndex === 0 ? "Front Cam" : "Back Cam";
+    }
+    return `Camera ${currentCameraIndex + 1}`;
+  };
+
   return (
     <>
       <div className="flex flex-col max-w-6xl lg:max-w-4xl xl:max-w-4xl w-full">
@@ -23,6 +72,11 @@ export default function CameraCapture({
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
+            style={
+              isMobile && currentCameraIndex === 0
+                ? { transform: "scaleX(-1)" }
+                : {}
+            }
             autoPlay
             playsInline
             muted
@@ -38,13 +92,27 @@ export default function CameraCapture({
           )}
         </div>
 
-        {/* Shot progress */}
-        <div className="mt-2 bg-[#F2AEBD] text-white text-sm px-2 py-1 rounded w-fit">
-          {shotIndex < shotParam
-            ? `Shot ${shotIndex + 1} of ${shotParam}`
-            : `Done`}
-          {" • "}
-          Timer: {cooldown}s
+        {/* Bottom info bar - Shot progress (left) and Camera switch (right) */}
+        <div className="mt-2 flex justify-between items-center">
+          {/* Shot progress - Left */}
+          <div className="bg-[#F2AEBD] text-white text-sm px-2 py-1 rounded">
+            {shotIndex < shotParam
+              ? `Shot ${shotIndex + 1} of ${shotParam}`
+              : `Done`}
+            {" • "}
+            Timer: {cooldown}s
+          </div>
+
+          {/* Camera Switch Button - Right */}
+          {availableCameras.length > 1 && (
+            <button
+              onClick={handleCameraSwitch}
+              disabled={isRunning}
+              className="bg-[#F2AEBD] hover:bg-[#F2AEBD] active:bg-[#F2AEBD] text-white px-3 py-1 rounded font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {getCameraButtonText()}
+            </button>
+          )}
         </div>
       </div>
 
@@ -56,14 +124,14 @@ export default function CameraCapture({
           disabled={isRunning}
         >
           <div
-            className={`absolute inset-0 rounded-xl translate-x-1 sm:translate-x-2 lg:translate-x-2 translate-y-1 sm:translate-y-2 lg:translate-y-2 transition-colors ${
+            className={`absolute inset-0 rounded-xl translate-x-1 sm:translate-x-2 lg:translate-x-2 translate-y-1 sm:translate-y-2 lg:translate-y-2 ${
               isRunning
                 ? "bg-[#F2AEBD]"
                 : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
             }`}
           ></div>
           <div
-            className={`relative border-2 sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 xl:py-6 px-8 sm:px-12 lg:px-12 md:px-12 transition-colors ${
+            className={`relative border-2 sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 xl:py-6 px-8 sm:px-12 lg:px-12 md:px-12 ${
               isRunning
                 ? "bg-[#3D568F] border-[#F2AEBD]"
                 : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]"
@@ -93,17 +161,13 @@ export default function CameraCapture({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[50vw] lg:w-[2vw] xl:w-[15vw] h-auto hidden group-active:block xl:group-hover:block"
+                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[50vw] lg:w-[20vw] xl:w-[15vw] h-auto hidden group-active:block xl:group-hover:block"
                 />
               </>
             )}
           </div>
         </button>
       </div>
-
-      {error && (
-        <p className="max-w-md text-sm text-red-600 text-center">{error}</p>
-      )}
     </>
   );
 }
