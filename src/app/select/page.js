@@ -113,8 +113,8 @@ export default function SelectPage() {
         </div>
 
         {/* Medium Screen Size */}
-        <div className="hidden lg:flex xl:hidden fixed inset-y-0 left-25 items-center justify-center pointer-events-none z-10">
-          <div className="lg:flex flex flex-col items-center gap-5 pointer-events-auto">
+        <div className="hidden lg:flex xl:hidden fixed inset-y-0 left-35 items-center justify-center pointer-events-none z-10">
+          <div className="lg:flex flex flex-col items-center gap-2 pointer-events-auto">
             {/* Timer Column */}
             <div>
               <Image
@@ -123,7 +123,7 @@ export default function SelectPage() {
                 width={400}
                 height={100}
                 priority
-                className="pointer-events-auto w-[35vw] max-w-200 h-auto"
+                className="pointer-events-auto w-[20vw] max-w-200 h-auto"
               />
             </div>
             {/* Timer Buttons */}
@@ -156,7 +156,7 @@ export default function SelectPage() {
                 width={400}
                 height={100}
                 priority
-                className="pointer-events-auto w-[25vw] max-w-90 h-auto mt-15"
+                className="pointer-events-auto w-[13vw] max-w-90 h-auto mt-5"
               />
             </div>
             <div className="flex gap-8">
@@ -175,16 +175,16 @@ export default function SelectPage() {
             </div>
 
             {/* Next Button */}
-            <Link href={`/capture?t=${selectedTimer}&s=${selectedShot}`} className="relative inline-block group mt-15">
-              <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] transition-colors"></div>
-              <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-7 px-18 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
+            <Link href={`/capture?t=${selectedTimer}&s=${selectedShot}`} className="relative inline-block group mt-10">
+              <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
+              <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-5 px-13 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
                 <Image
                   src="/next_button.png"
                   alt="Next Button"
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[6vw] h-auto group-hover:hidden"
+                  className="pointer-events-none w-[4vw] h-auto group-hover:hidden"
                 />
                 <Image
                   src="/hover_next.png"
@@ -192,20 +192,20 @@ export default function SelectPage() {
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-auto w-[6vw] h-auto hidden group-hover:block"
+                  className="pointer-events-auto w-[4vw] h-auto hidden group-hover:block"
                 />
               </div>
             </Link>
           </div>
         </div>
-        <div className="hidden lg:flex xl:hidden fixed inset-y-0 right-[calc(4.5vw+1rem)] items-center justify-center pointer-events-none z-10">
+        <div className="hidden lg:flex xl:hidden fixed inset-y-0 right-[calc(5vw+5rem)] items-center justify-center pointer-events-none z-10">
           <Image
             src="/cute_booth.png"
             alt="Photobooth Large"
             width={554.039}
             height={621.22}
             priority
-            className="pointer-events-auto w-[40vw] max-w-120 h-auto"
+            className="pointer-events-auto w-[30vw] max-w-120 h-auto"
           />
         </div>
 

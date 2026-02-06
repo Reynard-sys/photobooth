@@ -13,7 +13,7 @@ export default function TimerButton({ seconds, isSelected, onClick }) {
         }`}
       ></div>
       <div
-        className={`relative border sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 xl:py-6 px-8 sm:px-12 lg:px-12 md:px-12 transition-colors ${
+        className={`relative border sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 xl:py-6 px-8 sm:px-12 lg:px-9 md:px-12 transition-colors ${
           isSelected
             ? "bg-[#3D568F] border-[#F2AEBD]"
             : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]"
@@ -25,7 +25,7 @@ export default function TimerButton({ seconds, isSelected, onClick }) {
           width={200}
           height={15}
           priority
-          className={`pointer-events-none w-[4vw] sm:w-[4vw] md:w-[4vw] lg:w-[3vw] xl:w-[3vw] h-auto ${
+          className={`pointer-events-none w-[4vw] sm:w-[4vw] md:w-[4vw] lg:w-[2vw] xl:w-[3vw] h-auto ${
             isSelected ? "hidden" : "group-active:hidden"
           }`}
         />
@@ -35,7 +35,7 @@ export default function TimerButton({ seconds, isSelected, onClick }) {
           width={200}
           height={15}
           priority
-          className={`pointer-events-none w-[4vw] sm:w-[4vw] md:w-[4vw] lg:w-[3vw] xl:w-[3vw] h-auto ${
+          className={`pointer-events-none w-[4vw] sm:w-[4vw] md:w-[4vw] lg:w-[2vw] xl:w-[3vw] h-auto ${
             isSelected ? "block" : "hidden group-active:block"
           }`}
         />

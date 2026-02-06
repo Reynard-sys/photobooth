@@ -19,7 +19,7 @@ export default function RetakePage() {
       <div className="h-dvh overflow-hidden bg-[#FDFDF5]">
         <Border />
         <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none h-full justify-start w-full items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 xl:pt-20 bg-[#FDFDF5]">
-          <div className="flex mt-5 md:mt-40 lg:mt-5 xl:mt-0 mb-2 text-center">
+          <div className="flex mt-5 md:mt-40 lg:-mt-15 xl:mt-0 mb-2 text-center">
             <Image
               src="/retake_asset.png"
               alt="Smile"
@@ -45,7 +45,7 @@ export default function RetakePage() {
                 }`}
               >
                 <div
-                  className={`relative overflow-hidden rounded border-4 border-[#F2AEBD] w-10vw h-auto sm:w-2vw md:w-9vw xl:w-150 max-w-70 sm:max-w-120 md:max-w-120 xl:max-w-130 ${shotParam === 3 && index === 2 ? "md:w-46 md:h-46" : ""}`}
+                  className={`relative overflow-hidden rounded border-4 border-[#F2AEBD] w-10vw h-auto sm:w-2vw md:w-9vw lg:w-60 xl:w-150 max-w-70 sm:max-w-120 md:max-w-120 xl:max-w-130 ${shotParam === 3 && index === 2 ? "md:w-46 md:h-46" : ""}`}
                 >
                   <img
                     className={`w-full ${
@@ -74,15 +74,15 @@ export default function RetakePage() {
             href={`/stripSelect?s=${shotParam}`}
             className="relative inline-block group mt-5 mb-5"
           >
-            <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 xl:translate-x-3 translate-y-2 xl:translate-y-3 group-active:bg-[#F2AEBD] transition-colors"></div>
-            <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 xl:py-10 px-10 xl:px-40 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
+            <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 xl:translate-x-3 translate-y-2 xl:translate-y-3 group-hover:bg-[#F2AEBD] transition-colors"></div>
+            <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 xl:py-10 px-10 xl:px-40 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
               <Image
                 src="/next_button.png"
                 alt="Next Button"
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-none w-[10vw] max-w-15 xl:max-w-30 h-auto group-active:hidden"
+                className="pointer-events-none w-[10vw] max-w-15 lg:w-10 xl:max-w-30 h-auto group-hover:hidden"
               />
               <Image
                 src="/hover_next.png"
@@ -90,7 +90,7 @@ export default function RetakePage() {
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-none w-[10vw] max-w-15 xl:max-w-30 h-auto hidden group-active:block"
+                className="pointer-events-none w-[10vw] max-w-15 lg:w-10 xl:max-w-30 h-auto hidden group-hover:block"
               />
             </div>
           </Link>

@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 
-const PhotoStripComposite = forwardRef(
+const PhotoStripComposite3 = forwardRef(
   ({ shots, template, isExporting = false, filterClass }, ref) => {
     const templateConfigs = {
       Frame1: {
@@ -120,6 +120,15 @@ const PhotoStripComposite = forwardRef(
           { x: -10, y: 1531, width: 1200, height: 675, rotation: -0.28 },
         ],
       },
+      Frame14: {
+        width: 1200,
+        height: 2800,
+        photos: [
+          { x: 155, y: 265, width: 940, height: 529, rotation: 9 },
+          { x: 75, y: 1280, width: 830, height: 467, rotation: -2 },
+          { x: 290, y: 1990, width: 830, height: 467, rotation: -2 },
+        ],
+      },
     };
 
     const config = templateConfigs[template] || templateConfigs["Frame1"];
@@ -174,5 +183,5 @@ const PhotoStripComposite = forwardRef(
   },
 );
 
-PhotoStripComposite.displayName = "PhotoStripComposite";
-export default PhotoStripComposite;
+PhotoStripComposite3.displayName = "PhotoStripComposite3";
+export default PhotoStripComposite3;
