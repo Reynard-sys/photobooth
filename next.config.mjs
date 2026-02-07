@@ -2,9 +2,6 @@
 const nextConfig = {
   /* config options here */
   reactCompiler: true,
-  images: {
-    unoptimized: true,
-  },
 };
 
 export default nextConfig;
