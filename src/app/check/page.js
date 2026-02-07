@@ -107,7 +107,7 @@ function RetakeContent() {
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-none w-[10vw] max-w-15 lg:w-10 xl:max-w-30 h-auto hidden group-hover:block"
+                className="pointer-events-none w-[10vw] max-w-15 lg:w-[7vw] xl:w-[3vw] h-auto hidden group-hover:block"
               />
             </div>
           </Link>
