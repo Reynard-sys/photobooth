@@ -740,7 +740,7 @@ function DownloadContent() {
                         <>
                           <Image
                             src="/email.png"
-                            alt="Hovered Back to Edit Button"
+                            alt="Email Button"
                             width={200}
                             height={15}
                             priority
@@ -748,7 +748,7 @@ function DownloadContent() {
                           />
                           <Image
                             src="/hover_email.png"
-                            alt="Hovered Back to Edit Button"
+                            alt="Hovered Email Button"
                             width={200}
                             height={15}
                             priority
@@ -917,7 +917,7 @@ function DownloadContent() {
                   <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[5vw] xl:w-[12vw] xl:h-[4vw] py-1">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/Edit.png"
+                        src="/edit.png"
                         alt="Back to Edit Button"
                         width={200}
                         height={15}
