@@ -45,7 +45,7 @@ export default function RetakePage() {
                 }`}
               >
                 <div
-                  className={`relative overflow-hidden rounded border-4 border-[#F2AEBD] w-10vw h-auto sm:w-2vw md:w-9vw lg:w-60 xl:w-150 max-w-70 sm:max-w-120 md:max-w-120 xl:max-w-130 ${shotParam === 3 && index === 2 ? "md:w-46 md:h-46" : ""}`}
+                  className={`relative overflow-hidden rounded border-4 border-[#F2AEBD] max-w-[calc(23vh*16/9)] ${shotParam === 3 && index === 2 ? "md:w-46 md:h-46" : ""}`}
                 >
                   <img
                     className={`w-full ${
@@ -56,7 +56,7 @@ export default function RetakePage() {
                   />
                   <Link
                     href={`/retake?i=${index}`}
-                    className="absolute top-2 right-2 z-20"
+                    className="absolute top-2 right-2 z-20 pointer-events-auto"
                   >
                     <Image
                       src="/redo_asset.png"
@@ -74,15 +74,15 @@ export default function RetakePage() {
             href={`/stripSelect?s=${shotParam}`}
             className="relative inline-block group mt-5 mb-5"
           >
-            <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 xl:translate-x-3 translate-y-2 xl:translate-y-3 group-hover:bg-[#F2AEBD] transition-colors"></div>
-            <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 xl:py-10 px-10 xl:px-40 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
+            <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
+            <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 xl:py-5 px-30 xl:px-40 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
               <Image
                 src="/next_button.png"
                 alt="Next Button"
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-none w-[10vw] max-w-15 lg:w-10 xl:max-w-30 h-auto group-hover:hidden"
+                className="pointer-events-none w-[10vw] max-w-15 lg:w-[7vw] xl:w-[3vw] h-auto group-hover:hidden"
               />
               <Image
                 src="/hover_next.png"
