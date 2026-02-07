@@ -81,7 +81,7 @@ export default function Home() {
             width={554.039}
             height={621.22}
             priority
-            className="pointer-events-auto w-[30vw] max-w-554 h-auto"
+            className="pointer-events-auto w-auto max-h-[52vh]"
           />
         </div>
         
@@ -126,7 +126,7 @@ export default function Home() {
             width={600}
             height={621.22}
             priority
-            className="pointer-events-auto w-[40vw] max-w-600 h-auto"
+            className="pointer-events-auto w-auto h-[95vh] max-h-[70vh]"
           />
         </div>
       </main>

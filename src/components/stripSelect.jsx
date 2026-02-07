@@ -1,6 +1,9 @@
 import Image from "next/image";
+import { useState } from "react";
 
 export default function StripSelect({ selectedStrip, onSelectStrip }) {
+  const [currentPage, setCurrentPage] = useState(0);
+
   const strips = [
     {
       id: "Frame1",
@@ -88,33 +91,65 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
     },
   ];
 
+  const itemsPerPage = 6;
+  const totalPages = Math.ceil(strips.length / itemsPerPage);
+  const startIndex = currentPage * itemsPerPage;
+  const currentStrips = strips.slice(startIndex, startIndex + itemsPerPage);
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(0, prev - 1));
+  };
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(totalPages - 1, prev + 1));
+  };
+
   return (
     <div className="flex flex-col items-center gap-5">
-      <div className="grid grid-cols-3 xl:grid-cols-5 items-center justify-center z-10 mt-0 gap-4 xl:gap-6">
-        {strips.map((strip) => {
-          const isSelected = selectedStrip === strip.id;
-
-          return (
+      <div className="flex items-center gap-4">
+        {/* Back Button */}
+        <div className="flex items-center justify-center w-[10vw]">
+          {currentPage > 0 && (
             <button
-              key={strip.id}
               type="button"
-              className="relative inline-block group"
-              onClick={() => onSelectStrip(strip.id)}
+              onClick={handlePrevPage}
+              className="flex items-center justify-center"
             >
-              <div
-                className={`absolute inset-0 rounded-xl translate-x-2 sm:translate-x-2 lg:translate-x-2 translate-y-2 sm:translate-y-2 lg:translate-y-2 transition-colors ${
-                  isSelected
-                    ? "bg-[#F2AEBD]"
-                    : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
-                }`}
-              ></div>
-              <div
-                className={`relative border sm:border-2 rounded-xl transition-colors flex items-center justify-center
+              <Image
+                src="/back_page.png"
+                alt="Previous Page"
+                width={50}
+                height={50}
+                className="object-contain"
+              />
+            </button>
+          )}
+        </div>
+
+        {/* 2x2 Grid */}
+        <div className="grid grid-cols-3 grid-rows-2 gap-4">
+          {currentStrips.map((strip) => {
+            const isSelected = selectedStrip === strip.id;
+            return (
+              <button
+                key={strip.id}
+                type="button"
+                className="relative inline-block group"
+                onClick={() => onSelectStrip(strip.id)}
+              >
+                <div
+                  className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition colors ${
+                    isSelected
+                      ? "bg-[#F2AEBD]"
+                      : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
+                  }`}
+                ></div>
+                <div
+                  className={`relative border sm:border-2 rounded-xl transition-colors flex items-center justify-center
                   w-[18vw] h-[12vw] 
                   sm:w-[18vw] sm:h-[12vw] 
                   md:w-[14vw] md:h-[10vw] 
                   lg:w-[18vw] lg:h-[7vw] 
-                  xl:w-[10vw] xl:h-[10vw]
+                  xl:w-[10vw] xl:h-[4vw]
                   2xl:w-[7vw] 2xl:h-[3.5vw]
                   py-2 sm:py-0.5 lg:py-3 xl:py-2 2xl:py-2
                   ${
@@ -122,37 +157,57 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                       ? "bg-[#3D568F] border-[#F2AEBD]"
                       : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]"
                   }`}
-              >
-                <div className="relative w-full h-full flex items-center justify-center p-2">
-                  <Image
-                    src={`/${strip.icon}`}
-                    alt={`${strip.alt} Strip Button`}
-                    width={200}
-                    height={50}
-                    priority
-                    className={`pointer-events-none object-contain w-full h-full ${
-                      isSelected
-                        ? "hidden"
-                        : "group-active:hidden xl:group-hover:hidden"
-                    }`}
-                  />
-                  <Image
-                    src={`/${strip.hoverIcon}`}
-                    alt={`${strip.alt} Strip Button Hover`}
-                    width={200}
-                    height={50}
-                    priority
-                    className={`pointer-events-none object-contain w-full h-full ${
-                      isSelected
-                        ? "block"
-                        : "hidden group-active:block xl:group-hover:block"
-                    }`}
-                  />
+                >
+                  <div className="relative w-full h-full flex items-center justify-center p-2">
+                    <Image
+                      src={`/${strip.icon}`}
+                      alt={`/${strip.alt} Strip Button`}
+                      width={200}
+                      height={50}
+                      priority
+                      className={`pointer-events-none object-contain w-full h-full ${
+                        isSelected
+                          ? "hidden"
+                          : "group-active:hidden xl:group-hover:hidden"
+                      }`}
+                    />
+                    <Image
+                      src={`/${strip.icon}`}
+                      alt={`${strip.icon} Strip Button Hover`}
+                      width={200}
+                      height={50}
+                      priority
+                      className={`pointer-events-none object-contain w-full h-full ${
+                        isSelected
+                          ? "block"
+                          : "hidden group-active:block xl:group-hover:block"
+                      }`}
+                    />
+                  </div>
                 </div>
-              </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Next Page Button */}
+        <div className="flex items-center justify-center w-[10vw]">
+          {currentPage < totalPages - 1 && (
+            <button
+              type="button"
+              onClick={handleNextPage}
+              className="flex items-center justify-center"
+            >
+              <Image
+                src="/next_page.png"
+                alt="Next Page"
+                width={50}
+                height={50}
+                className="object-contain"
+              />
             </button>
-          );
-        })}
+          )}
+        </div>
       </div>
     </div>
   );

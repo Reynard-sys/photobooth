@@ -205,7 +205,7 @@ export default function SelectPage() {
             width={554.039}
             height={621.22}
             priority
-            className="pointer-events-auto w-[30vw] max-w-120 h-auto"
+            className="pointer-events-auto w-[10vw] max-w-120 h-auto"
           />
         </div>
 

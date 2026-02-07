@@ -11,32 +11,27 @@ import Link from "next/link";
 import "instagram.css";
 import FilterSelect from "../../components/filterSelect";
 
-const getInitialScale = (shotsLength = 3) => {
-  if (typeof window === "undefined") return 1;
-
-  const canvasHeight = shotsLength === 4 ? 3600 : 2800;
-
-  const maxWidth = window.innerWidth - 64;
-  const maxHeight = window.innerHeight * 0.7;
-  const scaleW = maxWidth / 1200;
-  const scaleH = maxHeight / canvasHeight;
-  return Math.min(scaleW, scaleH, 1);
-};
-
 export default function FinalExportPage() {
   const stripRef = useRef(null);
   const [shots, setShots] = useState([]);
   const [isExporting, setIsExporting] = useState(false);
   const [template, setTemplate] = useState("Frame1");
   const [selectedFilter, setSelectedFilter] = useState("none");
-  const [currentScale, setCurrentScale] = useState(getInitialScale());
+  const [currentScale, setCurrentScale] = useState(1);
 
-  // 1. Sync photos and calculate the preview scale
+  // Load shots from sessionStorage
   useEffect(() => {
     const stored = sessionStorage.getItem("shots");
-    if (stored) setShots(JSON.parse(stored));
+    if (stored) {
+      setShots(JSON.parse(stored));
+    }
+  }, []);
 
-    const updateScale = () => {
+  // Recalculate scale whenever shots or window size changes
+  useEffect(() => {
+    const calculateScale = () => {
+      if (typeof window === "undefined") return 1;
+
       const canvasHeight = shots.length === 4 ? 3600 : 2800;
       const maxWidth = window.innerWidth - 64;
       const maxHeight = window.innerHeight * 0.7;
@@ -45,19 +40,23 @@ export default function FinalExportPage() {
       setCurrentScale(Math.min(scaleW, scaleH, 1));
     };
 
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
-  }, []);
+    calculateScale();
 
-  // Handler for strip selection
+    window.addEventListener("resize", calculateScale);
+    return () => window.removeEventListener("resize", calculateScale);
+  }, [shots.length]); // Recalculate when shots.length changes
+
+  // Strip selection
   const handleSelectStrip = (stripId) => {
     setTemplate(stripId);
   };
 
+  // Filter selection
   const handleSelectFilter = (filterId) => {
     setSelectedFilter(filterId);
   };
 
+  // Call for installed filter function
   const getFilterClass = () => {
     switch (selectedFilter) {
       case "aden":
@@ -75,7 +74,7 @@ export default function FinalExportPage() {
     }
   };
 
-  // Helper function to load an image and apply filter
+  // Filter calculation. Used AI to get filter calculation (╥﹏╥)
   const applyCSSFilterToCanvas = (ctx, canvas, filterType) => {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
@@ -277,11 +276,10 @@ export default function FinalExportPage() {
         }
         break;
     }
-
     ctx.putImageData(imageData, 0, 0);
   };
 
-  // Helper function to load an image and apply filter
+  // Load an image and apply filter
   const loadAndFilterImage = async (src, filterType) => {
     return new Promise((resolve) => {
       const img = new window.Image();
@@ -303,6 +301,7 @@ export default function FinalExportPage() {
     });
   };
 
+  // Download logic
   const downloadPhotoStrip = async () => {
     if (!stripRef.current || shots.length === 0) return;
 
@@ -354,7 +353,7 @@ export default function FinalExportPage() {
 
       document.body.removeChild(clone);
 
-      // Restore original images and classes
+      // Restore original images
       images.forEach((img, i) => {
         img.src = originalSrcs[i];
         if (selectedFilter !== "none") {
@@ -381,37 +380,13 @@ export default function FinalExportPage() {
         link.click();
         document.body.removeChild(link);
       }
-
-      await uploadToDrive(dataUrl);
     } catch (error) {
       console.error("Download Error:", error);
       alert("Could not generate image. Try a different browser or clear tabs.");
     }
   };
 
-  const uploadToDrive = async (dataUrl) => {
-    try {
-      const blob = await (await fetch(dataUrl)).blob();
-      const file = new File([blob], `photostrip-${Date.now()}.png`, {
-        type: "image/png",
-      });
-
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const DRIVE_UPLOAD_URL =
-
-      await fetch(DRIVE_UPLOAD_URL, {
-        method: "POST",
-        body: formData,
-      });
-
-      console.log("Successfully backed up to Drive");
-    } catch (error) {
-      console.error("Drive backup failed:", error);
-    }
-  };
-
+  // Set canvas height depending on the shot selected
   const canvasHeight = shots.length === 4 ? 3600 : 2800;
 
   return (
