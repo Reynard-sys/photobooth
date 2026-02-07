@@ -72,9 +72,9 @@ export default function CameraCapture({
 
   return (
     <>
-      <div className="flex flex-col max-w-6xl lg:max-w-100 xl:max-w-4xl w-full">
+      <div className="flex flex-col w-full max-w-[calc(70vh*16/9)] lg:max-w-full xl:max-w-[calc(40vh*16/9)]">
         {/* Video container */}
-        <div className="border-10 border-[#F2AEBD] rounded-md p-6 sm:p-10 md:p-12 lg:p-20 xl:p-10 mt-0 bg-[#F2DDDC] w-full relative aspect-video overflow-hidden">
+        <div className="border-10 border-[#F2AEBD] rounded-md bg-[#F2DDDC] w-full relative aspect-video overflow-hidden">
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"

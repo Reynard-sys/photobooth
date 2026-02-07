@@ -75,7 +75,11 @@ export default function CameraRetake({
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ transform: "scaleX(-1)" }}
+            style={
+              isMobile && currentCameraIndex === 1
+                ? {}
+                : { transform: "scaleX(-1)" }
+            }
             autoPlay
             playsInline
             muted

@@ -17,6 +17,10 @@ export default function RetakePage() {
   const [countdown, setCountdown] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
 
+  const [currentCameraId, setCurrentCameraId] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
+
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
@@ -30,43 +34,50 @@ export default function RetakePage() {
     if ([3, 5, 10].includes(t)) setCooldown(t);
   }, []);
 
+  // Move startCamera outside useEffect so it can be reused
+  async function startCamera(deviceId = null) {
+    try {
+      // Stop existing stream first
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((t) => t.stop());
+      }
+
+      const constraints = {
+        video: deviceId
+          ? {
+              deviceId: { exact: deviceId },
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            }
+          : {
+              facingMode: "user",
+              width: { ideal: 1920 },
+              height: { ideal: 1080 },
+            },
+        audio: false,
+      };
+
+      const stream = await navigator.mediaDevices.getUserMedia(constraints);
+      streamRef.current = stream;
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        await videoRef.current.play().catch(() => {});
+      }
+    } catch (e) {
+      setError(
+        e?.name === "NotAllowedError"
+          ? "Camera permission denied. Please allow camera access in your browser settings."
+          : `Camera error: ${e?.message || String(e)}`,
+      );
+    }
+  }
+
   // Start camera on mount
   useEffect(() => {
-    let isMounted = true;
-
-    async function startCamera() {
-      try {
-        const constraints = {
-          video: {
-            facingMode: "user",
-            width: { ideal: 1920 },
-            height: { ideal: 1080 },
-          },
-          audio: false,
-        };
-
-        const stream = await navigator.mediaDevices.getUserMedia(constraints);
-        if (!isMounted) return;
-
-        streamRef.current = stream;
-
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          await videoRef.current.play().catch(() => {});
-        }
-      } catch (e) {
-        setError(
-          e?.name === "NotAllowedError"
-            ? "Camera permission denied. Please allow camera access in your browser settings."
-            : `Camera error: ${e?.message || String(e)}`,
-        );
-      }
-    }
-
     startCamera();
 
     return () => {
-      isMounted = false;
       const stream = streamRef.current;
       if (stream) stream.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
@@ -125,8 +136,11 @@ export default function RetakePage() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return null;
 
-    ctx.translate(canvasWidth, 0);
-    ctx.scale(-1, 1);
+    // Only flip if NOT on mobile back camera
+    if (!(isMobile && currentCameraIndex === 1)) {
+      ctx.translate(canvasWidth, 0);
+      ctx.scale(-1, 1);
+    }
 
     ctx.drawImage(
       video,
@@ -169,6 +183,16 @@ export default function RetakePage() {
     router.push("/check");
   }
 
+  const handleCameraSwitch = (deviceId) => {
+    setCurrentCameraId(deviceId);
+    startCamera(deviceId);
+  };
+
+  const handleCameraStateChange = ({ isMobile, currentCameraIndex }) => {
+    setIsMobile(isMobile);
+    setCurrentCameraIndex(currentCameraIndex);
+  };
+
   return (
     <>
       <Border />
@@ -191,6 +215,8 @@ export default function RetakePage() {
           error={error}
           onCapture={saveRetake}
           onCancel={() => router.push("/check")}
+          onCameraSwitch={handleCameraSwitch}
+          onCameraStateChange={handleCameraStateChange}
         />
       </main>
     </>
