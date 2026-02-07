@@ -9,7 +9,9 @@ export default function ShotButton({ shots, isSelected, onClick }) {
     >
       <div
         className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${
-          isSelected ? "bg-[#F2AEBD]" : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
+          isSelected
+            ? "bg-[#F2AEBD]"
+            : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
         }`}
       ></div>
       <div
@@ -28,7 +30,7 @@ export default function ShotButton({ shots, isSelected, onClick }) {
           className={`pointer-events-none w-[4vw] sm:w-[4vw] lg:w-[2vw] md:w-[4vw] xl:w-[3vw] h-auto ${isSelected ? "hidden" : "group-active:hidden"}`}
         />
         <Image
-          src={`/${shots}shots.png`}
+          src={`/hover_${shots}shots.png`}
           alt={`Hovered ${shots} Shots Button`}
           width={200}
           height={15}

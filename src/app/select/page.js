@@ -106,7 +106,7 @@ export default function SelectPage() {
                 width={200}
                 height={15}
                 priority
-                className="pointer-events-none w-[8vw] h-auto hidden group-active:block"
+                className="pointer-events-none w-[8vw] max-w-15 h-auto hidden group-active:block"
               />
             </div>
           </Link>
@@ -305,7 +305,7 @@ export default function SelectPage() {
                   height={15}
                   priority
                   className="pointer-events-auto h-auto hidden group-hover:block"
-                  style={{ width: "clamp(4rem, 6vw, 10rem)" }}
+                  style={{ width: "clamp(4rem, 5vw, 10rem)" }}
                 />
               </div>
             </Link>
