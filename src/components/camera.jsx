@@ -25,7 +25,7 @@ export default function CameraCapture({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+    setIsMobile(/iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini|tablet/i.test(navigator.userAgent));
 
     const getCameras = async () => {
       try {
