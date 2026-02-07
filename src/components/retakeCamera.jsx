@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function CameraRetake({
   videoRef,
@@ -11,7 +12,61 @@ export default function CameraRetake({
   error,
   onCapture,
   onCancel,
+  onCameraSwitch,
+  onCameraStateChange,
 }) {
+  const [availableCameras, setAvailableCameras] = useState([]);
+  const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent));
+
+    const getCameras = async () => {
+      try {
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const videoDevices = devices.filter(
+          (device) => device.kind === "videoinput",
+        );
+        setAvailableCameras(videoDevices);
+      } catch (err) {
+        console.error("Error getting cameras:", err);
+      }
+    };
+
+    getCameras();
+  }, []);
+
+  useEffect(() => {
+    if (onCameraStateChange) {
+      onCameraStateChange({ isMobile, currentCameraIndex });
+    }
+  }, [isMobile, currentCameraIndex, onCameraStateChange]);
+
+  const handleCameraSwitch = () => {
+    if (availableCameras.length <= 1) return;
+
+    let nextIndex;
+    if (isMobile) {
+      nextIndex = currentCameraIndex === 0 ? 1 : 0;
+    } else {
+      nextIndex = (currentCameraIndex + 1) % availableCameras.length;
+    }
+
+    setCurrentCameraIndex(nextIndex);
+
+    if (onCameraSwitch) {
+      onCameraSwitch(availableCameras[nextIndex].deviceId);
+    }
+  };
+
+  const getCameraButtonText = () => {
+    if (isMobile) {
+      return currentCameraIndex === 0 ? "Front Cam" : "Back Cam";
+    }
+    return `Camera ${currentCameraIndex + 1}`;
+  };
+
   return (
     <>
       <div className="flex flex-col max-w-6xl lg:max-w-4xl xl:max-w-4xl w-full">
@@ -20,6 +75,7 @@ export default function CameraRetake({
           <video
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
+            style={{ transform: "scaleX(-1)" }}
             autoPlay
             playsInline
             muted
@@ -36,10 +92,26 @@ export default function CameraRetake({
         </div>
 
         {/* Shot info */}
-        <div className="mt-2 bg-[#F2AEBD] text-white text-sm px-2 py-1 rounded w-fit">
-          Retaking Shot {shotIndex + 1}
-          {" • "}
-          Timer: {cooldown}s
+
+        {/* Bottom info bar - Shot progress (left) and Camera switch (right) */}
+        <div className="mt-2 flex justify-between items-center">
+          {/* Shot progress - Left */}
+          <div className="bg-[#F2AEBD] text-white text-sm px-2 py-1 rounded">
+            Retaking Shot {shotIndex + 1}
+            {" • "}
+            Timer: {cooldown}s
+          </div>
+
+          {/* Camera Switch Button - Right */}
+          {availableCameras.length > 1 && (
+            <button
+              onClick={handleCameraSwitch}
+              disabled={isRunning}
+              className="bg-[#F2AEBD] hover:bg-[#F2AEBD] active:bg-[#F2AEBD] text-white px-3 py-1 rounded font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {getCameraButtonText()}
+            </button>
+          )}
         </div>
       </div>
 

@@ -49,7 +49,13 @@ export default function CameraCapture({
   const handleCameraSwitch = () => {
     if (availableCameras.length <= 1) return;
 
-    const nextIndex = (currentCameraIndex + 1) % availableCameras.length;
+    let nextIndex;
+    if (isMobile) {
+      nextIndex = currentCameraIndex === 0 ? 1 : 0;
+    } else {
+      nextIndex = (currentCameraIndex + 1) % availableCameras.length;
+    }
+
     setCurrentCameraIndex(nextIndex);
 
     if (onCameraSwitch) {
@@ -73,9 +79,9 @@ export default function CameraCapture({
             ref={videoRef}
             className="absolute inset-0 w-full h-full object-cover"
             style={
-              isMobile && currentCameraIndex === 0
-                ? { transform: "scaleX(-1)" }
-                : {}
+              isMobile && currentCameraIndex === 1
+                ? {}
+                : { transform: "scaleX(-1)" }
             }
             autoPlay
             playsInline
