@@ -195,30 +195,32 @@ export default function RetakePage() {
 
   return (
     <>
-      <Border />
-      <main className="flex flex-col justify-start min-h-screen items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
-        <div className="flex mt-15 lg:-mt-15 mb-5 text-center">
-          <Image
-            src="/smile_title.png"
-            alt="Smile"
-            width={240}
-            height={60}
-            className="mx-auto"
+      <div className="h-dvh overflow-hidden bg-[#FDFDF5]">
+        <Border />
+        <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none justify-start h-full items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
+          <div className="flex mt-15 lg:-mt-15 mb-5 text-center">
+            <Image
+              src="/smile_title.png"
+              alt="Smile"
+              width={240}
+              height={60}
+              className="mx-auto"
+            />
+          </div>
+          <CameraRetake
+            videoRef={videoRef}
+            countdown={countdown}
+            shotIndex={index}
+            cooldown={cooldown}
+            isRunning={isRunning}
+            error={error}
+            onCapture={saveRetake}
+            onCancel={() => router.push("/check")}
+            onCameraSwitch={handleCameraSwitch}
+            onCameraStateChange={handleCameraStateChange}
           />
-        </div>
-        <CameraRetake
-          videoRef={videoRef}
-          countdown={countdown}
-          shotIndex={index}
-          cooldown={cooldown}
-          isRunning={isRunning}
-          error={error}
-          onCapture={saveRetake}
-          onCancel={() => router.push("/check")}
-          onCameraSwitch={handleCameraSwitch}
-          onCameraStateChange={handleCameraStateChange}
-        />
-      </main>
+        </main>
+      </div>
     </>
   );
 }
