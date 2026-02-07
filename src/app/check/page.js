@@ -71,7 +71,7 @@ export default function RetakePage() {
             ))}
           </div>
           <Link
-            href={`/stripSelect?s=${shotParam}`}
+            href={`/edit?s=${shotParam}`}
             className="relative inline-block group mt-5 mb-5"
           >
             <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>

@@ -27,6 +27,12 @@ export default function CameraCapture({
 
     const getCameras = async () => {
       try {
+        await navigator.mediaDevices
+          .getUserMedia({ video: true })
+          .then((stream) => {
+            stream.getTracks().forEach((track) => track.stop());
+          });
+
         const devices = await navigator.mediaDevices.enumerateDevices();
         const videoDevices = devices.filter(
           (device) => device.kind === "videoinput",
@@ -38,6 +44,12 @@ export default function CameraCapture({
     };
 
     getCameras();
+
+    navigator.mediaDevices.addEventListener("devicechange", getCameras);
+
+    return () => {
+      navigator.mediaDevices.removeEventListener("devicechange", getCameras);
+    };
   }, []);
 
   useEffect(() => {

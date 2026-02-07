@@ -301,91 +301,6 @@ export default function FinalExportPage() {
     });
   };
 
-  // Download logic
-  const downloadPhotoStrip = async () => {
-    if (!stripRef.current || shots.length === 0) return;
-
-    try {
-      const canvasHeight = shots.length === 4 ? 3600 : 2800;
-
-      // Apply filters to shots if needed
-      let filteredShots = shots;
-      if (selectedFilter !== "none") {
-        filteredShots = await Promise.all(
-          shots.map((shot) => loadAndFilterImage(shot, selectedFilter)),
-        );
-      }
-
-      // Temporarily replace the shots in the component
-      const images = stripRef.current.querySelectorAll("img[alt^='Shot']");
-      const originalSrcs = [];
-      images.forEach((img, i) => {
-        originalSrcs[i] = img.src;
-        if (filteredShots[i]) {
-          img.src = filteredShots[i];
-        }
-        // Remove filter class
-        img.className = img.className.replace(/filter-\w+/g, "").trim();
-      });
-
-      const original = stripRef.current;
-      const clone = original.cloneNode(true);
-
-      clone.style.position = "absolute";
-      clone.style.left = "-9999px";
-      clone.style.top = "-9999px";
-      clone.style.width = "1200px";
-      clone.style.height = `${canvasHeight}px`;
-      clone.style.transform = "none";
-
-      document.body.appendChild(clone);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const canvas = await html2canvas(clone, {
-        backgroundColor: null,
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        width: 1200,
-        height: canvasHeight,
-        removeContainer: true,
-      });
-
-      document.body.removeChild(clone);
-
-      // Restore original images
-      images.forEach((img, i) => {
-        img.src = originalSrcs[i];
-        if (selectedFilter !== "none") {
-          img.className += ` ${getFilterClass()}`;
-        }
-      });
-
-      const dataUrl = canvas.toDataURL("image/png", 1.0);
-
-      const isSafari = /^((?!chrome|android).)*safari/i.test(
-        navigator.userAgent,
-      );
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-      if (isSafari || isIOS) {
-        const newTab = window.open();
-        newTab.document.body.innerHTML = `<img src="${dataUrl}" style="width:100%" />`;
-        newTab.document.title = "Save your Photo Strip";
-      } else {
-        const link = document.createElement("a");
-        link.download = `photostrip-${Date.now()}.png`;
-        link.href = dataUrl;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    } catch (error) {
-      console.error("Download Error:", error);
-      alert("Could not generate image. Try a different browser or clear tabs.");
-    }
-  };
-
   // Set canvas height depending on the shot selected
   const canvasHeight = shots.length === 4 ? 3600 : 2800;
 
@@ -463,10 +378,9 @@ export default function FinalExportPage() {
 
             {/* Action Buttons */}
             <div className="mt-10 mb-20 flex flex-col items-center gap-6">
-              <button
-                onClick={downloadPhotoStrip}
-                disabled={shots.length === 0 || isExporting}
-                className="relative inline-block group disabled:opacity-50 disabled:cursor-not-allowed"
+              <Link
+                href={`/download?template=${template}&filter=${selectedFilter}`}
+                className="relative inline-block group"
               >
                 <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                 <div
@@ -477,16 +391,16 @@ export default function FinalExportPage() {
                 >
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <Image
-                      src="/download.png"
-                      alt="Download Button"
+                      src="/next_button.png"
+                      alt="Next Button"
                       width={200}
                       height={15}
                       priority
                       className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                     />
                     <Image
-                      src="/hover_download.png"
-                      alt="Hovered Download Button"
+                      src="/hover_next.png"
+                      alt="Hovered Next Button"
                       width={200}
                       height={15}
                       priority
@@ -494,7 +408,7 @@ export default function FinalExportPage() {
                     />
                   </div>
                 </div>
-              </button>
+              </Link>
 
               <Link
                 href="/check"
@@ -531,9 +445,9 @@ export default function FinalExportPage() {
           </div>
 
           {/* Medium and Large Screen Size */}
-          <div className="hidden lg:flex w-full max-w-[95vw] 2xl:max-w-450 items-center justify-between">
+          <div className="hidden lg:flex w-full items-center justify-between">
             {/* Preview Area - Left Side */}
-            <div className="flex flex-col items-center justify-center shrink-0">
+            <div className="flex flex-col items-center justify-center shrink-0 ml-70 mb-0 xl:mb-10 2xl:mb-0">
               <div
                 className="relative overflow-hidden bg-white"
                 style={{
@@ -571,13 +485,13 @@ export default function FinalExportPage() {
             </div>
 
             {/* Right Side - Strip Selection & Buttons */}
-            <div className="flex flex-col items-center justify-center ml-8 xl:ml-16 2xl:ml-24">
+            <div className="flex flex-col items-center justify-center ml-8 xl:ml-16 mr-0 xl:mr-20 2xl:mr-30">
               <Image
                 src="/strips_title.png"
                 alt="Smile"
                 width={240}
                 height={60}
-                className="w-1vw mt-0 2xl:mt-10"
+                className="w-47 mt-0 2xl:mt-10"
               />
               {/* Strip Selection Buttons */}
               <StripSelect
@@ -590,11 +504,11 @@ export default function FinalExportPage() {
                 alt="Smile"
                 width={300}
                 height={60}
-                className="w-0.5vw 2xl:w-10vw mt-10"
+                className="w-50 mt-10 xl:mt-0 2xl:mt-10"
               />
 
               {/* Filter Selection Buttons */}
-              <div className="mt-6 w-full">
+              <div className="mt-6 xl:mt-0 w-full">
                 <FilterSelect
                   selectedFilter={selectedFilter}
                   onSelectFilter={handleSelectFilter}
@@ -602,32 +516,31 @@ export default function FinalExportPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="mt-30 mb-20 flex flex-col items-center gap-6">
-                <button
-                  onClick={downloadPhotoStrip}
-                  disabled={shots.length === 0 || isExporting}
-                  className="relative inline-block group disabled:opacity-50 disabled:cursor-not-allowed"
+              <div className="mt-10 xl:mt-6 2xl:mt-10 mb-20 flex flex-col items-center gap-6">
+                <Link
+                  href={`/download?template=${template}&filter=${selectedFilter}`}
+                  className="relative inline-block group"
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                   <div
                     className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
                     w-[35vw] h-[7vw]
-                    xl:w-[12vw] xl:h-[4vw]
+                    xl:w-[26vw] xl:h-[4vw]
                     2xl:w-[20vw] 2xl:h-[4vw]
-                    py-4.5"
+                    py-4.5 xl:py-2"
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/download.png"
-                        alt="Download Button"
+                        src="/next_button.png"
+                        alt="Next Button Button"
                         width={200}
                         height={15}
                         priority
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_download.png"
-                        alt="Hovered Download Button"
+                        src="/hover_next.png"
+                        alt="Hovered Next Button"
                         width={200}
                         height={15}
                         priority
@@ -635,19 +548,19 @@ export default function FinalExportPage() {
                       />
                     </div>
                   </div>
-                </button>
+                </Link>
 
                 <Link
                   href="/check"
-                  className="relative inline-block group mt-5 mb-5"
+                  className="relative inline-block group mt-0 mb-5"
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                   <div
                     className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
-                  w-[35vw] h-[7vw]
-                  xl:w-[12vw] xl:h-[4vw]
-                  2xl:w-[20vw] 2xl:h-[4vw]
-                  py-4.5"
+                    w-[35vw] h-[7vw]
+                    xl:w-[26vw] xl:h-[4vw]
+                    2xl:w-[20vw] 2xl:h-[4vw]
+                    py-4.5 xl:py-2"
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image

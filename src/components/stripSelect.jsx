@@ -126,7 +126,7 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
         </div>
 
         {/* 2x2 Grid */}
-        <div className="grid grid-cols-3 grid-rows-2 gap-4">
+        <div className="grid grid-cols-3 grid-rows-2 items-center justify-center z-10 gap-4">
           {currentStrips.map((strip) => {
             const isSelected = selectedStrip === strip.id;
             return (
@@ -149,7 +149,7 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                   sm:w-[18vw] sm:h-[12vw] 
                   md:w-[14vw] md:h-[10vw] 
                   lg:w-[18vw] lg:h-[7vw] 
-                  xl:w-[10vw] xl:h-[4vw]
+                  xl:w-[8vw] xl:h-[3.5vw]
                   2xl:w-[7vw] 2xl:h-[3.5vw]
                   py-2 sm:py-0.5 lg:py-3 xl:py-2 2xl:py-2
                   ${

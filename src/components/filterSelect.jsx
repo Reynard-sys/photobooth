@@ -42,7 +42,7 @@ export default function FilterSelect({ selectedFilter, onSelectFilter }) {
 
   return (
     <div className="flex flex-col items-center gap-5">
-      <div className="grid grid-cols-3 lg:grid-cols-3 items-center justify-center z-10 gap-4 xl:gap-6">
+      <div className="grid grid-cols-3 items-center justify-center z-10 gap-4">
         {filters.map((filter) => {
           const isSelected = selectedFilter === filter.id;
 
@@ -54,7 +54,7 @@ export default function FilterSelect({ selectedFilter, onSelectFilter }) {
               onClick={() => onSelectFilter(filter.id)}
             >
               <div
-                className={`absolute inset-0 rounded-xl translate-x-2 sm:translate-x-2 lg:translate-x-2 translate-y-2 sm:translate-y-2 lg:translate-y-2 transition-colors ${
+                className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${
                   isSelected
                     ? "bg-[#F2AEBD]"
                     : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
@@ -66,7 +66,7 @@ export default function FilterSelect({ selectedFilter, onSelectFilter }) {
                   sm:w-[18vw] sm:h-[12vw] 
                   md:w-[14vw] md:h-[10vw] 
                   lg:w-[18vw] lg:h-[7vw] 
-                  xl:w-[10vw] xl:h-[4vw]
+                  xl:w-[8vw] xl:h-[3.5vw]
                   2xl:w-[7vw] 2xl:h-[3.5vw]
                   py-2 sm:py-0.5 lg:py-3 xl:py-2 2xl:py-2
                   ${
