@@ -23,6 +23,12 @@ export default function DownloadPage() {
   const [stripPosition, setStripPosition] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
 
+  const [email, setEmail] = useState("");
+  const [isSendingEmail, setIsSendingEmail] = useState(false);
+  const [emailStatus, setEmailStatus] = useState(null);
+
+  const [generatedImage, setGeneratedImage] = useState(null);
+
   useEffect(() => {
     const stored = sessionStorage.getItem("shots");
     if (stored) {
@@ -67,7 +73,7 @@ export default function DownloadPage() {
   useEffect(() => {
     if (!isAnimating) return;
 
-    const duration = 5000;
+    const duration = 1000;
     const startTime = Date.now();
 
     const animate = () => {
@@ -76,7 +82,7 @@ export default function DownloadPage() {
 
       const easeProgress = 1 - Math.pow(1 - progress / 100, 3);
 
-      const revealAmount = shots.length === 4 ? 131 : 140;
+      const revealAmount = shots.length === 4 ? 130 : 130;
 
       setStripPosition(easeProgress * revealAmount);
 
@@ -333,8 +339,8 @@ export default function DownloadPage() {
     });
   };
 
-  const downloadPhotoStrip = async () => {
-    if (!stripRef.current || shots.length === 0) return;
+  const generatePhotoStripImage = async () => {
+    if (!stripRef.current || shots.length === 0) return null;
 
     try {
       const canvasHeight = shots.length === 4 ? 3600 : 2800;
@@ -389,6 +395,27 @@ export default function DownloadPage() {
       });
 
       const dataUrl = canvas.toDataURL("image/png", 1.0);
+      return dataUrl;
+    } catch (error) {
+      console.error("Image generation error:", error);
+      return null;
+    }
+  };
+
+  const downloadPhotoStrip = async () => {
+    if (!stripRef.current || shots.length === 0) return;
+
+    try {
+      let dataUrl = generatedImage;
+      if (!dataUrl) {
+        dataUrl = await generatePhotoStripImage();
+        setGeneratedImage(dataUrl);
+      }
+
+      if (!dataUrl) {
+        alert("Could not generate image. Try again.");
+        return;
+      }
 
       const isSafari = /^((?!chrome|android).)*safari/i.test(
         navigator.userAgent,
@@ -410,6 +437,62 @@ export default function DownloadPage() {
     } catch (error) {
       console.error("Download Error:", error);
       alert("Could not generate image. Try a different browser or clear tabs.");
+    }
+  };
+
+  const sendEmailWithImage = async () => {
+    if (!email || !stripRef.current || shots.length === 0) return;
+
+    if (!email.includes("@")) {
+      setEmailStatus("error");
+      setTimeout(() => setEmailStatus(null), 3000);
+      return;
+    }
+
+    setIsSendingEmail(true);
+    setEmailStatus(null);
+
+    try {
+      let dataUrl = generatedImage;
+      if (!dataUrl) {
+        dataUrl = await generatePhotoStripImage();
+        setGeneratedImage(dataUrl);
+      }
+
+      if (!dataUrl) {
+        setEmailStatus("error");
+        setTimeout(() => setEmailStatus(null), 3000);
+        return;
+      }
+
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          imageData: dataUrl,
+          filename: `photostrip-${Date.now()}.png`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setEmailStatus("success");
+        setEmail("");
+        setTimeout(() => setEmailStatus(null), 5000);
+      } else {
+        setEmailStatus("error");
+        setTimeout(() => setEmailStatus(null), 5000);
+      }
+    } catch (error) {
+      console.error("Email Error:", error);
+      setEmailStatus("error");
+      setTimeout(() => setEmailStatus(null), 5000);
+    } finally {
+      setIsSendingEmail(false);
     }
   };
 
@@ -592,6 +675,109 @@ export default function DownloadPage() {
                     </div>
                   </div>
                 </Link>
+                {/* Email Section */}
+                <div className="flex flex-col items-center gap-4 w-full">
+                  {/* Email Input */}
+                  <div className="w-[60vw] md:w-[35vw] lg:w-[15vw] xl:w-[12vw]">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full px-4 py-3 border-2 border-[#3D568F] rounded-xl bg-[#FDFDF5] text-[#3D568F] placeholder-[#3D568F]/50 focus:outline-none focus:ring-2 focus:ring-[#F2AEBD] text-center font-medium"
+                    />
+                  </div>
+
+                  {/* Send Email Button */}
+                  <button
+                    onClick={sendEmailWithImage}
+                    disabled={!email || isSendingEmail}
+                    className="group relative cursor-pointer"
+                  >
+                    <div
+                      className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${
+                        isSendingEmail
+                          ? "bg-[#F2AEBD]"
+                          : "bg-[#3D568F] group-active:bg-[#F2AEBD] lg:group-hover:bg-[#F2AEBD]"
+                      }`}
+                    ></div>
+                    <div
+                      className={`relative border-2 sm:border-2 rounded-xl w-[60vw] h-[12vw]
+                                    md:w-[35vw] md:h-[7vw]
+                                    py-3 max-w-90 max-h-40 sm:max-h-18 ${
+                                      isSendingEmail
+                                        ? "bg-[#3D568F] border-[#F2AEBD]"
+                                        : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
+                                    }`}
+                    >
+                      {isSendingEmail ? (
+                        <Image
+                          src={`/capturing_asset.png`}
+                          alt="Capturing"
+                          width={200}
+                          height={15}
+                          priority
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <>
+                          <Image
+                            src="/email.png"
+                            alt="Hovered Back to Edit Button"
+                            width={200}
+                            height={15}
+                            priority
+                            className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
+                          />
+                          <Image
+                            src="/hover_email.png"
+                            alt="Hovered Back to Edit Button"
+                            width={200}
+                            height={15}
+                            priority
+                            className="pointer-events-none object-contain w-full h-full hidden group-active:block xl:group-hover:block"
+                          />
+                        </>
+                      )}
+                    </div>
+                  </button>
+
+                  {/* Status Message */}
+                  {emailStatus && (
+                    <div
+                      className={`text-center font-medium ${emailStatus === "success" ? "text-[#3E5D93]" : "text-[#F2AEBD]"}`}
+                    >
+                      {emailStatus === "success"
+                        ? "Email sent successfully!"
+                        : "Failed to send email"}
+                    </div>
+                  )}
+
+                  {/* Reset Link */}
+                  <Link href="/" className="relative inline-block group mt-4">
+                    <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
+                    <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] lg:w-[15vw] lg:h-[5vw] xl:w-[12vw] xl:h-[4vw] py-1 max-w-90 max-h-40 sm:max-h-18">
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image
+                          src="/reset.png"
+                          alt="Reset Button"
+                          width={200}
+                          height={15}
+                          priority
+                          className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
+                        />
+                        <Image
+                          src="/hover_reset.png"
+                          alt="Hovered Reset Button"
+                          width={200}
+                          height={15}
+                          priority
+                          className="pointer-events-none object-contain w-full h-full hidden group-active:block xl:group-hover:block"
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                </div>
                 <div className="z-10 w-[30vw] pointer-events-none">
                   <Image
                     src="/credits.png"
@@ -756,6 +942,107 @@ export default function DownloadPage() {
                     </div>
                   </div>
                 </Link>
+                {/* Email Section */}
+                <div className="flex flex-col items-center gap-4 w-full">
+                  {/* Email Input */}
+                  <div className="w-[60vw] md:w-[35vw] lg:w-[15vw] xl:w-[12vw]">
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full px-4 py-3 border-2 border-[#3D568F] rounded-xl bg-[#FDFDF5] text-[#3D568F] placeholder-[#3D568F]/50 focus:outline-none focus:ring-2 focus:ring-[#F2AEBD] text-center font-medium"
+                    />
+                  </div>
+
+                  {/* Send Email Button */}
+                  <button
+                    onClick={sendEmailWithImage}
+                    disabled={!email || isSendingEmail}
+                    className="group relative cursor-pointer"
+                  >
+                    <div
+                      className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${
+                        isSendingEmail
+                          ? "bg-[#F2AEBD]"
+                          : "bg-[#3D568F] group-active:bg-[#F2AEBD] lg:group-hover:bg-[#F2AEBD]"
+                      }`}
+                    ></div>
+                    <div
+                      className={`relative border-2 sm:border-2 rounded-xl w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[5vw] xl:w-[12vw] xl:h-[4vw] py-4 ${
+                        isSendingEmail
+                          ? "bg-[#3D568F] border-[#F2AEBD]"
+                          : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
+                      }`}
+                    >
+                      {isSendingEmail ? (
+                        <Image
+                          src={`/capturing_asset.png`}
+                          alt="Capturing"
+                          width={200}
+                          height={15}
+                          priority
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <>
+                          <Image
+                            src="/email.png"
+                            alt="Email Button"
+                            width={200}
+                            height={15}
+                            priority
+                            className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
+                          />
+                          <Image
+                            src="/hover_email.png"
+                            alt="Hovered Email Button"
+                            width={200}
+                            height={15}
+                            priority
+                            className="pointer-events-none object-contain w-full h-full hidden group-active:block xl:group-hover:block"
+                          />
+                        </>
+                      )}
+                    </div>
+                  </button>
+
+                  {/* Status Message */}
+                  {emailStatus && (
+                    <div
+                      className={`text-center font-bold ${emailStatus === "success" ? "text-[#3E5D93]" : "text-[#F2AEBD]"}`}
+                    >
+                      {emailStatus === "success"
+                        ? "Email sent successfully!"
+                        : "Failed to send email"}
+                    </div>
+                  )}
+
+                  {/* Reset Link */}
+                  <Link href="/" className="relative inline-block group mt-4">
+                    <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
+                    <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] lg:w-[15vw] lg:h-[5vw] xl:w-[12vw] xl:h-[4vw] py-1 max-w-90 max-h-40 sm:max-h-18">
+                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                        <Image
+                          src="/reset.png"
+                          alt="Reset Button"
+                          width={200}
+                          height={15}
+                          priority
+                          className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
+                        />
+                        <Image
+                          src="/hover_reset.png"
+                          alt="Hovered Reset Button"
+                          width={200}
+                          height={15}
+                          priority
+                          className="pointer-events-none object-contain w-full h-full hidden group-active:block xl:group-hover:block"
+                        />
+                      </div>
+                    </div>
+                  </Link>
+                </div>
               </div>
             )}
             <div className="absolute bottom-10 right-10 z-10 w-[30vw] md:w-[20vw] lg:w-[15vw] pointer-events-none">
