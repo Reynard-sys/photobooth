@@ -172,7 +172,7 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                       }`}
                     />
                     <Image
-                      src={`/${strip.icon}`}
+                      src={`/${strip.hoverIcon}`}
                       alt={`${strip.icon} Strip Button Hover`}
                       width={200}
                       height={50}
