@@ -1,7 +1,6 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
-
+export const dynamic = "force-dynamic";
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -23,7 +22,11 @@ export default function CameraRetake({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(/iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini|tablet/i.test(navigator.userAgent));
+    setIsMobile(
+      /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini|tablet/i.test(
+        navigator.userAgent,
+      ),
+    );
 
     const getCameras = async () => {
       try {
@@ -84,7 +87,7 @@ export default function CameraRetake({
 
   return (
     <>
-      <div className="flex flex-col w-full max-w-[calc(70vh*16/9)] lg:max-w-full xl:max-w-[calc(40vh*16/9)]">
+      <div className="flex flex-col w-full max-w-[calc(70vh*16/9)] md:max-w-[calc(40vh*16/9)] lg:max-w-[calc(50vh*16/9)] xl:max-w-[calc(40vh*16/9)]">
         {/* Video container */}
         <div className="border-10 border-[#F2AEBD] rounded-md p-6 sm:p-10 md:p-12 lg:p-20 xl:p-10 mt-0 bg-[#F2DDDC] w-full relative aspect-video overflow-hidden">
           <video
@@ -162,7 +165,7 @@ export default function CameraRetake({
                 alt="Capturing"
                 width={200}
                 height={15}
-                className="w-[15vw] md:w-[10vw] lg:w-[15vw] xl:w-[10vw] h-auto"
+                className="w-[15vw] md:w-[8vw] lg:w-[7vw] xl:w-[5vw] h-auto"
               />
             ) : (
               <>
@@ -172,7 +175,7 @@ export default function CameraRetake({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[15vw] md:w-[8vw] lg:w-[15vw] xl:w-[5vw] h-auto group-hover:hidden xl:group-hover:hidden"
+                  className="pointer-events-none w-[15vw] md:w-[8vw] lg:w-[7vw] xl:w-[5vw] h-auto group-hover:hidden xl:group-hover:hidden"
                 />
                 <Image
                   src="/hover_retake_button.png"
@@ -180,7 +183,7 @@ export default function CameraRetake({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[15vw] md:w-[50vw] lg:w-[15vw] xl:w-[5vw] h-auto hidden group-hover:block xl:group-hover:block"
+                  className="pointer-events-none w-[15vw] md:w-[8vw] lg:w-[7vw] xl:w-[5vw] h-auto hidden group-hover:block xl:group-hover:block"
                 />
               </>
             )}
