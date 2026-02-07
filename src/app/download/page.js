@@ -46,6 +46,39 @@ function DownloadContent() {
 
   const [generatedImage, setGeneratedImage] = useState(null);
 
+  const [assetsReady, setAssetsReady] = useState(false);
+
+  // ADD THIS EFFECT AT THE TOP (before other useEffects)
+  useEffect(() => {
+    const imagesToPreload = [
+      "/machine.png",
+      "/top_machine.png",
+      "/download.png",
+      "/hover_download.png",
+      "/edit.png",
+      "/hover_edit.png",
+      "/reset.png",
+      "/hover_reset.png",
+      "/email.png",
+      "/hover_email.png",
+      "/sending.png",
+      "/credits.png",
+    ];
+
+    Promise.all(
+      imagesToPreload.map((src) => {
+        return new Promise((resolve) => {
+          const img = new window.Image();
+          img.onload = resolve;
+          img.onerror = resolve; // Still resolve on error
+          img.src = src;
+        });
+      }),
+    ).then(() => {
+      setAssetsReady(true);
+    });
+  }, []);
+
   useEffect(() => {
     const stored = sessionStorage.getItem("shots");
     if (stored) {
