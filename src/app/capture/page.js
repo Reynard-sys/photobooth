@@ -7,8 +7,24 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import CameraCapture from "../../components/camera";
+import { Suspense } from "react";
 
 export default function CapturePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-dvh flex items-center justify-center bg-[#FDFDF5]">
+          <p className="text-[#3D568F] font-bold animate-pulse">
+            Initializing Camera...
+          </p>
+        </div>
+      }
+    >
+      <CaptureContent />
+    </Suspense>
+  );
+}
+function CaptureContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
@@ -11,6 +12,22 @@ import "instagram.css";
 import Link from "next/link";
 
 export default function DownloadPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-dvh flex items-center justify-center bg-[#FDFDF5]">
+          <p className="text-[#3D568F] font-bold animate-pulse">
+            Loading shots...
+          </p>
+        </div>
+      }
+    >
+      <DownloadContent />
+    </Suspense>
+  );
+}
+
+function DownloadContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const stripRef = useRef(null);
@@ -73,7 +90,7 @@ export default function DownloadPage() {
   useEffect(() => {
     if (!isAnimating) return;
 
-    const duration = 1000;
+    const duration = 5000;
     const startTime = Date.now();
 
     const animate = () => {
@@ -82,7 +99,7 @@ export default function DownloadPage() {
 
       const easeProgress = 1 - Math.pow(1 - progress / 100, 3);
 
-      const revealAmount = shots.length === 4 ? 130 : 130;
+      const revealAmount = shots.length === 4 ? 135 : 135;
 
       setStripPosition(easeProgress * revealAmount);
 
@@ -712,8 +729,8 @@ export default function DownloadPage() {
                     >
                       {isSendingEmail ? (
                         <Image
-                          src={`/capturing_asset.png`}
-                          alt="Capturing"
+                          src={`/sending.png`}
+                          alt="Sending"
                           width={200}
                           height={15}
                           priority
@@ -977,8 +994,8 @@ export default function DownloadPage() {
                     >
                       {isSendingEmail ? (
                         <Image
-                          src={`/capturing_asset.png`}
-                          alt="Capturing"
+                          src={`/sending.png`}
+                          alt="Sending"
                           width={200}
                           height={15}
                           priority

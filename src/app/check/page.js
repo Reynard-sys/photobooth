@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import Border from "../../components/border";
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -7,6 +8,22 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
 export default function RetakePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-dvh flex items-center justify-center bg-[#FDFDF5]">
+          <p className="text-[#3D568F] font-bold animate-pulse">
+            Loading shots...
+          </p>
+        </div>
+      }
+    >
+      <RetakeContent />
+    </Suspense>
+  );
+}
+
+function RetakeContent() {
   const [shots, setShots] = useState([]);
   const searchParams = useSearchParams();
   const shotParam = Number(searchParams.get("s"));
