@@ -447,7 +447,7 @@ export default function FinalExportPage() {
           {/* Medium and Large Screen Size */}
           <div className="hidden lg:flex w-full items-center justify-between">
             {/* Preview Area - Left Side */}
-            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-40 xl:ml-50 mb-0 lg:mb-10 xl:mb-10 2xl:mb-0">
+            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-40 xl:ml-50 mb-0 lg:mb-15 xl:mb-10 2xl:mb-0">
               <div
                 className="relative overflow-hidden bg-white"
                 style={{
