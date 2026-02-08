@@ -254,7 +254,7 @@ function CaptureContent() {
       <div className="h-dvh overflow-hidden bg-[#FDFDF5]">
         <Border />
         <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none justify-start h-full items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
-          <div className="flex mt-15 lg:-mt-20 mb-5 text-center">
+          <div className="flex mt-15 lg:-mt-10 mb-5 text-center">
             <Image
               src="/smile_title.png"
               alt="Smile"
