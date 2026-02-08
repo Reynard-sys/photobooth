@@ -841,7 +841,7 @@ function DownloadContent() {
           </div>
 
           {/* Large Screen Size */}
-          <div className="hidden lg:flex w-full items-center justify-between mt-15 2xl:mt-15">
+          <div className="hidden lg:flex w-full items-center justify-between mt-15 lg:mt-10 xl:mt-15 2xl:mt-30">
             <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-50 xl:ml-70 mb-0 xl:mb-10 2xl:mb-0">
               {/* Photo Booth Machine */}
               <div
@@ -922,7 +922,7 @@ function DownloadContent() {
                   className="relative inline-block group"
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-0">
+                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-3">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
                         src="/download.png"
@@ -946,7 +946,7 @@ function DownloadContent() {
 
                 <Link href="/edit" className="relative inline-block group">
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-0">
+                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-3">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
                         src="/edit.png"
@@ -970,7 +970,7 @@ function DownloadContent() {
 
                 <Link href="/" className="relative inline-block group">
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-0">
+                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-3">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
                         src="/reset.png"
@@ -1018,7 +1018,7 @@ function DownloadContent() {
                       }`}
                     ></div>
                     <div
-                      className={`relative border-2 sm:border-2 rounded-xl w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[3.9vw] xl:w-[12vw] xl:h-[4vw] py-4 lg:py-3 ${
+                      className={`relative border-2 sm:border-2 rounded-xl w-[50vw] h-[10vw] lg:w-[15vw] lg:h-[3.9vw] xl:w-[12vw] xl:h-[3.8vw] py-4 lg:py-3 p-0 xl:p-5 ${
                         isSendingEmail
                           ? "bg-[#3D568F] border-[#F2AEBD]"
                           : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
@@ -1071,7 +1071,7 @@ function DownloadContent() {
                   <Link href="/" className="relative inline-block group">
                     <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                     <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] lg:w-[15vw] lg:h-[3.9vw] xl:w-[12vw] xl:h-[4vw] py-1 max-w-90 max-h-40 sm:max-h-18">
-                      <div className="relative w-full h-full flex items-center justify-center p-2">
+                      <div className="relative w-full h-full flex items-center justify-center p-2 xl:p-4">
                         <Image
                           src="/reset.png"
                           alt="Reset Button"
