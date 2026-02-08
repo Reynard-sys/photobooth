@@ -118,7 +118,7 @@ export default function CameraRetake({
         {/* Bottom info bar - Shot progress (left) and Camera switch (right) */}
         <div className="mt-2 flex justify-between items-center">
           {/* Shot progress - Left */}
-          <div className="bg-[#F2AEBD] text-white text-sm px-2 py-1 rounded">
+          <div className="bg-[#F2AEBD] text-white text-sm lg:text-xs xl:text-sm px-2 py-1 rounded">
             Retaking Shot {shotIndex + 1}
             {" • "}
             Timer: {cooldown}s
@@ -129,7 +129,7 @@ export default function CameraRetake({
             <button
               onClick={handleCameraSwitch}
               disabled={isRunning}
-              className="bg-[#F2AEBD] hover:bg-[#F2AEBD] active:bg-[#F2AEBD] text-white px-3 py-1 rounded font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#F2AEBD] hover:bg-[#F2AEBD] active:bg-[#F2AEBD] text-white px-3 py-1 rounded font-bold text-sm lg:text-xs xl:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {getCameraButtonText()}
             </button>
@@ -138,7 +138,7 @@ export default function CameraRetake({
       </div>
 
       {/* Buttons */}
-      <div className="flex flex-col gap-5 mt-5">
+      <div className="flex flex-col gap-10 mt-10 lg:mt-5 xl:mt-8">
         {/* Capture Button */}
         <button
           className="group relative cursor-pointer"
@@ -153,7 +153,7 @@ export default function CameraRetake({
             }`}
           ></div>
           <div
-            className={`relative border-2 sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 xl:py-5 px-15 sm:px-15 md:px-25 lg:px-25 ${
+            className={`relative border-2 sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 lg:py-3 xl:py-5 px-15 sm:px-15 md:px-25 lg:px-20 xl:px-25 ${
               isRunning
                 ? "bg-[#3D568F] border-[#F2AEBD]"
                 : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
@@ -165,7 +165,7 @@ export default function CameraRetake({
                 alt="Capturing"
                 width={200}
                 height={15}
-                className="w-[15vw] md:w-[8vw] lg:w-[7vw] xl:w-[5vw] h-auto"
+                className="w-[15vw] md:w-[8vw] lg:w-[5vw] xl:w-[5vw] h-auto"
               />
             ) : (
               <>
@@ -175,7 +175,7 @@ export default function CameraRetake({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[15vw] md:w-[8vw] lg:w-[7vw] xl:w-[5vw] h-auto group-hover:hidden xl:group-hover:hidden"
+                  className="pointer-events-none w-[15vw] md:w-[8vw] lg:w-[5vw] xl:w-[5vw] h-auto group-hover:hidden xl:group-hover:hidden"
                 />
                 <Image
                   src="/hover_retake_button.png"
