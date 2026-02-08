@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import CameraRetake from "../../components/retakeCamera";
+import Link from "next/link";
 
 export default function RetakePage() {
   return (
@@ -236,6 +237,17 @@ function RetakeContent() {
             onCameraSwitch={handleCameraSwitch}
             onCameraStateChange={handleCameraStateChange}
           />
+          <Link href="/check">
+            <div className="absolute top-15 left-15 z-10 w-[30vw] md:w-[20vw] lg:w-[3vw]">
+              <Image
+                src="/back_page.png"
+                alt="Bottom Left Decoration"
+                width={500}
+                height={500}
+                className="w-full h-auto object-contain"
+              />
+            </div>
+          </Link>
         </main>
       </div>
     </>

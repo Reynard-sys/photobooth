@@ -286,9 +286,7 @@ export default function SelectPage() {
               style={{ marginTop: "clamp(2rem, 4vh, 5rem)" }}
             >
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
-              <div
-                className="relative px-12 py-5 bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD]transition-colors"
-              >
+              <div className="relative px-12 py-5 bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD]transition-colors">
                 <Image
                   src="/next_button.png"
                   alt="Next Button"
@@ -321,6 +319,17 @@ export default function SelectPage() {
             className="pointer-events-auto w-auto max-h-[68vh]"
           />
         </div>
+        <Link href="/">
+          <div className="absolute top-15 left-15 z-10 w-[30vw] md:w-[20vw] lg:w-[3vw]">
+            <Image
+              src="/back_page.png"
+              alt="Bottom Left Decoration"
+              width={500}
+              height={500}
+              className="w-full h-auto object-contain"
+            />
+          </div>
+        </Link>
       </main>
     </>
   );

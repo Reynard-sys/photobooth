@@ -42,7 +42,7 @@ function RetakeContent() {
               alt="Smile"
               width={240}
               height={60}
-              className="mx-auto w-5wv lg:w-35"
+              className="mx-auto w-5vw lg:w-35 xl:w-70"
             />
           </div>
           <div
