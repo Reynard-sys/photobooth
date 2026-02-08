@@ -138,7 +138,7 @@ export default function CameraRetake({
       </div>
 
       {/* Buttons */}
-      <div className="flex flex-col gap-10 mt-10 lg:mt-5 xl:mt-8">
+      <div className="flex flex-col gap-10 mt-10 lg:mt-3 xl:mt-8">
         {/* Capture Button */}
         <button
           className="group relative cursor-pointer"
