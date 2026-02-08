@@ -516,7 +516,7 @@ export default function FinalExportPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="mt-10 lg:mt-8 xl:mt-6 2xl:mt-10 mb-20 flex flex-col items-center gap-6">
+              <div className="mt-10 lg:mt-5 xl:mt-6 2xl:mt-10 mb-20 flex flex-col items-center gap-6 lg:gap-4 xl:gap-6">
                 <Link
                   href={`/download?template=${template}&filter=${selectedFilter}`}
                   className="relative inline-block group"
@@ -525,7 +525,7 @@ export default function FinalExportPage() {
                   <div
                     className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
                     w-[35vw] h-[7vw]
-                    lg:w-[15vw] lg:h-[3.5vw]
+                    lg:w-[22vw] lg:h-[3.2vw]
                     xl:w-[26vw] xl:h-[4vw]
                     2xl:w-[20vw] 2xl:h-[4vw]
                     py-4.5 lg:py-0 xl:py-2"
@@ -559,7 +559,7 @@ export default function FinalExportPage() {
                   <div
                     className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
                     w-[35vw] h-[7vw]
-                    lg:w-[15vw] lg:h-[3.5vw]
+                    lg:w-[22vw] lg:h-[3.2vw]
                     xl:w-[26vw] xl:h-[4vw]
                     2xl:w-[20vw] 2xl:h-[4vw]
                     py-4.5 lg:py-0 xl:py-2"
