@@ -447,7 +447,7 @@ export default function FinalExportPage() {
           {/* Medium and Large Screen Size */}
           <div className="hidden lg:flex w-full items-center justify-between">
             {/* Preview Area - Left Side */}
-            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-40 mb-0 xl:mb-10 2xl:mb-0">
+            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-40 xl:ml-50 mb-0 lg:mb-10 xl:mb-10 2xl:mb-0">
               <div
                 className="relative overflow-hidden bg-white"
                 style={{
@@ -491,7 +491,7 @@ export default function FinalExportPage() {
                 alt="Smile"
                 width={240}
                 height={60}
-                className="w-47 mt-0 2xl:mt-10"
+                className="w-47 lg:w-30 xl:w-47 mt-0 2xl:mt-10"
               />
               {/* Strip Selection Buttons */}
               <StripSelect
@@ -504,7 +504,7 @@ export default function FinalExportPage() {
                 alt="Smile"
                 width={300}
                 height={60}
-                className="w-50 mt-10 lg:mt-2 xl:mt-0 2xl:mt-10"
+                className="w-50 lg:w-30 xl:w-47 mt-10 lg:mt-2 xl:mt-0 2xl:mt-10"
               />
 
               {/* Filter Selection Buttons */}
@@ -525,10 +525,10 @@ export default function FinalExportPage() {
                   <div
                     className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
                     w-[35vw] h-[7vw]
-                    lg:w-[20vw] lg:h-[4vw]
+                    lg:w-[15vw] lg:h-[3.5vw]
                     xl:w-[26vw] xl:h-[4vw]
                     2xl:w-[20vw] 2xl:h-[4vw]
-                    py-4.5 lg:py-1 xl:py-2"
+                    py-4.5 lg:py-0 xl:py-2"
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
@@ -558,11 +558,11 @@ export default function FinalExportPage() {
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                   <div
                     className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
-                   w-[35vw] h-[7vw]
-                    lg:w-[20vw] lg:h-[4vw]
+                    w-[35vw] h-[7vw]
+                    lg:w-[15vw] lg:h-[3.5vw]
                     xl:w-[26vw] xl:h-[4vw]
                     2xl:w-[20vw] 2xl:h-[4vw]
-                    py-4.5 lg:py-1 xl:py-2"
+                    py-4.5 lg:py-0 xl:py-2"
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image

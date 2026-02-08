@@ -48,7 +48,6 @@ function DownloadContent() {
 
   const [assetsReady, setAssetsReady] = useState(false);
 
-  // ADD THIS EFFECT AT THE TOP (before other useEffects)
   useEffect(() => {
     const imagesToPreload = [
       "/machine.png",
@@ -70,7 +69,7 @@ function DownloadContent() {
         return new Promise((resolve) => {
           const img = new window.Image();
           img.onload = resolve;
-          img.onerror = resolve; // Still resolve on error
+          img.onerror = resolve;
           img.src = src;
         });
       }),

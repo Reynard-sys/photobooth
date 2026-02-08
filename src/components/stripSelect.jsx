@@ -119,7 +119,7 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                 alt="Previous Page"
                 width={50}
                 height={50}
-                className="object-contain"
+                className="object-contain p-0 lg:p-2 xl:p-0 ml-0 lg:ml-10 xl:ml-0"
               />
             </button>
           )}
@@ -148,10 +148,10 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                   w-[18vw] h-[12vw] 
                   sm:w-[18vw] sm:h-[12vw] 
                   md:w-[14vw] md:h-[10vw] 
-                  lg:w-[8vw] lg:h-[5vw] 
+                  lg:w-[7vw] lg:h-[4vw] 
                   xl:w-[8vw] xl:h-[3.5vw]
                   2xl:w-[7vw] 2xl:h-[3.5vw]
-                  py-2 sm:py-0.5 lg:py-2 xl:py-2 2xl:py-2
+                  py-2 sm:py-0.5 lg:py-1.5 xl:py-2 2xl:py-2
                   ${
                     isSelected
                       ? "bg-[#3D568F] border-[#F2AEBD]"
@@ -203,7 +203,7 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                 alt="Next Page"
                 width={50}
                 height={50}
-                className="object-contain"
+                className="object-contain p-0 lg:p-2 xl:p-0 mr-0 lg:mr-10 xl:mr-0"
               />
             </button>
           )}
