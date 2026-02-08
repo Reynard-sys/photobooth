@@ -801,31 +801,6 @@ function DownloadContent() {
                         : "Failed to send email"}
                     </div>
                   )}
-
-                  {/* Reset Link */}
-                  <Link href="/" className="relative inline-block group mt-4">
-                    <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                    <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] lg:w-[15vw] lg:h-[5vw] xl:w-[12vw] xl:h-[4vw] py-1 max-w-90 max-h-40 sm:max-h-18">
-                      <div className="relative w-full h-full flex items-center justify-center p-2">
-                        <Image
-                          src="/reset.png"
-                          alt="Reset Button"
-                          width={200}
-                          height={15}
-                          priority
-                          className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
-                        />
-                        <Image
-                          src="/hover_reset.png"
-                          alt="Hovered Reset Button"
-                          width={200}
-                          height={15}
-                          priority
-                          className="pointer-events-none object-contain w-full h-full hidden group-active:block xl:group-hover:block"
-                        />
-                      </div>
-                    </div>
-                  </Link>
                 </div>
                 <div className="z-10 w-[30vw] pointer-events-none">
                   <Image
@@ -1066,31 +1041,6 @@ function DownloadContent() {
                         : "Failed to send email"}
                     </div>
                   )}
-
-                  {/* Reset Link */}
-                  <Link href="/" className="relative inline-block group">
-                    <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                    <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] lg:w-[15vw] lg:h-[3.9vw] xl:w-[12vw] xl:h-[4vw] py-1 max-w-90 max-h-40 sm:max-h-18">
-                      <div className="relative w-full h-full flex items-center justify-center p-2 xl:p-4">
-                        <Image
-                          src="/reset.png"
-                          alt="Reset Button"
-                          width={200}
-                          height={15}
-                          priority
-                          className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
-                        />
-                        <Image
-                          src="/hover_reset.png"
-                          alt="Hovered Reset Button"
-                          width={200}
-                          height={15}
-                          priority
-                          className="pointer-events-none object-contain w-full h-full hidden group-active:block xl:group-hover:block"
-                        />
-                      </div>
-                    </div>
-                  </Link>
                 </div>
               </div>
             )}
