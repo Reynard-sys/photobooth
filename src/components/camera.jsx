@@ -163,7 +163,7 @@ export default function CameraCapture({
                 alt="Capturing"
                 width={200}
                 height={15}
-                className="w-[30vw] sm:w-[30vw] md:w-[20vw] lg:w-[15vw] xl:w-[10vw] h-auto"
+                className="w-[30vw] sm:w-[30vw] md:w-[20vw] lg:w-[7vw] xl:w-[10vw] h-auto"
               />
             ) : (
               <>
