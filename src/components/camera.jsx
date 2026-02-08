@@ -86,7 +86,7 @@ export default function CameraCapture({
 
   return (
     <>
-      <div className="flex flex-col w-full max-w-[calc(70vh*16/9)] md:max-w-[calc(40vh*16/9)] lg:max-w-[calc(45vh*16/9)] xl:max-w-[calc(40vh*16/9)]">
+      <div className="flex flex-col w-full max-w-[calc(70vh*16/9)] md:max-w-[calc(40vh*16/9)] lg:max-w-[calc(45vh*16/9)] xl:max-w-[calc(50vh*16/9)]">
         {/* Video container */}
         <div className="border-10 border-[#F2AEBD] rounded-md bg-[#F2DDDC] w-full relative aspect-video overflow-hidden">
           <video
@@ -115,7 +115,7 @@ export default function CameraCapture({
         {/* Bottom info bar - Shot progress (left) and Camera switch (right) */}
         <div className="mt-2 flex justify-between items-center">
           {/* Shot progress - Left */}
-          <div className="bg-[#F2AEBD] text-white text-sm px-2 py-1 rounded">
+          <div className="bg-[#F2AEBD] text-white text-sm lg:text-xs xl:text-sm px-2 py-1 rounded">
             {shotIndex < shotParam
               ? `Shot ${shotIndex + 1} of ${shotParam}`
               : `Done`}
@@ -128,7 +128,7 @@ export default function CameraCapture({
             <button
               onClick={handleCameraSwitch}
               disabled={isRunning}
-              className="bg-[#F2AEBD] hover:bg-[#F2AEBD] active:bg-[#F2AEBD] text-white px-3 py-1 rounded font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+              className="bg-[#F2AEBD] hover:bg-[#F2AEBD] active:bg-[#F2AEBD] text-white px-3 py-1 rounded font-bold text-sm lg:text-xs xl:text-sm disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {getCameraButtonText()}
             </button>
@@ -137,7 +137,7 @@ export default function CameraCapture({
       </div>
 
       {/* Start Button */}
-      <div className="flex flex-col gap-10 mt-10 lg:mt-5 xl:mt-10">
+      <div className="flex flex-col gap-10 mt-10 lg:mt-5 xl:mt-8">
         <button
           className="group relative cursor-pointer"
           onClick={onStartSession}
@@ -151,7 +151,7 @@ export default function CameraCapture({
             }`}
           ></div>
           <div
-            className={`relative border-2 sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 xl:py-6 px-8 sm:px-12 lg:px-12 md:px-12 ${
+            className={`relative border-2 sm:border-2 rounded-xl py-3 sm:py-5 md:py-5 lg:p-3 xl:py-5 px-8 sm:px-12 lg:px-10 xl:px-12 md:px-12 ${
               isRunning
                 ? "bg-[#3D568F] border-[#F2AEBD]"
                 : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
@@ -173,7 +173,7 @@ export default function CameraCapture({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[10vw] xl:w-[15vw] h-auto group-hover:hidden xl:group-hover:hidden"
+                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[12vw] xl:w-[13vw] h-auto group-hover:hidden xl:group-hover:hidden"
                 />
                 <Image
                   src={`/hover_start_${shotParam}s.png`}
@@ -181,7 +181,7 @@ export default function CameraCapture({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[10vw] xl:w-[15vw] h-auto hidden group-hover:block xl:group-hover:block"
+                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[12vw] xl:w-[13vw] h-auto hidden group-hover:block xl:group-hover:block"
                 />
               </>
             )}
