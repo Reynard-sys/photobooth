@@ -238,7 +238,7 @@ function RetakeContent() {
             onCameraStateChange={handleCameraStateChange}
           />
           <Link href="/check">
-            <div className="absolute top-15 left-15 z-10 w-[30vw] md:w-[20vw] lg:w-[3vw]">
+            <div className="absolute top-10 left-10 lg:top-15 lg:left-15 z-10 w-[5vw] lg:w-[3vw]">
               <Image
                 src="/back_page.png"
                 alt="Bottom Left Decoration"
