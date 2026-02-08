@@ -86,7 +86,7 @@ export default function CameraCapture({
 
   return (
     <>
-      <div className="flex flex-col w-full max-w-[calc(70vh*16/9)] md:max-w-[calc(40vh*16/9)] lg:max-w-[calc(50vh*16/9)] xl:max-w-[calc(40vh*16/9)]">
+      <div className="flex flex-col w-full max-w-[calc(70vh*16/9)] md:max-w-[calc(40vh*16/9)] lg:max-w-[calc(45vh*16/9)] xl:max-w-[calc(40vh*16/9)]">
         {/* Video container */}
         <div className="border-10 border-[#F2AEBD] rounded-md bg-[#F2DDDC] w-full relative aspect-video overflow-hidden">
           <video
@@ -137,7 +137,7 @@ export default function CameraCapture({
       </div>
 
       {/* Start Button */}
-      <div className="flex flex-col gap-10 mt-10">
+      <div className="flex flex-col gap-10 mt-10 lg:mt-5 xl:mt-10">
         <button
           className="group relative cursor-pointer"
           onClick={onStartSession}
@@ -173,7 +173,7 @@ export default function CameraCapture({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[15vw] xl:w-[15vw] h-auto group-hover:hidden xl:group-hover:hidden"
+                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[10vw] xl:w-[15vw] h-auto group-hover:hidden xl:group-hover:hidden"
                 />
                 <Image
                   src={`/hover_start_${shotParam}s.png`}
@@ -181,7 +181,7 @@ export default function CameraCapture({
                   width={200}
                   height={15}
                   priority
-                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[15vw] xl:w-[15vw] h-auto hidden group-hover:block xl:group-hover:block"
+                  className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[10vw] xl:w-[15vw] h-auto hidden group-hover:block xl:group-hover:block"
                 />
               </>
             )}
