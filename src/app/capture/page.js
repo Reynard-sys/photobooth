@@ -253,14 +253,14 @@ function CaptureContent() {
     <>
       <div className="h-dvh overflow-hidden bg-[#FDFDF5]">
         <Border />
-        <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none justify-start h-full items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
-          <div className="flex mt-15 lg:-mt-30 mb-5 text-center">
+        <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none justify-start h-full items-center p-10 sm:p-10 md:p-12 lg:p-24 xl:p-10 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
+          <div className="flex mt-15 lg:-mt-20 xl:mt-0 mb-5 lg:mb-0 xl:mb-5 text-center">
             <Image
               src="/smile_title.png"
               alt="Smile"
               width={240}
               height={60}
-              className="mx-auto w-40 lg:w-30"
+              className="mx-auto w-40 lg:w-30 xl:w-40"
             />
           </div>
           <CameraCapture
