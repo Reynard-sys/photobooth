@@ -104,7 +104,7 @@ export default function CameraCapture({
 
           {/* Countdown overlay */}
           {countdown !== null && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 rounded-xl">
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40">
               <div className="text-white text-7xl font-extrabold">
                 {countdown}
               </div>
