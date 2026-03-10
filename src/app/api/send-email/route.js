@@ -1,13 +1,15 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export async function POST(request) {
   try {
     const { email, imageData, filename } = await request.json();
 
-    if (!email || !email.includes("@")) {
+    if (!email || !EMAIL_REGEX.test(email)) {
       return NextResponse.json(
-        { success: false, error: "Invalid email address" },
+        { success: false, error: "Invalid email address", error_code: "invalid_email" },
         { status: 400 },
       );
     }
@@ -20,41 +22,75 @@ export async function POST(request) {
     formData.append("image", base64Data);
     formData.append("name", filename);
 
-    const uploadResponse = await fetch(
-      `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`,
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
+    // 10-second timeout on ImgBB upload
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-    const uploadResult = await uploadResponse.json();
+    let uploadResult;
+    try {
+      const uploadResponse = await fetch(
+        `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`,
+        {
+          method: "POST",
+          body: formData,
+          signal: controller.signal,
+        },
+      );
+      uploadResult = await uploadResponse.json();
+    } catch (fetchError) {
+      clearTimeout(timeoutId);
+      const isTimeout = fetchError.name === "AbortError";
+      console.error("ImgBB upload failed:", fetchError);
+      return NextResponse.json(
+        {
+          success: false,
+          error: isTimeout
+            ? "Image upload timed out. Please try again."
+            : "Failed to upload image. Please try again.",
+          error_code: "imgbb_failed",
+        },
+        { status: 502 },
+      );
+    } finally {
+      clearTimeout(timeoutId);
+    }
 
     if (!uploadResult.success) {
-      throw new Error("Failed to upload image");
+      console.error("ImgBB returned failure:", uploadResult);
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Failed to upload image. Please try again.",
+          error_code: "imgbb_failed",
+        },
+        { status: 502 },
+      );
     }
 
     const imageUrl = uploadResult.data.url;
-    const displayUrl = uploadResult.data.display_url;
-
     console.log("Image uploaded successfully:", imageUrl);
     console.log("Sending email...");
 
+    // Derive secure mode from port: port 465 uses SSL (secure=true), port 587 uses STARTTLS (secure=false)
+    const smtpPort = parseInt(process.env.SMTP_PORT || "587");
+    const useSecure = smtpPort === 465;
+
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT),
-      secure: false,
+      port: smtpPort,
+      secure: useSecure,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
       },
     });
 
-    await transporter.sendMail({
-      from: `"Photo Booth 📸" <${process.env.SMTP_FROM}>`,
-      to: email,
-      subject: "📸 Your Photo Strip is Ready!",
-      html: `
+    try {
+      await transporter.sendMail({
+        from: `"Photo Booth 📸" <${process.env.SMTP_FROM}>`,
+        to: email,
+        subject: "📸 Your Photo Strip is Ready!",
+        html: `
         <!DOCTYPE html>
         <html>
           <head>
@@ -107,22 +143,12 @@ export async function POST(request) {
                 font-weight: bold;
                 font-size: 16px;
               }
-              .button:hover {
-                background: #2d4470;
-              }
               .footer {
                 text-align: center;
                 padding: 20px;
                 color: #666;
                 font-size: 12px;
                 background: #f9f9f9;
-              }
-              .tip {
-                background: #fff9e6;
-                border-left: 4px solid #F2AEBD;
-                padding: 15px;
-                margin: 20px 0;
-                text-align: left;
               }
             </style>
           </head>
@@ -138,7 +164,7 @@ export async function POST(request) {
                 </p>
                 
                 <p style="color: #666;">
-                  Made by Rey & Rel ദ്ദി◝ ⩊ ◜.ᐟ
+                  Made by Rey &amp; Rel ദ്ദി◝ ⩊ ◜.ᐟ
                 </p>
                 
                 <div class="image-container">
@@ -154,7 +180,23 @@ export async function POST(request) {
           </body>
         </html>
       `,
-    });
+      });
+    } catch (smtpError) {
+      console.error("SMTP send failed:", smtpError);
+      transporter.close();
+
+      let smtpMessage = "Could not send email. Please check your address and try again.";
+      if (smtpError.code === "EAUTH") {
+        smtpMessage = "Email authentication failed on our end. Please contact support.";
+      } else if (smtpError.code === "ESOCKET" || smtpError.code === "ECONNECTION") {
+        smtpMessage = "Could not connect to mail server. Please try again later.";
+      }
+
+      return NextResponse.json(
+        { success: false, error: smtpMessage, error_code: "smtp_failed" },
+        { status: 500 },
+      );
+    }
 
     console.log("Email sent successfully!");
     transporter.close();
@@ -164,20 +206,9 @@ export async function POST(request) {
       imageUrl: imageUrl,
     });
   } catch (error) {
-    console.error("Email send error:", error);
-
-    let errorMessage = "Failed to send email";
-
-    if (error.message.includes("upload")) {
-      errorMessage = "Failed to upload image. Please try again.";
-    } else if (error.code === "EAUTH") {
-      errorMessage = "Email authentication failed.";
-    } else if (error.code === "ESOCKET") {
-      errorMessage = "Cannot connect to email server.";
-    }
-
+    console.error("Unexpected email route error:", error);
     return NextResponse.json(
-      { success: false, error: errorMessage },
+      { success: false, error: "An unexpected error occurred. Please try again.", error_code: "unknown" },
       { status: 500 },
     );
   }
