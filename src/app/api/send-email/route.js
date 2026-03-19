@@ -1,92 +1,161 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-export async function POST(request) {
-  try {
-    const { email, imageData, filename } = await request.json();
+export const runtime = "nodejs";
 
-    if (!email || !email.includes("@")) {
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const REQUIRED_ENV_VARS = [
+  "SMTP_HOST",
+  "SMTP_PORT",
+  "SMTP_USER",
+  "SMTP_PASS",
+  "SMTP_FROM",
+];
+const MAX_EMAIL_IMAGE_SIZE = 10 * 1024 * 1024;
+
+function sanitizeFilename(filename, fallbackExtension = "jpg") {
+  if (typeof filename !== "string" || !filename.trim()) {
+    return `photostrip-${Date.now()}.${fallbackExtension}`;
+  }
+
+  const cleaned = filename
+    .trim()
+    .replace(/[^\w.-]/g, "-")
+    .replace(/-+/g, "-");
+
+  return cleaned || `photostrip-${Date.now()}.${fallbackExtension}`;
+}
+
+function isUploadedImage(value) {
+  return (
+    value &&
+    typeof value === "object" &&
+    typeof value.arrayBuffer === "function" &&
+    typeof value.type === "string" &&
+    typeof value.size === "number"
+  );
+}
+
+function buildTransporter() {
+  const missingEnvVars = REQUIRED_ENV_VARS.filter(
+    (envVar) => !process.env[envVar],
+  );
+
+  if (missingEnvVars.length > 0) {
+    throw new Error(
+      `Missing email configuration: ${missingEnvVars.join(", ")}`,
+    );
+  }
+
+  const port = Number(process.env.SMTP_PORT);
+
+  if (!Number.isInteger(port) || port <= 0) {
+    throw new Error("Invalid SMTP_PORT configuration");
+  }
+
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port,
+    secure: port === 465,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+    connectionTimeout: 15000,
+    greetingTimeout: 10000,
+    socketTimeout: 20000,
+  });
+}
+
+export async function POST(request) {
+  let transporter;
+
+  try {
+    const formData = await request.formData();
+    const emailValue = formData.get("email");
+    const imageFile = formData.get("image");
+    const filenameValue = formData.get("filename");
+
+    const email =
+      typeof emailValue === "string" ? emailValue.trim().toLowerCase() : "";
+
+    if (!EMAIL_REGEX.test(email)) {
       return NextResponse.json(
         { success: false, error: "Invalid email address" },
         { status: 400 },
       );
     }
 
-    console.log("Starting upload to ImgBB...");
-
-    const base64Data = imageData.replace(/^data:image\/\w+;base64,/, "");
-
-    const formData = new FormData();
-    formData.append("image", base64Data);
-    formData.append("name", filename);
-
-    const uploadResponse = await fetch(
-      `https://api.imgbb.com/1/upload?key=${process.env.IMGBB_API_KEY}`,
-      {
-        method: "POST",
-        body: formData,
-      },
-    );
-
-    const uploadResult = await uploadResponse.json();
-
-    if (!uploadResult.success) {
-      throw new Error("Failed to upload image");
+    if (!isUploadedImage(imageFile) || imageFile.size === 0) {
+      return NextResponse.json(
+        { success: false, error: "Missing image attachment" },
+        { status: 400 },
+      );
     }
 
-    const imageUrl = uploadResult.data.url;
-    const displayUrl = uploadResult.data.display_url;
+    if (!imageFile.type.startsWith("image/")) {
+      return NextResponse.json(
+        { success: false, error: "Unsupported image format" },
+        { status: 400 },
+      );
+    }
 
-    console.log("Image uploaded successfully:", imageUrl);
-    console.log("Sending email...");
+    if (imageFile.size > MAX_EMAIL_IMAGE_SIZE) {
+      return NextResponse.json(
+        { success: false, error: "Image is too large to email" },
+        { status: 400 },
+      );
+    }
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT),
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    });
+    const attachmentBuffer = Buffer.from(await imageFile.arrayBuffer());
+    const extension = imageFile.type.split("/")[1] || "jpg";
+    const filename = sanitizeFilename(filenameValue, extension);
+    const contentId = `photostrip-${Date.now()}@photobooth.local`;
+
+    transporter = buildTransporter();
+    await transporter.verify();
 
     await transporter.sendMail({
       from: `"Photo Booth 📸" <${process.env.SMTP_FROM}>`,
       to: email,
       subject: "📸 Your Photo Strip is Ready!",
+      text: [
+        "Thanks for capturing the moment.",
+        "Your photo strip is attached to this email.",
+      ].join("\n\n"),
       html: `
         <!DOCTYPE html>
         <html>
           <head>
             <style>
-              body { 
-                font-family: Arial, sans-serif; 
+              body {
+                font-family: Arial, sans-serif;
                 margin: 0;
                 padding: 0;
                 background-color: #f5f5f5;
               }
-              .container { 
-                max-width: 600px; 
-                margin: 0 auto; 
+              .container {
+                max-width: 600px;
+                margin: 0 auto;
                 background: white;
               }
-              .header { 
-                background: linear-gradient(135deg, #3D568F 0%, #F2AEBD 100%); 
-                color: white; 
-                padding: 40px 20px; 
+              .header {
+                background: linear-gradient(135deg, #3d568f 0%, #f2aebd 100%);
+                color: white;
+                padding: 40px 20px;
                 text-align: center;
               }
               .header h1 {
                 margin: 0;
                 font-size: 28px;
               }
-              .content { 
+              .content {
                 padding: 30px 20px;
                 text-align: center;
               }
               .image-container {
                 margin: 30px 0;
-                background: #FDFDF5;
+                background: #fdfdf5;
                 padding: 20px;
                 border-radius: 10px;
               }
@@ -94,21 +163,7 @@ export async function POST(request) {
                 max-width: 100%;
                 height: auto;
                 border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-              }
-              .button { 
-                display: inline-block; 
-                background: #3D568F; 
-                color: white; 
-                padding: 15px 40px; 
-                text-decoration: none; 
-                border-radius: 8px; 
-                margin: 20px 0;
-                font-weight: bold;
-                font-size: 16px;
-              }
-              .button:hover {
-                background: #2d4470;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
               }
               .footer {
                 text-align: center;
@@ -117,35 +172,25 @@ export async function POST(request) {
                 font-size: 12px;
                 background: #f9f9f9;
               }
-              .tip {
-                background: #fff9e6;
-                border-left: 4px solid #F2AEBD;
-                padding: 15px;
-                margin: 20px 0;
-                text-align: left;
-              }
             </style>
           </head>
           <body>
             <div class="container">
               <div class="header">
-                <h1>🎉 Your Photo Booth Memory!</h1>
+                <h1>Your Photo Booth Memory!</h1>
               </div>
-              
               <div class="content">
-                <p style="font-size: 18px; color: #3D568F; font-weight: bold;">
+                <p style="font-size: 18px; color: #3d568f; font-weight: bold;">
                   Thanks for capturing the moment!
                 </p>
-                
                 <p style="color: #666;">
-                  Made by Rey & Rel ദ്ദി◝ ⩊ ◜.ᐟ
+                  Your photo strip is attached to this email in case your mail
+                  app does not render the preview below.
                 </p>
-                
                 <div class="image-container">
-                  <img src="${imageUrl}" alt="Your Photo Strip" />
+                  <img src="cid:${contentId}" alt="Your Photo Strip" />
                 </div>
               </div>
-              
               <div class="footer">
                 <p>This email was sent from Photo Booth App</p>
                 <p>© ${new Date().getFullYear()} All rights reserved</p>
@@ -154,25 +199,32 @@ export async function POST(request) {
           </body>
         </html>
       `,
+      attachments: [
+        {
+          filename,
+          content: attachmentBuffer,
+          contentType: imageFile.type || "image/jpeg",
+          cid: contentId,
+          disposition: "inline",
+        },
+      ],
     });
 
-    console.log("Email sent successfully!");
-    transporter.close();
-
-    return NextResponse.json({
-      success: true,
-      imageUrl: imageUrl,
-    });
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Email send error:", error);
 
     let errorMessage = "Failed to send email";
 
-    if (error.message.includes("upload")) {
-      errorMessage = "Failed to upload image. Please try again.";
+    if (error.message?.includes("Missing email configuration")) {
+      errorMessage = "Email service is not configured.";
+    } else if (error.message?.includes("Invalid SMTP_PORT")) {
+      errorMessage = "Email service configuration is invalid.";
     } else if (error.code === "EAUTH") {
       errorMessage = "Email authentication failed.";
-    } else if (error.code === "ESOCKET") {
+    } else if (
+      ["ESOCKET", "ETIMEDOUT", "ECONNECTION", "ENOTFOUND"].includes(error.code)
+    ) {
       errorMessage = "Cannot connect to email server.";
     }
 
@@ -180,5 +232,9 @@ export async function POST(request) {
       { success: false, error: errorMessage },
       { status: 500 },
     );
+  } finally {
+    if (typeof transporter?.close === "function") {
+      transporter.close();
+    }
   }
 }

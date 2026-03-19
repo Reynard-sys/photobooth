@@ -31,6 +31,7 @@ function DownloadContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const stripRef = useRef(null);
+  const emailStatusTimeoutRef = useRef(null);
 
   const [shots, setShots] = useState([]);
   const [template, setTemplate] = useState("Frame1");
@@ -43,6 +44,7 @@ function DownloadContent() {
   const [email, setEmail] = useState("");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState(null);
+  const [emailMessage, setEmailMessage] = useState("");
 
   const [generatedImage, setGeneratedImage] = useState(null);
 
@@ -90,6 +92,14 @@ function DownloadContent() {
     if (templateParam) setTemplate(templateParam);
     if (filterParam) setSelectedFilter(filterParam);
   }, [searchParams]);
+
+  useEffect(() => {
+    return () => {
+      if (emailStatusTimeoutRef.current) {
+        clearTimeout(emailStatusTimeoutRef.current);
+      }
+    };
+  }, []);
 
   // Scale for machine and strip
   useEffect(() => {
@@ -160,6 +170,21 @@ function DownloadContent() {
       default:
         return "";
     }
+  };
+
+  const showEmailStatus = (status, message, duration = 5000) => {
+    if (emailStatusTimeoutRef.current) {
+      clearTimeout(emailStatusTimeoutRef.current);
+    }
+
+    setEmailStatus(status);
+    setEmailMessage(message);
+
+    emailStatusTimeoutRef.current = window.setTimeout(() => {
+      setEmailStatus(null);
+      setEmailMessage("");
+      emailStatusTimeoutRef.current = null;
+    }, duration);
   };
 
   // Filter calculation. Used AI to get filter calculation (╥﹏╥)
@@ -388,7 +413,20 @@ function DownloadContent() {
     });
   };
 
-  const generatePhotoStripImage = async () => {
+  const canvasToBlob = (canvas, type, quality) => {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) {
+          resolve(blob);
+          return;
+        }
+
+        reject(new Error("Could not convert image for email"));
+      }, type, quality);
+    });
+  };
+
+  const renderPhotoStripCanvas = async () => {
     if (!stripRef.current || shots.length === 0) return null;
 
     try {
@@ -422,33 +460,64 @@ function DownloadContent() {
       clone.style.transform = "none";
 
       document.body.appendChild(clone);
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 300));
 
-      const canvas = await html2canvas(clone, {
-        backgroundColor: null,
-        scale: 1,
-        useCORS: true,
-        allowTaint: true,
-        width: 1200,
-        height: canvasHeight,
-        removeContainer: true,
-      });
+        const canvas = await html2canvas(clone, {
+          backgroundColor: null,
+          scale: 1,
+          useCORS: true,
+          allowTaint: true,
+          width: 1200,
+          height: canvasHeight,
+          removeContainer: true,
+        });
 
-      document.body.removeChild(clone);
-
-      images.forEach((img, i) => {
-        img.src = originalSrcs[i];
-        if (selectedFilter !== "none") {
-          img.className += ` ${getFilterClass()}`;
+        return canvas;
+      } finally {
+        if (clone.parentNode) {
+          clone.parentNode.removeChild(clone);
         }
-      });
-
-      const dataUrl = canvas.toDataURL("image/png", 1.0);
-      return dataUrl;
+        images.forEach((img, i) => {
+          img.src = originalSrcs[i];
+          if (selectedFilter !== "none") {
+            img.className += ` ${getFilterClass()}`;
+          }
+        });
+      }
     } catch (error) {
       console.error("Image generation error:", error);
       return null;
     }
+  };
+
+  const generatePhotoStripImage = async () => {
+    const canvas = await renderPhotoStripCanvas();
+    return canvas ? canvas.toDataURL("image/png", 1.0) : null;
+  };
+
+  const generateEmailAttachment = async () => {
+    const canvas = await renderPhotoStripCanvas();
+
+    if (!canvas) {
+      return null;
+    }
+
+    const exportCanvas = document.createElement("canvas");
+    exportCanvas.width = canvas.width;
+    exportCanvas.height = canvas.height;
+
+    const exportContext = exportCanvas.getContext("2d");
+
+    if (!exportContext) {
+      throw new Error("Could not prepare image for email");
+    }
+
+    exportContext.fillStyle = "#FDFDF5";
+    exportContext.fillRect(0, 0, exportCanvas.width, exportCanvas.height);
+    exportContext.drawImage(canvas, 0, 0);
+
+    return canvasToBlob(exportCanvas, "image/jpeg", 0.9);
   };
 
   const downloadPhotoStrip = async () => {
@@ -493,53 +562,52 @@ function DownloadContent() {
     if (!email || !stripRef.current || shots.length === 0) return;
 
     if (!email.includes("@")) {
-      setEmailStatus("error");
-      setTimeout(() => setEmailStatus(null), 3000);
+      showEmailStatus("error", "Enter a valid email address.", 3000);
       return;
     }
 
     setIsSendingEmail(true);
     setEmailStatus(null);
+    setEmailMessage("");
 
     try {
-      let dataUrl = generatedImage;
-      if (!dataUrl) {
-        dataUrl = await generatePhotoStripImage();
+      if (!generatedImage) {
+        const dataUrl = await generatePhotoStripImage();
         setGeneratedImage(dataUrl);
       }
 
-      if (!dataUrl) {
-        setEmailStatus("error");
-        setTimeout(() => setEmailStatus(null), 3000);
+      const emailAttachment = await generateEmailAttachment();
+
+      if (!emailAttachment) {
+        showEmailStatus("error", "Could not generate the image for email.", 3000);
         return;
       }
 
+      const filename = `photostrip-${Date.now()}.jpg`;
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("filename", filename);
+      formData.append("image", emailAttachment, filename);
+
       const response = await fetch("/api/send-email", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          imageData: dataUrl,
-          filename: `photostrip-${Date.now()}.png`,
-        }),
+        body: formData,
       });
 
       const result = await response.json();
 
       if (result.success) {
-        setEmailStatus("success");
+        showEmailStatus("success", "Email sent successfully!");
         setEmail("");
-        setTimeout(() => setEmailStatus(null), 5000);
       } else {
-        setEmailStatus("error");
-        setTimeout(() => setEmailStatus(null), 5000);
+        showEmailStatus(
+          "error",
+          result.error || "Failed to send email. Please try again.",
+        );
       }
     } catch (error) {
       console.error("Email Error:", error);
-      setEmailStatus("error");
-      setTimeout(() => setEmailStatus(null), 5000);
+      showEmailStatus("error", "Failed to send email. Please try again.");
     } finally {
       setIsSendingEmail(false);
     }
@@ -796,9 +864,7 @@ function DownloadContent() {
                     <div
                       className={`text-center font-medium ${emailStatus === "success" ? "text-[#3E5D93]" : "text-[#F2AEBD]"}`}
                     >
-                      {emailStatus === "success"
-                        ? "Email sent successfully!"
-                        : "Failed to send email"}
+                      {emailMessage}
                     </div>
                   )}
                 </div>
@@ -1036,9 +1102,7 @@ function DownloadContent() {
                     <div
                       className={`text-center font-bold ${emailStatus === "success" ? "text-[#3E5D93]" : "text-[#F2AEBD]"}`}
                     >
-                      {emailStatus === "success"
-                        ? "Email sent successfully!"
-                        : "Failed to send email"}
+                      {emailMessage}
                     </div>
                   )}
                 </div>

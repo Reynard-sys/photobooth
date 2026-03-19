@@ -25,7 +25,6 @@ Photo Booth is a full-stack web application that brings the joy of traditional p
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/) with PostCSS
 - **Image Processing**: [html2canvas](https://html2canvas.hertzen.com/) for DOM-to-image conversion, [Sharp](https://sharp.pixelplumbing.com/) for image optimization
 - **Email Service**: [Nodemailer](https://nodemailer.com/) for SMTP-based email delivery
-- **Image Hosting**: [ImgBB API](https://api.imgbb.com/) for temporary image hosting in emails
 - **Development**: ESLint for code quality
 
 ## Getting Started
@@ -58,9 +57,6 @@ Photo Booth is a full-stack web application that brings the joy of traditional p
    
    Create a `.env.local` file in the root directory:
    ```env
-   # ImgBB API Key for image uploads (get free from https://api.imgbb.com/)
-   IMGBB_API_KEY=your_imgbb_api_key_here
-
    # SMTP Server configuration for email sending
    SMTP_HOST=smtp.gmail.com
    SMTP_PORT=587
@@ -203,8 +199,8 @@ The application flow guides users through a seamless photo booth experience:
      - Direct browser download
    - Option to **Email**:
      - User enters email address
-     - Photos uploaded to ImgBB for hosting
-     - HTML email composed with styled photo strip
+     - Photo strip is converted into an email-friendly attachment
+     - HTML email composed with the strip embedded inline
      - Sent via Nodemailer using configured SMTP server
 
 ### Technology Details
@@ -212,10 +208,9 @@ The application flow guides users through a seamless photo booth experience:
 - **Camera Access**: Uses Web Cameras API for accessing device cameras
 - **Image Rendering**: `html2canvas` converts styled React components to canvas, then PNG
 - **Email Pipeline**: 
-  1. Image encoded to Base64
-  2. Uploaded to ImgBB external service
-  3. ImgBB returns public URL
-  4. Nodemailer sends HTML email with embedded image URL
+  1. The final strip is rendered in the browser with `html2canvas`
+  2. A compressed image attachment is posted to the email API route
+  3. Nodemailer sends the attachment and embeds it inline in the HTML email
 - **State Management**: React hooks and URL parameters for maintaining user selections across pages
 
 ## Deployment
@@ -230,7 +225,6 @@ Vercel is the official Next.js deployment platform and offers the smoothest expe
 2. Go to [Vercel](https://vercel.com/new)
 3. Import your GitHub repository
 4. Add environment variables in project settings:
-   - `IMGBB_API_KEY`
    - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`
 5. Deploy with one click
 
@@ -259,7 +253,6 @@ The application can also be deployed to:
 
 ### Images Not Rendering
 - Check browser console for CORS errors
-- Verify ImgBB API key is valid
 - Ensure sufficient disk space for image processing
 - Clear browser cache and try again
 
@@ -316,7 +309,6 @@ Photo Booth was created to bring joy and creativity to event photography and soc
 - [Tailwind CSS](https://tailwindcss.com/) for utility-first styling
 - [html2canvas](https://html2canvas.hertzen.com/) for DOM rendering
 - [Nodemailer](https://nodemailer.com/) for email delivery
-- [ImgBB](https://api.imgbb.com/) for image hosting
 
 ---
 
