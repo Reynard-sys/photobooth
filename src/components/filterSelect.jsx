@@ -4,38 +4,26 @@ export default function FilterSelect({ selectedFilter, onSelectFilter }) {
   const filters = [
     {
       id: "none",
-      icon: "none.png",
-      hoverIcon: "hover_none.png",
       alt: "Original",
     },
     {
       id: "aden",
-      icon: "aden.png",
-      hoverIcon: "hover_aden.png",
       alt: "Aden",
     },
     {
       id: "inkwell",
-      icon: "inkwell.png",
-      hoverIcon: "hover_inkwell.png",
       alt: "Inkwell",
     },
     {
       id: "perpetua",
-      icon: "perpetua.png",
-      hoverIcon: "hover_perpetua.png",
       alt: "Perpetua",
     },
     {
       id: "crema",
-      icon: "crema.png",
-      hoverIcon: "hover_crema.png",
       alt: "Crema",
     },
     {
       id: "sutro",
-      icon: "sutro.png",
-      hoverIcon: "hover_sutro.png",
       alt: "Sutro",
     },
   ];
@@ -77,7 +65,7 @@ export default function FilterSelect({ selectedFilter, onSelectFilter }) {
               >
                 <div className="relative w-full h-full flex items-center justify-center p-2">
                   <Image
-                    src={`/${filter.icon}`}
+                    src={`/webp-${filter.id}.webp`}
                     alt={`${filter.alt} Filter Button`}
                     width={200}
                     height={50}
@@ -89,7 +77,7 @@ export default function FilterSelect({ selectedFilter, onSelectFilter }) {
                     }`}
                   />
                   <Image
-                    src={`/${filter.hoverIcon}`}
+                    src={`/webp-hover-${filter.id}.webp`}
                     alt={`${filter.alt} Filter Button Hover`}
                     width={200}
                     height={50}

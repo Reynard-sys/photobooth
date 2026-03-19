@@ -1,6 +1,6 @@
 "use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -25,7 +25,11 @@ export default function CameraCapture({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(/iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini|tablet/i.test(navigator.userAgent));
+    setIsMobile(
+      /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini|tablet/i.test(
+        navigator.userAgent,
+      ),
+    );
 
     const getCameras = async () => {
       try {
@@ -159,7 +163,7 @@ export default function CameraCapture({
           >
             {isRunning ? (
               <Image
-                src={`/capturing_asset.png`}
+                src={`/webp-capturing-asset.webp`}
                 alt="Capturing"
                 width={200}
                 height={15}
@@ -168,7 +172,7 @@ export default function CameraCapture({
             ) : (
               <>
                 <Image
-                  src={`/start_${shotParam}s.png`}
+                  src={`/webp-start-${shotParam}s.webp`}
                   alt="Start Session"
                   width={200}
                   height={15}
@@ -176,7 +180,7 @@ export default function CameraCapture({
                   className="pointer-events-none w-[50vw] sm:w-[50vw] md:w-[30vw] lg:w-[12vw] xl:w-[13vw] h-auto group-hover:hidden xl:group-hover:hidden"
                 />
                 <Image
-                  src={`/hover_start_${shotParam}s.png`}
+                  src={`/webp-hover-start-${shotParam}s.webp`}
                   alt={`Hovered ${shotParam} Seconds Button`}
                   width={200}
                   height={15}

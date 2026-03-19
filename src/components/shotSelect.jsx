@@ -22,7 +22,7 @@ export default function ShotButton({ shots, isSelected, onClick }) {
         }`}
       >
         <Image
-          src={`/${shots}shots.png`}
+          src={`/webp-${shots}shots.webp`}
           alt={`${shots} Shots Button`}
           width={200}
           height={15}
@@ -30,7 +30,7 @@ export default function ShotButton({ shots, isSelected, onClick }) {
           className={`pointer-events-none w-[4vw] sm:w-[4vw] lg:w-[2vw] md:w-[4vw] xl:w-[3vw] h-auto ${isSelected ? "hidden" : "group-active:hidden"}`}
         />
         <Image
-          src={`/hover_${shots}shots.png`}
+          src={`/webp-hover-${shots}shots.webp`}
           alt={`Hovered ${shots} Shots Button`}
           width={200}
           height={15}

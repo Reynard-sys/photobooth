@@ -7,86 +7,72 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
   const strips = [
     {
       id: "Frame1",
-      icon: "star.png",
-      hoverIcon: "hover_star.png",
+      assetName: "star",
       alt: "Lucky Star",
     },
     {
       id: "Frame2",
-      icon: "neko.png",
-      hoverIcon: "hover_neko.png",
+      assetName: "neko",
       alt: "Neko",
     },
     {
       id: "Frame3",
-      icon: "love.png",
-      hoverIcon: "hover_love.png",
+      assetName: "love",
       alt: "Love",
     },
     {
       id: "Frame4",
-      icon: "wanted.png",
-      hoverIcon: "hover_wanted.png",
+      assetName: "wanted",
       alt: "Wanted",
     },
     {
       id: "Frame5",
-      icon: "blue_rose.png",
-      hoverIcon: "hover_blue_rose.png",
+      assetName: "blue-rose",
       alt: "Blue Rose",
     },
     {
       id: "Frame6",
-      icon: "ado.png",
-      hoverIcon: "hover_ado.png",
+      assetName: "ado",
       alt: "Ado",
     },
     {
       id: "Frame7",
-      icon: "frog.png",
-      hoverIcon: "hover_frog.png",
+      assetName: "frog",
       alt: "Frog",
     },
     {
       id: "Frame8",
-      icon: "stardew.png",
-      hoverIcon: "hover_stardew.png",
+      assetName: "stardew",
       alt: "Stardew",
     },
     {
       id: "Frame9",
-      icon: "chopper.png",
-      hoverIcon: "hover_chopper.png",
+      assetName: "chopper",
       alt: "Chopper",
     },
     {
       id: "Frame10",
-      icon: "valentines.png",
-      hoverIcon: "hover_valentines.png",
+      assetName: "valentines",
       alt: "Valentines",
     },
     {
       id: "Frame11",
-      icon: "valentines2.png",
-      hoverIcon: "hover_valentines2.png",
+      assetName: "valentines2",
       alt: "Valentines 2",
     },
     {
       id: "Frame12",
-      icon: "cats.png",
-      hoverIcon: "hover_cats.png",
+      assetName: "cats",
       alt: "Cats",
     },
     {
       id: "Frame13",
-      icon: "op.png",
-      hoverIcon: "hover_op.png",
+      assetName: "op",
       alt: "One Piece",
     },
     {
       id: "Frame14",
-      icon: "snacks.png",
-      hoverIcon: "hover_snacks.png",
+      assetName: "snacks",
       alt: "Snacks",
     },
   ];
@@ -115,7 +101,7 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
               className="flex items-center justify-center"
             >
               <Image
-                src="/back_page.png"
+                src="/webp-back-page.webp"
                 alt="Previous Page"
                 width={50}
                 height={50}
@@ -160,8 +146,8 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                 >
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <Image
-                      src={`/${strip.icon}`}
-                      alt={`/${strip.alt} Strip Button`}
+                      src={`/webp-${strip.assetName}.webp`}
+                      alt={`${strip.alt} Strip Button`}
                       width={200}
                       height={50}
                       priority
@@ -172,8 +158,8 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                       }`}
                     />
                     <Image
-                      src={`/${strip.hoverIcon}`}
-                      alt={`${strip.icon} Strip Button Hover`}
+                      src={`/webp-hover-${strip.assetName}.webp`}
+                      alt={`${strip.alt} Strip Button Hover`}
                       width={200}
                       height={50}
                       priority
@@ -199,7 +185,7 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
               className="flex items-center justify-center"
             >
               <Image
-                src="/next_page.png"
+                src="/webp-next-page.webp"
                 alt="Next Page"
                 width={50}
                 height={50}

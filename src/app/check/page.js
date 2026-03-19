@@ -38,7 +38,7 @@ function RetakeContent() {
         <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none h-full justify-start w-full items-center p-10 sm:p-10 md:p-12 lg:p-24 pt-4 sm:pt-6 md:pt-0 lg:pt-30 xl:pt-20 bg-[#FDFDF5]">
           <div className="flex mt-5 md:mt-40 lg:-mt-15 xl:mt-0 mb-2 text-center">
             <Image
-              src="/retake_asset.png"
+              src="/webp-retake-asset.webp"
               alt="Smile"
               width={240}
               height={60}
@@ -76,7 +76,7 @@ function RetakeContent() {
                     className="absolute top-2 right-2 z-20 pointer-events-auto"
                   >
                     <Image
-                      src="/redo_asset.png"
+                      src="/webp-redo-asset.webp"
                       alt="Retake"
                       width={20}
                       height={20}
@@ -94,7 +94,7 @@ function RetakeContent() {
             <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
             <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-3 lg:py-2 xl:py-5 px-30 xl:px-40 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
               <Image
-                src="/next_button.png"
+                src="/webp-next-button.webp"
                 alt="Next Button"
                 width={200}
                 height={15}
@@ -102,7 +102,7 @@ function RetakeContent() {
                 className="pointer-events-none w-[10vw] max-w-15 lg:w-[4vw] xl:w-[3vw] h-auto group-hover:hidden"
               />
               <Image
-                src="/hover_next.png"
+                src="/webp-hover-next.webp"
                 alt="Hovered Next Button"
                 width={200}
                 height={15}

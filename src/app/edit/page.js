@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { startTransition, useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 import PhotoStripComposite3 from "../../components/photostrip3";
 import PhotoStripComposite4 from "../../components/photostrip4";
@@ -23,7 +23,9 @@ export default function FinalExportPage() {
   useEffect(() => {
     const stored = sessionStorage.getItem("shots");
     if (stored) {
-      setShots(JSON.parse(stored));
+      startTransition(() => {
+        setShots(JSON.parse(stored));
+      });
     }
   }, []);
 
@@ -312,7 +314,7 @@ export default function FinalExportPage() {
           {/* Small Screen Size */}
           <div className="w-full lg:hidden max-w-6xl flex flex-col items-center">
             <Image
-              src="/strips_title.png"
+              src="/webp-strips-title.webp"
               alt="Smile"
               width={200}
               height={60}
@@ -324,7 +326,7 @@ export default function FinalExportPage() {
               onSelectStrip={handleSelectStrip}
             />
             <Image
-              src="/filters_title.png"
+              src="/webp-filters-title.webp"
               alt="Smile"
               width={200}
               height={60}
@@ -384,14 +386,11 @@ export default function FinalExportPage() {
               >
                 <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                 <div
-                  className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
-                  w-[60vw] h-[12vw]
-                  md:w-[35vw] md:h-[7vw]
-                  py-1 max-w-90 max-h-40 sm:max-h-18"
+                  className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] py-1 max-w-90 max-h-40 sm:max-h-18"
                 >
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <Image
-                      src="/next_button.png"
+                      src="/webp-next-button.webp"
                       alt="Next Button"
                       width={200}
                       height={15}
@@ -399,7 +398,7 @@ export default function FinalExportPage() {
                       className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                     />
                     <Image
-                      src="/hover_next.png"
+                      src="/webp-hover-next.webp"
                       alt="Hovered Next Button"
                       width={200}
                       height={15}
@@ -416,23 +415,20 @@ export default function FinalExportPage() {
               >
                 <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                 <div
-                  className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
-                  w-[60vw] h-[12vw]
-                  md:w-[35vw] md:h-[7vw]
-                  py-1 max-w-90 max-h-40 sm:max-h-18"
+                  className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] py-1 max-w-90 max-h-40 sm:max-h-18"
                 >
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <Image
-                      src="/retake_button.png"
-                      alt="Next Button"
+                      src="/webp-retake-button.webp"
+                      alt="Retake Button"
                       width={200}
                       height={15}
                       priority
                       className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                     />
                     <Image
-                      src="/hover_retake_button.png"
-                      alt="Hovered Next Button"
+                      src="/webp-hover-retake-button.webp"
+                      alt="Hovered Retake Button"
                       width={200}
                       height={15}
                       priority
@@ -487,7 +483,7 @@ export default function FinalExportPage() {
             {/* Right Side - Strip Selection & Buttons */}
             <div className="flex flex-col items-center justify-center ml-8 xl:ml-16 mr-0 xl:mr-20 2xl:mr-30">
               <Image
-                src="/strips_title.png"
+                src="/webp-strips-title.webp"
                 alt="Smile"
                 width={240}
                 height={60}
@@ -500,7 +496,7 @@ export default function FinalExportPage() {
               />
 
               <Image
-                src="/filters_title.png"
+                src="/webp-filters-title.webp"
                 alt="Smile"
                 width={300}
                 height={60}
@@ -523,16 +519,11 @@ export default function FinalExportPage() {
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                   <div
-                    className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
-                    w-[35vw] h-[7vw]
-                    lg:w-[22vw] lg:h-[3.2vw]
-                    xl:w-[26vw] xl:h-[4vw]
-                    2xl:w-[20vw] 2xl:h-[4vw]
-                    py-4.5 lg:py-0 xl:py-2"
+                    className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[35vw] h-[7vw] lg:w-[22vw] lg:h-[3.2vw] xl:w-[26vw] xl:h-[4vw] 2xl:w-[20vw] 2xl:h-[4vw] py-4.5 lg:py-0 xl:py-2"
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/next_button.png"
+                        src="/webp-next-button.webp"
                         alt="Next Button Button"
                         width={200}
                         height={15}
@@ -540,7 +531,7 @@ export default function FinalExportPage() {
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_next.png"
+                        src="/webp-hover-next.webp"
                         alt="Hovered Next Button"
                         width={200}
                         height={15}
@@ -557,25 +548,20 @@ export default function FinalExportPage() {
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
                   <div
-                    className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]
-                    w-[35vw] h-[7vw]
-                    lg:w-[22vw] lg:h-[3.2vw]
-                    xl:w-[26vw] xl:h-[4vw]
-                    2xl:w-[20vw] 2xl:h-[4vw]
-                    py-4.5 lg:py-0 xl:py-2"
+                    className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[35vw] h-[7vw] lg:w-[22vw] lg:h-[3.2vw] xl:w-[26vw] xl:h-[4vw] 2xl:w-[20vw] 2xl:h-[4vw] py-4.5 lg:py-0 xl:py-2"
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/retake_button.png"
-                        alt="Next Button"
+                        src="/webp-retake-button.webp"
+                        alt="Retake Button"
                         width={200}
                         height={15}
                         priority
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_retake_button.png"
-                        alt="Hovered Next Button"
+                        src="/webp-hover-retake-button.webp"
+                        alt="Hovered Retake Button"
                         width={200}
                         height={15}
                         priority

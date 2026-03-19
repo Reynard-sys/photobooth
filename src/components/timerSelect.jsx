@@ -9,7 +9,9 @@ export default function TimerButton({ seconds, isSelected, onClick }) {
     >
       <div
         className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${
-          isSelected ? "bg-[#F2AEBD]" : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
+          isSelected
+            ? "bg-[#F2AEBD]"
+            : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
         }`}
       ></div>
       <div
@@ -20,7 +22,7 @@ export default function TimerButton({ seconds, isSelected, onClick }) {
         }`}
       >
         <Image
-          src={`/${seconds}s.png`}
+          src={`/webp-${seconds}s.webp`}
           alt={`${seconds} Seconds Button`}
           width={200}
           height={15}
@@ -30,7 +32,7 @@ export default function TimerButton({ seconds, isSelected, onClick }) {
           }`}
         />
         <Image
-          src={`/hover_${seconds}s.png`}
+          src={`/webp-hover-${seconds}s.webp`}
           alt={`Hovered ${seconds} Seconds Button`}
           width={200}
           height={15}

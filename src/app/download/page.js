@@ -50,18 +50,18 @@ function DownloadContent() {
 
   useEffect(() => {
     const imagesToPreload = [
-      "/machine.png",
-      "/top_machine.png",
-      "/download.png",
-      "/hover_download.png",
-      "/edit.png",
-      "/hover_edit.png",
-      "/reset.png",
-      "/hover_reset.png",
-      "/email.png",
-      "/hover_email.png",
-      "/sending.png",
-      "/credits.png",
+      "/webp-machine.webp",
+      "/webp-top-machine.webp",
+      "/webp-download.webp",
+      "/webp-hover-download.webp",
+      "/webp-edit.webp",
+      "/webp-hover-edit.webp",
+      "/webp-reset.webp",
+      "/webp-hover-reset.webp",
+      "/webp-email.webp",
+      "/webp-hover-email.webp",
+      "/webp-sending.webp",
+      "/webp-credits.webp",
     ];
 
     Promise.all(
@@ -568,7 +568,7 @@ function DownloadContent() {
             <div className="relative" style={{ width: `${machineWidth}px` }}>
               {/* Machine Base */}
               <Image
-                src="/machine.png"
+                src="/webp-machine.webp"
                 alt="Photo Booth Machine"
                 width={1200}
                 height={400}
@@ -620,7 +620,7 @@ function DownloadContent() {
 
               {/* Machine Cover Part */}
               <Image
-                src="/top_machine.png"
+                src="/webp-top-machine.webp"
                 alt="Machine Top"
                 width={1200}
                 height={200}
@@ -648,7 +648,7 @@ function DownloadContent() {
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/download.png"
+                        src="/webp-download.webp"
                         alt="Download Button"
                         width={200}
                         height={15}
@@ -656,7 +656,7 @@ function DownloadContent() {
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_download.png"
+                        src="/webp-hover-download.webp"
                         alt="Hovered Download Button"
                         width={200}
                         height={15}
@@ -677,7 +677,7 @@ function DownloadContent() {
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/edit.png"
+                        src="/webp-edit.webp"
                         alt="Back to Edit Button"
                         width={200}
                         height={15}
@@ -685,7 +685,7 @@ function DownloadContent() {
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_edit.png"
+                        src="/webp-hover-edit.webp"
                         alt="Hovered Back to Edit Button"
                         width={200}
                         height={15}
@@ -706,7 +706,7 @@ function DownloadContent() {
                   >
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/reset.png"
+                        src="/webp-reset.webp"
                         alt="Reset Button"
                         width={200}
                         height={15}
@@ -714,7 +714,7 @@ function DownloadContent() {
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_reset.png"
+                        src="/webp-hover-reset.webp"
                         alt="Hovered Reset Button"
                         width={200}
                         height={15}
@@ -761,7 +761,7 @@ function DownloadContent() {
                     >
                       {isSendingEmail ? (
                         <Image
-                          src={`/sending.png`}
+                          src={`/webp-sending.webp`}
                           alt="Sending"
                           width={200}
                           height={15}
@@ -771,7 +771,7 @@ function DownloadContent() {
                       ) : (
                         <>
                           <Image
-                            src="/email.png"
+                            src="/webp-email.webp"
                             alt="Email Button"
                             width={200}
                             height={15}
@@ -779,7 +779,7 @@ function DownloadContent() {
                             className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                           />
                           <Image
-                            src="/hover_email.png"
+                            src="/webp-hover-email.webp"
                             alt="Hovered Email Button"
                             width={200}
                             height={15}
@@ -804,7 +804,7 @@ function DownloadContent() {
                 </div>
                 <div className="z-10 w-[30vw] pointer-events-none">
                   <Image
-                    src="/credits.png"
+                    src="/webp-credits.webp"
                     alt="Bottom Left Decoration"
                     width={500}
                     height={500}
@@ -825,7 +825,7 @@ function DownloadContent() {
               >
                 {/* Machine Base */}
                 <Image
-                  src="/machine.png"
+                  src="/webp-machine.webp"
                   alt="Photo Booth Machine"
                   width={1200}
                   height={400}
@@ -877,7 +877,7 @@ function DownloadContent() {
 
                 {/* Machine Cover Part */}
                 <Image
-                  src="/top_machine.png"
+                  src="/webp-top-machine.webp"
                   alt="Machine Top"
                   width={1200}
                   height={200}
@@ -900,7 +900,7 @@ function DownloadContent() {
                   <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-3">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/download.png"
+                        src="/webp-download.webp"
                         alt="Download Button"
                         width={200}
                         height={15}
@@ -908,7 +908,7 @@ function DownloadContent() {
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_download.png"
+                        src="/webp-hover-download.webp"
                         alt="Hovered Download Button"
                         width={200}
                         height={15}
@@ -924,7 +924,7 @@ function DownloadContent() {
                   <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-3">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/edit.png"
+                        src="/webp-edit.webp"
                         alt="Back to Edit Button"
                         width={200}
                         height={15}
@@ -932,7 +932,7 @@ function DownloadContent() {
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_edit.png"
+                        src="/webp-hover-edit.webp"
                         alt="Hovered Back to Edit Button"
                         width={200}
                         height={15}
@@ -948,7 +948,7 @@ function DownloadContent() {
                   <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[50vw] h-[10vw] sm:w-[40vw] sm:h-[8vw] md:w-[20vw] md:h-[6vw] lg:w-[15vw] lg:h-[4vw] xl:w-[12vw] xl:h-[4vw] py-1 p-2 xl:p-3">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
-                        src="/reset.png"
+                        src="/webp-reset.webp"
                         alt="Back to Edit Button"
                         width={200}
                         height={15}
@@ -956,7 +956,7 @@ function DownloadContent() {
                         className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                       />
                       <Image
-                        src="/hover_reset.png"
+                        src="/webp-hover-reset.webp"
                         alt="Hovered Back to Edit Button"
                         width={200}
                         height={15}
@@ -1001,7 +1001,7 @@ function DownloadContent() {
                     >
                       {isSendingEmail ? (
                         <Image
-                          src={`/sending.png`}
+                          src={`/webp-sending.webp`}
                           alt="Sending"
                           width={200}
                           height={15}
@@ -1011,7 +1011,7 @@ function DownloadContent() {
                       ) : (
                         <>
                           <Image
-                            src="/email.png"
+                            src="/webp-email.webp"
                             alt="Email Button"
                             width={200}
                             height={15}
@@ -1019,7 +1019,7 @@ function DownloadContent() {
                             className="pointer-events-none object-contain w-full h-full group-active:hidden xl:group-hover:hidden"
                           />
                           <Image
-                            src="/hover_email.png"
+                            src="/webp-hover-email.webp"
                             alt="Hovered Email Button"
                             width={200}
                             height={15}
@@ -1046,7 +1046,7 @@ function DownloadContent() {
             )}
             <div className="absolute bottom-10 right-10 z-10 w-[30vw] md:w-[20vw] lg:w-[15vw] pointer-events-none">
               <Image
-                src="/credits.png"
+                src="/webp-credits.webp"
                 alt="Bottom Left Decoration"
                 width={500}
                 height={500}

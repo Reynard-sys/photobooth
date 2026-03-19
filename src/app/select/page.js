@@ -17,7 +17,7 @@ export default function SelectPage() {
         {/* Small Screen Size */}
         <div className="flex lg:hidden inset-0 items-center justify-center pointer-event-none z-10 mt-[5vw] mb-8">
           <Image
-            src="/cute_booth.png"
+            src="/webp-cute-booth.webp"
             alt="Photobooth Small"
             width={600}
             height={300.948}
@@ -29,7 +29,7 @@ export default function SelectPage() {
           {/* Timer Column */}
           <div>
             <Image
-              src="/timer_asset.png"
+              src="/webp-timer-asset.webp"
               alt="Select Title"
               width={400}
               height={100}
@@ -62,7 +62,7 @@ export default function SelectPage() {
           {/* Shots Column */}
           <div>
             <Image
-              src="/shots_asset.png"
+              src="/webp-shots-asset.webp"
               alt="Select Title"
               width={400}
               height={100}
@@ -93,7 +93,7 @@ export default function SelectPage() {
             <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] transition-colors"></div>
             <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-4 px-10 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
               <Image
-                src="/next_button.png"
+                src="/webp-next-button.webp"
                 alt="Next Button"
                 width={200}
                 height={15}
@@ -101,7 +101,7 @@ export default function SelectPage() {
                 className="pointer-events-none w-[8vw] max-w-15 h-auto group-active:hidden"
               />
               <Image
-                src="/hover_next.png"
+                src="/webp-hover-next.webp"
                 alt="Hovered Next Button"
                 width={200}
                 height={15}
@@ -118,7 +118,7 @@ export default function SelectPage() {
             {/* Timer Column */}
             <div>
               <Image
-                src="/timer_asset.png"
+                src="/webp-timer-asset.webp"
                 alt="Select Title"
                 width={400}
                 height={100}
@@ -151,7 +151,7 @@ export default function SelectPage() {
             {/* Shots Column */}
             <div>
               <Image
-                src="/shots_asset.png"
+                src="/webp-shots-asset.webp"
                 alt="Select Title"
                 width={400}
                 height={100}
@@ -182,7 +182,7 @@ export default function SelectPage() {
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
               <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-5 px-13 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
                 <Image
-                  src="/next_button.png"
+                  src="/webp-next-button.webp"
                   alt="Next Button"
                   width={200}
                   height={15}
@@ -190,7 +190,7 @@ export default function SelectPage() {
                   className="pointer-events-none w-[4vw] h-auto group-hover:hidden"
                 />
                 <Image
-                  src="/hover_next.png"
+                  src="/webp-hover-next.webp"
                   alt="Hovered Next Button"
                   width={200}
                   height={15}
@@ -203,7 +203,7 @@ export default function SelectPage() {
         </div>
         <div className="hidden lg:flex xl:hidden fixed inset-y-0 right-[calc(5vw+5rem)] items-center justify-center pointer-events-none z-10">
           <Image
-            src="/cute_booth.png"
+            src="/webp-cute-booth.webp"
             alt="Photobooth Large"
             width={554.039}
             height={621.22}
@@ -221,7 +221,7 @@ export default function SelectPage() {
             {/* Timer Column */}
             <div>
               <Image
-                src="/timer_asset.png"
+                src="/webp-timer-asset.webp"
                 alt="Select Title"
                 width={400}
                 height={100}
@@ -255,7 +255,7 @@ export default function SelectPage() {
             {/* Shots Column */}
             <div>
               <Image
-                src="/shots_asset.png"
+                src="/webp-shots-asset.webp"
                 alt="Select Title"
                 width={400}
                 height={100}
@@ -288,7 +288,7 @@ export default function SelectPage() {
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
               <div className="relative px-12 py-5 bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD]transition-colors">
                 <Image
-                  src="/next_button.png"
+                  src="/webp-next-button.webp"
                   alt="Next Button"
                   width={200}
                   height={15}
@@ -297,7 +297,7 @@ export default function SelectPage() {
                   style={{ width: "clamp(4rem, 5vw, 10rem)" }}
                 />
                 <Image
-                  src="/hover_next.png"
+                  src="/webp-hover-next.webp"
                   alt="Hovered Next Button"
                   width={200}
                   height={15}
@@ -311,7 +311,7 @@ export default function SelectPage() {
         </div>
         <div className="hidden xl:flex fixed top-[5vh] bottom-[5vh] right-[calc(7vw+2rem)] items-center justify-center pointer-events-none z-10">
           <Image
-            src="/cute_booth.png"
+            src="/webp-cute-booth.webp"
             alt="Photobooth Large"
             width={554.039}
             height={621.22}
@@ -322,7 +322,7 @@ export default function SelectPage() {
         <Link href="/">
           <div className="absolute top-10 left-10 lg:top-15 lg:left-15 z-10 w-[5vw] lg:w-[3vw]">
             <Image
-              src="/back_page.png"
+              src="/webp-back-page.webp"
               alt="Bottom Left Decoration"
               width={500}
               height={500}

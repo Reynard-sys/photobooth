@@ -3,7 +3,7 @@
 export const dynamic = "force-dynamic";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { startTransition, useState, useEffect } from "react";
 
 export default function CameraRetake({
   videoRef,
@@ -22,11 +22,13 @@ export default function CameraRetake({
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    setIsMobile(
-      /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini|tablet/i.test(
-        navigator.userAgent,
-      ),
-    );
+    startTransition(() => {
+      setIsMobile(
+        /iPhone|iPad|iPod|Android|webOS|BlackBerry|IEMobile|Opera Mini|tablet/i.test(
+          navigator.userAgent,
+        ),
+      );
+    });
 
     const getCameras = async () => {
       try {
@@ -161,7 +163,7 @@ export default function CameraRetake({
           >
             {isRunning ? (
               <Image
-                src="/capturing_asset.png"
+                src="/webp-capturing-asset.webp"
                 alt="Capturing"
                 width={200}
                 height={15}
@@ -170,7 +172,7 @@ export default function CameraRetake({
             ) : (
               <>
                 <Image
-                  src="/retake_button.png"
+                  src="/webp-retake-button.webp"
                   alt="Capture Retake"
                   width={200}
                   height={15}
@@ -178,7 +180,7 @@ export default function CameraRetake({
                   className="pointer-events-none w-[15vw] md:w-[8vw] lg:w-[5vw] xl:w-[5vw] h-auto group-hover:hidden xl:group-hover:hidden"
                 />
                 <Image
-                  src="/hover_retake_button.png"
+                  src="/webp-hover-retake-button.webp"
                   alt="Hovered Retake Button"
                   width={200}
                   height={15}

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "convert:webp": "tsx scripts/convert-to-webp.ts"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",
@@ -24,6 +25,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "mkcert": "^3.2.0",
-    "tailwindcss": "^4"
+    "tailwindcss": "^4",
+    "tsx": "^4.21.0"
   }
 }

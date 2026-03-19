@@ -218,7 +218,7 @@ function RetakeContent() {
         <main className="flex flex-col overflow-y-auto lg:overflow-hidden xl:overflow-hidden overscroll-none justify-start h-full items-center p-10 sm:p-10 md:p-12 lg:p-24 xl:p-10 pt-4 sm:pt-6 md:pt-0 lg:pt-30 bg-[#FDFDF5]">
           <div className="flex mt-15 lg:-mt-20 xl:mt-0 mb-5 lg:mb-0 xl:mb-5 text-center">
             <Image
-              src="/smile_title.png"
+              src="/webp-smile-title.webp"
               alt="Smile"
               width={240}
               height={60}
@@ -240,7 +240,7 @@ function RetakeContent() {
           <Link href="/check">
             <div className="absolute top-10 left-10 lg:top-15 lg:left-15 z-10 w-[5vw] lg:w-[3vw]">
               <Image
-                src="/back_page.png"
+                src="/webp-back-page.webp"
                 alt="Bottom Left Decoration"
                 width={500}
                 height={500}
