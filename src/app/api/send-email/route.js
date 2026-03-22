@@ -64,12 +64,23 @@ function buildTransporter() {
     connectionTimeout: 15000,
     greetingTimeout: 10000,
     socketTimeout: 20000,
+    pool: true,       // reuse SMTP connections across sends
+    maxConnections: 3,
   });
 }
 
-export async function POST(request) {
-  let transporter;
+// Module-level singleton — reuse the transporter across requests
+// instead of creating a new one (and doing TCP handshake) every time.
+let _transporter = null;
+function getTransporter() {
+  if (!_transporter) {
+    _transporter = buildTransporter();
+  }
+  return _transporter;
+}
 
+
+export async function POST(request) {
   try {
     const formData = await request.formData();
     const emailValue = formData.get("email");
@@ -107,13 +118,15 @@ export async function POST(request) {
       );
     }
 
-    const attachmentBuffer = Buffer.from(await imageFile.arrayBuffer());
+    // Convert buffer and get transporter in parallel
+    const [attachmentBuffer, transporter] = await Promise.all([
+      imageFile.arrayBuffer().then((ab) => Buffer.from(ab)),
+      Promise.resolve(getTransporter()),
+    ]);
+
     const extension = imageFile.type.split("/")[1] || "jpg";
     const filename = sanitizeFilename(filenameValue, extension);
     const contentId = `photostrip-${Date.now()}@photobooth.local`;
-
-    transporter = buildTransporter();
-    await transporter.verify();
 
     await transporter.sendMail({
       from: `"Photo Booth 📸" <${process.env.SMTP_FROM}>`,
@@ -268,6 +281,9 @@ export async function POST(request) {
   } catch (error) {
     console.error("Email send error:", error);
 
+    // If transporter fails, clear the singleton so next request rebuilds it
+    _transporter = null;
+
     let errorMessage = "Failed to send email";
 
     if (error.message?.includes("Missing email configuration")) {
@@ -286,9 +302,5 @@ export async function POST(request) {
       { success: false, error: errorMessage },
       { status: 500 },
     );
-  } finally {
-    if (typeof transporter?.close === "function") {
-      transporter.close();
-    }
   }
 }

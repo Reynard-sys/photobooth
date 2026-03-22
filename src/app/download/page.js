@@ -1,7 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
-import { useState, useEffect, useRef } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
 import PhotoStripComposite3 from "../../components/photostrip3";
@@ -10,6 +9,8 @@ import Border from "../../components/border";
 import Image from "next/image";
 import "instagram.css";
 import Link from "next/link";
+import { getTemplateDimensions } from "../../lib/templateDimensions";
+import { applyCSSFilterToCanvas } from "../../lib/filterUtils";
 
 export default function DownloadPage() {
   return (

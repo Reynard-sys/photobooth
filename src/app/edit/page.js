@@ -10,6 +10,8 @@ import Image from "next/image";
 import Link from "next/link";
 import "instagram.css";
 import FilterSelect from "../../components/filterSelect";
+import { getTemplateDimensions } from "../../lib/templateDimensions";
+import { applyCSSFilterToCanvas } from "../../lib/filterUtils";
 
 export default function FinalExportPage() {
   const stripRef = useRef(null);
