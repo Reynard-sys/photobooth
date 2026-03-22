@@ -125,80 +125,134 @@ export async function POST(request) {
       ].join("\n\n"),
       html: `
         <!DOCTYPE html>
-        <html>
+        <html lang="en">
           <head>
+            <meta charset="UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <title>Your Photo Strip</title>
             <style>
+              * { margin: 0; padding: 0; box-sizing: border-box; }
               body {
-                font-family: Arial, sans-serif;
-                margin: 0;
-                padding: 0;
-                background-color: #f5f5f5;
+                font-family: 'Georgia', serif;
+                background-color: #f5f0eb;
+                color: #3d3d3d;
               }
-              .container {
-                max-width: 600px;
-                margin: 0 auto;
-                background: white;
+              .wrapper {
+                max-width: 560px;
+                margin: 40px auto;
+                background: #fdfdf5;
+                border-radius: 16px;
+                overflow: hidden;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+                border: 1.5px solid #e8ddd5;
               }
               .header {
-                background: linear-gradient(135deg, #3d568f 0%, #f2aebd 100%);
-                color: white;
-                padding: 40px 20px;
+                background: linear-gradient(135deg, #3d568f 0%, #7b84c3 60%, #f2aebd 100%);
+                padding: 40px 30px 32px;
                 text-align: center;
+              }
+              .header .emoji {
+                font-size: 42px;
+                display: block;
+                margin-bottom: 10px;
               }
               .header h1 {
-                margin: 0;
-                font-size: 28px;
+                font-family: 'Georgia', serif;
+                font-size: 26px;
+                color: #ffffff;
+                font-weight: normal;
+                letter-spacing: 0.5px;
+                text-shadow: 0 1px 4px rgba(0,0,0,0.18);
+              }
+              .tagline {
+                font-size: 13px;
+                color: rgba(255,255,255,0.80);
+                margin-top: 6px;
+                letter-spacing: 0.3px;
               }
               .content {
-                padding: 30px 20px;
+                padding: 32px 30px 20px;
                 text-align: center;
               }
-              .image-container {
-                margin: 30px 0;
-                background: #fdfdf5;
-                padding: 20px;
-                border-radius: 10px;
+              .greeting {
+                font-size: 17px;
+                color: #3d568f;
+                font-weight: bold;
+                margin-bottom: 8px;
               }
-              .image-container img {
+              .subtext {
+                font-size: 13.5px;
+                color: #888;
+                line-height: 1.6;
+                margin-bottom: 28px;
+              }
+              .photo-frame {
+                background: #fff;
+                border: 1.5px solid #e8ddd5;
+                border-radius: 12px;
+                padding: 16px;
+                display: inline-block;
+                box-shadow: 0 2px 12px rgba(61,86,143,0.08);
+                margin-bottom: 28px;
+              }
+              .photo-frame img {
+                display: block;
                 max-width: 100%;
                 height: auto;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border-radius: 6px;
+              }
+              .divider {
+                border: none;
+                border-top: 1px solid #ede8e0;
+                margin: 0 30px;
               }
               .footer {
+                padding: 22px 30px;
                 text-align: center;
-                padding: 20px;
-                color: #666;
-                font-size: 12px;
-                background: #f9f9f9;
+                background: #fdfdf5;
+              }
+              .footer .credit {
+                font-size: 13px;
+                color: #3d568f;
+                font-weight: bold;
+                margin-bottom: 4px;
+              }
+              .footer .note {
+                font-size: 11.5px;
+                color: #aaa;
               }
             </style>
           </head>
           <body>
-            <div class="container">
+            <div class="wrapper">
               <div class="header">
+                <span class="emoji">📸</span>
                 <h1>Your Photo Booth Memory!</h1>
+                <p class="tagline">A little keepsake, just for you ✨</p>
               </div>
+
               <div class="content">
-                <p style="font-size: 18px; color: #3d568f; font-weight: bold;">
-                  Thanks for capturing the moment!
+                <p class="greeting">Thanks for capturing the moment!</p>
+                <p class="subtext">
+                  Your photo strip is below — and also attached to this email<br />
+                  in case your mail app doesn't render the preview.
                 </p>
-                <p style="color: #666;">
-                  Your photo strip is attached to this email in case your mail
-                  app does not render the preview below.
-                </p>
-                <div class="image-container">
+                <div class="photo-frame">
                   <img src="cid:${contentId}" alt="Your Photo Strip" />
                 </div>
               </div>
+
+              <hr class="divider" />
+
               <div class="footer">
-                <p>This email was sent from Photo Booth App</p>
-                <p>© ${new Date().getFullYear()} All rights reserved</p>
+                <p class="credit">Made by Rey &amp; Rel ദ്ദി◝ ⩊ ◜.ᐟ</p>
+                <p class="note">© ${new Date().getFullYear()} — Hope you had a great time! 🎉</p>
               </div>
             </div>
           </body>
         </html>
       `,
+
       attachments: [
         {
           filename,
