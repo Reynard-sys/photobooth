@@ -29,24 +29,27 @@ export default function FinalExportPage() {
     }
   }, []);
 
-  // Recalculate scale whenever shots or window size changes
+  // Recalculate scale whenever shots, template, or window size changes
   useEffect(() => {
     const calculateScale = () => {
       if (typeof window === "undefined") return 1;
 
-      const canvasHeight = shots.length === 4 ? 3600 : 2800;
+      // Use each template's native height so Frame15 (1920px) scales up larger
+      // than the taller 2800px strips — filling the available preview area.
+      const nH = shots.length === 4 ? 3600 : template === "Frame15" ? 1920 : 2800;
       const maxWidth = window.innerWidth - 64;
-      const maxHeight = window.innerHeight * 0.7;
+      const maxHeight = window.innerHeight * 0.85;
       const scaleW = maxWidth / 1200;
-      const scaleH = maxHeight / canvasHeight;
-      setCurrentScale(Math.min(scaleW, scaleH, 1));
+      const scaleH = maxHeight / nH;
+      // Allow up to 1.5x on large screens so the preview is noticeably bigger
+      setCurrentScale(Math.min(scaleW, scaleH, 1.5));
     };
 
     calculateScale();
 
     window.addEventListener("resize", calculateScale);
     return () => window.removeEventListener("resize", calculateScale);
-  }, [shots.length]); // Recalculate when shots.length changes
+  }, [shots.length, template]); // Recalculate when shots or template changes
 
   // Strip selection
   const handleSelectStrip = (stripId) => {
@@ -303,8 +306,15 @@ export default function FinalExportPage() {
     });
   };
 
-  // Set canvas height depending on the shot selected
-  const canvasHeight = shots.length === 4 ? 3600 : 2800;
+  // Native dimensions: Frame15 is 1080×1920; all others are 1200×2800/3600
+  const nativeWidth = template === "Frame15" && shots.length !== 4 ? 1080 : 1200;
+  const nativeHeight =
+    shots.length === 4
+      ? 3600
+      : template === "Frame15"
+        ? 1920
+        : 2800;
+  const canvasHeight = nativeHeight; // alias used in exporting logic
 
   return (
     <>
@@ -345,7 +355,7 @@ export default function FinalExportPage() {
               <div
                 className="relative overflow-hidden bg-white"
                 style={{
-                  width: isExporting ? "1200px" : `${1200 * currentScale}px`,
+                  width: isExporting ? `${nativeWidth}px` : `${nativeWidth * currentScale}px`,
                   height: isExporting
                     ? `${canvasHeight}px`
                     : `${canvasHeight * currentScale}px`,
@@ -385,9 +395,7 @@ export default function FinalExportPage() {
                 className="relative inline-block group"
               >
                 <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                <div
-                  className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] py-1 max-w-90 max-h-40 sm:max-h-18"
-                >
+                <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] py-1 max-w-90 max-h-40 sm:max-h-18">
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <Image
                       src="/webp-next-button.webp"
@@ -414,9 +422,7 @@ export default function FinalExportPage() {
                 className="relative inline-block group mt-5 mb-5"
               >
                 <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                <div
-                  className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] py-1 max-w-90 max-h-40 sm:max-h-18"
-                >
+                <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[60vw] h-[12vw] md:w-[35vw] md:h-[7vw] py-1 max-w-90 max-h-40 sm:max-h-18">
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <Image
                       src="/webp-retake-button.webp"
@@ -441,13 +447,13 @@ export default function FinalExportPage() {
           </div>
 
           {/* Medium and Large Screen Size */}
-          <div className="hidden lg:flex w-full items-center justify-between">
+          <div className="hidden lg:flex w-full h-full items-center justify-between">
             {/* Preview Area - Left Side */}
-            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-40 xl:ml-50 mb-0 lg:mb-15 xl:mb-10 2xl:mb-0">
+            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-55 xl:ml-65 2xl:ml-80">
               <div
                 className="relative overflow-hidden bg-white"
                 style={{
-                  width: isExporting ? "1200px" : `${1200 * currentScale}px`,
+                  width: isExporting ? `${nativeWidth}px` : `${nativeWidth * currentScale}px`,
                   height: isExporting
                     ? `${canvasHeight}px`
                     : `${canvasHeight * currentScale}px`,
@@ -481,7 +487,7 @@ export default function FinalExportPage() {
             </div>
 
             {/* Right Side - Strip Selection & Buttons */}
-            <div className="flex flex-col items-center justify-center ml-8 xl:ml-16 mr-0 xl:mr-20 2xl:mr-30">
+            <div className="flex flex-col items-center justify-center ml-8 xl:ml-16 mr-0 xl:mr-20 2xl:mr-30 h-full py-10">
               <Image
                 src="/webp-strips-title.webp"
                 alt="Smile"
@@ -518,9 +524,7 @@ export default function FinalExportPage() {
                   className="relative inline-block group"
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                  <div
-                    className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[35vw] h-[7vw] lg:w-[22vw] lg:h-[3.2vw] xl:w-[26vw] xl:h-[4vw] 2xl:w-[20vw] 2xl:h-[4vw] py-4.5 lg:py-0 xl:py-2"
-                  >
+                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[35vw] h-[7vw] lg:w-[22vw] lg:h-[3.2vw] xl:w-[26vw] xl:h-[4vw] 2xl:w-[20vw] 2xl:h-[4vw] py-4.5 lg:py-0 xl:py-2">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
                         src="/webp-next-button.webp"
@@ -547,9 +551,7 @@ export default function FinalExportPage() {
                   className="relative inline-block group mt-0 mb-5"
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
-                  <div
-                    className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[35vw] h-[7vw] lg:w-[22vw] lg:h-[3.2vw] xl:w-[26vw] xl:h-[4vw] 2xl:w-[20vw] 2xl:h-[4vw] py-4.5 lg:py-0 xl:py-2"
-                  >
+                  <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl transition-colors flex items-center justify-center group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD] w-[35vw] h-[7vw] lg:w-[22vw] lg:h-[3.2vw] xl:w-[26vw] xl:h-[4vw] 2xl:w-[20vw] 2xl:h-[4vw] py-4.5 lg:py-0 xl:py-2">
                     <div className="relative w-full h-full flex items-center justify-center p-2">
                       <Image
                         src="/webp-retake-button.webp"

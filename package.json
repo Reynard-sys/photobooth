@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "convert:webp": "tsx scripts/convert-to-webp.ts"
+    "convert:webp": "node scripts/convert-to-webp.js"
   },
   "dependencies": {
     "html2canvas": "^1.4.1",

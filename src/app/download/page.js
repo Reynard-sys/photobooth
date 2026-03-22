@@ -41,6 +41,13 @@ function DownloadContent() {
   const [stripPosition, setStripPosition] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
 
+  // Returns the native export dimensions for a given template + shot count
+  const getTemplateDimensions = (tmpl, shotCount) => {
+    if (shotCount === 4) return { width: 1200, height: 3600 };
+    if (tmpl === "Frame15") return { width: 1080, height: 1920 };
+    return { width: 1200, height: 2800 };
+  };
+
   const [email, setEmail] = useState("");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState(null);
@@ -106,27 +113,34 @@ function DownloadContent() {
     const calculateScale = () => {
       if (typeof window === "undefined") return;
 
-      const canvasHeight = 3600;
+      const { width: stripNativeWidth, height: stripNativeHeight } =
+        getTemplateDimensions(template, shots.length);
+      // Machine always based on 1200 wide (the machine image is 1200px)
+      const machineNativeHeight = shots.length === 4 ? 3600 : 2800;
       const maxWidth = window.innerWidth - 64;
       const maxHeight = window.innerHeight * 0.7;
 
       // Machine scale
       const scaleW = maxWidth / 1200;
-      const scaleH = maxHeight / canvasHeight;
+      const scaleH = maxHeight / machineNativeHeight;
       const machineScaleValue = Math.min(scaleW, scaleH, 2);
       setMachineScale(machineScaleValue);
 
-      // Strip scale 70%
+      // Strip scale: use the machine's reference height (2800/3600) for the
+      // height constraint — NOT the strip's native height. This ensures Frame15
+      // (1920px) gets the same scale as normal 2800px strips, preventing it
+      // from rendering too large. Frame15 then naturally renders narrower
+      // (1080 × scale) and sits within the machine opening correctly.
       const maxStripWidth = Math.min(900, maxWidth * 0.7);
       const stripScaleW = maxStripWidth / 1200;
-      const stripScaleH = (maxHeight * 0.7) / canvasHeight;
+      const stripScaleH = (maxHeight * 0.7) / machineNativeHeight;
       setStripScale(Math.min(stripScaleW, stripScaleH, 0.7));
     };
 
     calculateScale();
     window.addEventListener("resize", calculateScale);
     return () => window.removeEventListener("resize", calculateScale);
-  }, [shots.length]);
+  }, [shots.length, template]);
 
   // Animation effect
   useEffect(() => {
@@ -141,7 +155,10 @@ function DownloadContent() {
 
       const easeProgress = 1 - Math.pow(1 - progress / 100, 3);
 
-      const revealAmount = shots.length === 4 ? 135 : 135;
+      // Frame15 (1080x1920) is shorter in height so needs a larger reveal %
+      // to fully slide the strip out of the machine opening
+      const revealAmount =
+        shots.length === 4 ? 135 : template === "Frame15" ? 170 : 145;
 
       setStripPosition(easeProgress * revealAmount);
 
@@ -153,7 +170,7 @@ function DownloadContent() {
     };
 
     requestAnimationFrame(animate);
-  }, [isAnimating, shots.length]);
+  }, [isAnimating, shots.length, template]);
 
   const getFilterClass = () => {
     switch (selectedFilter) {
@@ -415,14 +432,18 @@ function DownloadContent() {
 
   const canvasToBlob = (canvas, type, quality) => {
     return new Promise((resolve, reject) => {
-      canvas.toBlob((blob) => {
-        if (blob) {
-          resolve(blob);
-          return;
-        }
+      canvas.toBlob(
+        (blob) => {
+          if (blob) {
+            resolve(blob);
+            return;
+          }
 
-        reject(new Error("Could not convert image for email"));
-      }, type, quality);
+          reject(new Error("Could not convert image for email"));
+        },
+        type,
+        quality,
+      );
     });
   };
 
@@ -430,7 +451,8 @@ function DownloadContent() {
     if (!stripRef.current || shots.length === 0) return null;
 
     try {
-      const canvasHeight = shots.length === 4 ? 3600 : 2800;
+      const { width: canvasWidth, height: canvasHeight } =
+        getTemplateDimensions(template, shots.length);
 
       let filteredShots = shots;
       if (selectedFilter !== "none") {
@@ -455,7 +477,7 @@ function DownloadContent() {
       clone.style.position = "absolute";
       clone.style.left = "-9999px";
       clone.style.top = "-9999px";
-      clone.style.width = "1200px";
+      clone.style.width = `${canvasWidth}px`;
       clone.style.height = `${canvasHeight}px`;
       clone.style.transform = "none";
 
@@ -468,7 +490,7 @@ function DownloadContent() {
           scale: 1,
           useCORS: true,
           allowTaint: true,
-          width: 1200,
+          width: canvasWidth,
           height: canvasHeight,
           removeContainer: true,
         });
@@ -579,7 +601,11 @@ function DownloadContent() {
       const emailAttachment = await generateEmailAttachment();
 
       if (!emailAttachment) {
-        showEmailStatus("error", "Could not generate the image for email.", 3000);
+        showEmailStatus(
+          "error",
+          "Could not generate the image for email.",
+          3000,
+        );
         return;
       }
 
@@ -613,14 +639,17 @@ function DownloadContent() {
     }
   };
 
-  const canvasHeight = 3600;
+  // Use template-aware dimensions for strip centering and animation
+  const { width: stripNativeWidth, height: stripNativeHeight } =
+    getTemplateDimensions(template, shots.length);
   const stripTranslateY =
-    -(canvasHeight * stripScale) * (1 - stripPosition / 100);
+    -(stripNativeHeight * stripScale) * (1 - stripPosition / 100);
 
   // Center the strip horizontally in the machine
+  // Machine image is always 1200px wide; strip may be narrower (e.g. Frame15 = 1080)
   const machineWidth = 1200 * machineScale;
   const largeMachineWidth = machineWidth * 1.2;
-  const stripWidth = 1200 * stripScale;
+  const stripWidth = stripNativeWidth * stripScale;
   const largeStripWidth = stripWidth * 1.2;
   const stripLeftOffset = (machineWidth - stripWidth) / 2;
   const largeStripLeftOffset = (largeMachineWidth - largeStripWidth) / 2;
@@ -882,8 +911,8 @@ function DownloadContent() {
           </div>
 
           {/* Large Screen Size */}
-          <div className="hidden lg:flex w-full items-center justify-between mt-15 lg:mt-10 xl:mt-15 2xl:mt-30">
-            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-50 xl:ml-70 mb-0 xl:mb-10 2xl:mb-0">
+          <div className="hidden lg:flex w-full h-full items-center justify-between">
+            <div className="flex flex-col items-center justify-center shrink-0 ml-70 lg:ml-50 xl:ml-70">
               {/* Photo Booth Machine */}
               <div
                 className="relative"
