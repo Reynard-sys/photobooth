@@ -184,9 +184,13 @@ const PhotoStripComposite4 = forwardRef(
           );
         })}
 
-        {/* Layer 2: Photo Strips */}
+        {/* Layer 2: Strip Template (webp for display, png for export) */}
         <img
-          src={`/strips/4photos/${template}.png`}
+          src={
+            isExporting
+              ? `/strips/4photos/${template}.png`
+              : `/strips/4photos/${template}.webp`
+          }
           alt="Photo strip template"
           className="absolute inset-0 w-full h-full pointer-events-none"
           style={{ zIndex: 10 }}
