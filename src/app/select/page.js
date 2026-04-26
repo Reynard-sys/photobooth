@@ -7,13 +7,18 @@ import ShotButton from "../../components/shotSelect";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePhotoboothStore } from "../../lib/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function SelectPage() {
   const router = useRouter();
   const { timer, shotCount, setTimer, setShotCount } = usePhotoboothStore();
+  const [mounted, setMounted] = useState(false);
 
-  const canProceed = timer !== null && shotCount !== null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const canProceed = mounted && timer !== null && shotCount !== null;
 
   const handleNext = () => {
     if (!canProceed) return;
@@ -51,17 +56,17 @@ export default function SelectPage() {
           <div className="flex gap-4">
             <TimerButton
               seconds={3}
-              isSelected={timer === 3}
+              isSelected={mounted && timer === 3}
               onClick={() => setTimer(3)}
             />
             <TimerButton
               seconds={5}
-              isSelected={timer === 5}
+              isSelected={mounted && timer === 5}
               onClick={() => setTimer(5)}
             />
             <TimerButton
               seconds={10}
-              isSelected={timer === 10}
+              isSelected={mounted && timer === 10}
               onClick={() => setTimer(10)}
             />
           </div>
@@ -80,12 +85,12 @@ export default function SelectPage() {
           <div className="flex gap-4">
             <ShotButton
               shots={3}
-              isSelected={shotCount === 3}
+              isSelected={mounted && shotCount === 3}
               onClick={() => setShotCount(3)}
             />
             <ShotButton
               shots={4}
-              isSelected={shotCount === 4}
+              isSelected={mounted && shotCount === 4}
               onClick={() => setShotCount(4)}
             />
           </div>
@@ -137,17 +142,17 @@ export default function SelectPage() {
             <div className="flex gap-7">
               <TimerButton
                 seconds={3}
-                isSelected={timer === 3}
+                isSelected={mounted && timer === 3}
                 onClick={() => setTimer(3)}
               />
               <TimerButton
                 seconds={5}
-                isSelected={timer === 5}
+                isSelected={mounted && timer === 5}
                 onClick={() => setTimer(5)}
               />
               <TimerButton
                 seconds={10}
-                isSelected={timer === 10}
+                isSelected={mounted && timer === 10}
                 onClick={() => setTimer(10)}
               />
             </div>
@@ -166,12 +171,12 @@ export default function SelectPage() {
             <div className="flex gap-8">
               <ShotButton
                 shots={3}
-                isSelected={shotCount === 3}
+                isSelected={mounted && shotCount === 3}
                 onClick={() => setShotCount(3)}
               />
               <ShotButton
                 shots={4}
-                isSelected={shotCount === 4}
+                isSelected={mounted && shotCount === 4}
                 onClick={() => setShotCount(4)}
               />
             </div>
@@ -238,17 +243,17 @@ export default function SelectPage() {
             <div className="flex gap-5">
               <TimerButton
                 seconds={3}
-                isSelected={timer === 3}
+                isSelected={mounted && timer === 3}
                 onClick={() => setTimer(3)}
               />
               <TimerButton
                 seconds={5}
-                isSelected={timer === 5}
+                isSelected={mounted && timer === 5}
                 onClick={() => setTimer(5)}
               />
               <TimerButton
                 seconds={10}
-                isSelected={timer === 10}
+                isSelected={mounted && timer === 10}
                 onClick={() => setTimer(10)}
               />
             </div>
@@ -268,12 +273,12 @@ export default function SelectPage() {
             <div className="flex gap-5">
               <ShotButton
                 shots={3}
-                isSelected={shotCount === 3}
+                isSelected={mounted && shotCount === 3}
                 onClick={() => setShotCount(3)}
               />
               <ShotButton
                 shots={4}
-                isSelected={shotCount === 4}
+                isSelected={mounted && shotCount === 4}
                 onClick={() => setShotCount(4)}
               />
             </div>
