@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 import PhotoStripComposite3 from "../../components/photostrip3";
 import PhotoStripComposite4 from "../../components/photostrip4";
@@ -12,24 +12,15 @@ import "instagram.css";
 import FilterSelect from "../../components/filterSelect";
 import { getTemplateDimensions } from "../../lib/templateDimensions";
 import { applyCSSFilterToCanvas } from "../../lib/filterUtils";
+import { usePhotoboothStore } from "../../lib/store";
 
 export default function FinalExportPage() {
   const stripRef = useRef(null);
-  const [shots, setShots] = useState([]);
   const [isExporting, setIsExporting] = useState(false);
-  const [template, setTemplate] = useState("Frame1");
-  const [selectedFilter, setSelectedFilter] = useState("none");
   const [currentScale, setCurrentScale] = useState(1);
 
-  // Load shots from sessionStorage
-  useEffect(() => {
-    const stored = sessionStorage.getItem("shots");
-    if (stored) {
-      startTransition(() => {
-        setShots(JSON.parse(stored));
-      });
-    }
-  }, []);
+  // Read session state from Zustand store
+  const { shots, template, filter: selectedFilter, setTemplate, setFilter } = usePhotoboothStore();
 
   // Recalculate scale whenever shots, template, or window size changes
   useEffect(() => {
@@ -60,7 +51,7 @@ export default function FinalExportPage() {
 
   // Filter selection
   const handleSelectFilter = (filterId) => {
-    setSelectedFilter(filterId);
+    setFilter(filterId);
   };
 
   // Call for installed filter function
@@ -393,7 +384,7 @@ export default function FinalExportPage() {
             {/* Action Buttons */}
             <div className="mt-10 mb-20 flex flex-col items-center gap-6">
               <Link
-                href={`/download?template=${template}&filter=${selectedFilter}`}
+                href="/download"
                 className="relative inline-block group"
               >
                 <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>
@@ -522,7 +513,7 @@ export default function FinalExportPage() {
               {/* Action Buttons */}
               <div className="mt-10 lg:mt-5 xl:mt-6 2xl:mt-10 mb-20 flex flex-col items-center gap-6 lg:gap-4 xl:gap-6">
                 <Link
-                  href={`/download?template=${template}&filter=${selectedFilter}`}
+                  href="/download"
                   className="relative inline-block group"
                 >
                   <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD] transition-colors"></div>

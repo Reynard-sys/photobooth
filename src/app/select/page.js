@@ -4,12 +4,22 @@ import Border from "../../components/border";
 import Image from "next/image";
 import TimerButton from "../../components/timerSelect";
 import ShotButton from "../../components/shotSelect";
-import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { usePhotoboothStore } from "../../lib/store";
+import { useEffect } from "react";
 
 export default function SelectPage() {
-  const [selectedTimer, setSelectedTimer] = useState(null);
-  const [selectedShot, setSelectedShot] = useState(null);
+  const router = useRouter();
+  const { timer, shotCount, setTimer, setShotCount } = usePhotoboothStore();
+
+  const canProceed = timer !== null && shotCount !== null;
+
+  const handleNext = () => {
+    if (!canProceed) return;
+    router.push("/capture");
+  };
+
   return (
     <>
       <Border />
@@ -39,23 +49,20 @@ export default function SelectPage() {
           </div>
           {/* Timer Buttons */}
           <div className="flex gap-4">
-            {/* 3 Seconds */}
             <TimerButton
               seconds={3}
-              isSelected={selectedTimer === 3}
-              onClick={() => setSelectedTimer(3)}
+              isSelected={timer === 3}
+              onClick={() => setTimer(3)}
             />
-            {/* 5 Seconds */}
             <TimerButton
               seconds={5}
-              isSelected={selectedTimer === 5}
-              onClick={() => setSelectedTimer(5)}
+              isSelected={timer === 5}
+              onClick={() => setTimer(5)}
             />
-            {/* 10 Seconds */}
             <TimerButton
               seconds={10}
-              isSelected={selectedTimer === 10}
-              onClick={() => setSelectedTimer(10)}
+              isSelected={timer === 10}
+              onClick={() => setTimer(10)}
             />
           </div>
 
@@ -71,24 +78,24 @@ export default function SelectPage() {
             />
           </div>
           <div className="flex gap-4">
-            {/* 3 Shots */}
             <ShotButton
               shots={3}
-              isSelected={selectedShot === 3}
-              onClick={() => setSelectedShot(3)}
+              isSelected={shotCount === 3}
+              onClick={() => setShotCount(3)}
             />
-            {/* 4 Shots */}
             <ShotButton
               shots={4}
-              isSelected={selectedShot === 4}
-              onClick={() => setSelectedShot(4)}
+              isSelected={shotCount === 4}
+              onClick={() => setShotCount(4)}
             />
           </div>
 
           {/* Next Button */}
-          <Link
-            href={`/capture?t=${selectedTimer}&s=${selectedShot}`}
-            className="relative inline-block group mt-5"
+          <button
+            type="button"
+            onClick={handleNext}
+            disabled={!canProceed}
+            className="relative inline-block group mt-5 disabled:opacity-40"
           >
             <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-active:bg-[#F2AEBD] transition-colors"></div>
             <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-4 px-10 group-active:bg-[#3D568F] group-active:border-[#F2AEBD] transition-colors">
@@ -109,7 +116,7 @@ export default function SelectPage() {
                 className="pointer-events-none w-[8vw] max-w-15 h-auto hidden group-active:block"
               />
             </div>
-          </Link>
+          </button>
         </div>
 
         {/* Medium Screen Size */}
@@ -128,23 +135,20 @@ export default function SelectPage() {
             </div>
             {/* Timer Buttons */}
             <div className="flex gap-7">
-              {/* 3 Seconds */}
               <TimerButton
                 seconds={3}
-                isSelected={selectedTimer === 3}
-                onClick={() => setSelectedTimer(3)}
+                isSelected={timer === 3}
+                onClick={() => setTimer(3)}
               />
-              {/* 5 Seconds */}
               <TimerButton
                 seconds={5}
-                isSelected={selectedTimer === 5}
-                onClick={() => setSelectedTimer(5)}
+                isSelected={timer === 5}
+                onClick={() => setTimer(5)}
               />
-              {/* 10 Seconds */}
               <TimerButton
                 seconds={10}
-                isSelected={selectedTimer === 10}
-                onClick={() => setSelectedTimer(10)}
+                isSelected={timer === 10}
+                onClick={() => setTimer(10)}
               />
             </div>
 
@@ -160,24 +164,24 @@ export default function SelectPage() {
               />
             </div>
             <div className="flex gap-8">
-              {/* 3 Shots */}
               <ShotButton
                 shots={3}
-                isSelected={selectedShot === 3}
-                onClick={() => setSelectedShot(3)}
+                isSelected={shotCount === 3}
+                onClick={() => setShotCount(3)}
               />
-              {/* 4 Shots */}
               <ShotButton
                 shots={4}
-                isSelected={selectedShot === 4}
-                onClick={() => setSelectedShot(4)}
+                isSelected={shotCount === 4}
+                onClick={() => setShotCount(4)}
               />
             </div>
 
             {/* Next Button */}
-            <Link
-              href={`/capture?t=${selectedTimer}&s=${selectedShot}`}
-              className="relative inline-block group mt-10"
+            <button
+              type="button"
+              onClick={handleNext}
+              disabled={!canProceed}
+              className="relative inline-block group mt-10 disabled:opacity-40"
             >
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
               <div className="relative bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl py-5 px-13 group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
@@ -198,7 +202,7 @@ export default function SelectPage() {
                   className="pointer-events-auto w-[4vw] h-auto hidden group-hover:block"
                 />
               </div>
-            </Link>
+            </button>
           </div>
         </div>
         <div className="hidden lg:flex xl:hidden fixed inset-y-0 right-[calc(5vw+5rem)] items-center justify-center pointer-events-none z-10">
@@ -232,23 +236,20 @@ export default function SelectPage() {
             </div>
             {/* Timer Buttons */}
             <div className="flex gap-5">
-              {/* 3 Seconds */}
               <TimerButton
                 seconds={3}
-                isSelected={selectedTimer === 3}
-                onClick={() => setSelectedTimer(3)}
+                isSelected={timer === 3}
+                onClick={() => setTimer(3)}
               />
-              {/* 5 Seconds */}
               <TimerButton
                 seconds={5}
-                isSelected={selectedTimer === 5}
-                onClick={() => setSelectedTimer(5)}
+                isSelected={timer === 5}
+                onClick={() => setTimer(5)}
               />
-              {/* 10 Seconds */}
               <TimerButton
                 seconds={10}
-                isSelected={selectedTimer === 10}
-                onClick={() => setSelectedTimer(10)}
+                isSelected={timer === 10}
+                onClick={() => setTimer(10)}
               />
             </div>
 
@@ -265,28 +266,28 @@ export default function SelectPage() {
               />
             </div>
             <div className="flex gap-5">
-              {/* 3 Shots */}
               <ShotButton
                 shots={3}
-                isSelected={selectedShot === 3}
-                onClick={() => setSelectedShot(3)}
+                isSelected={shotCount === 3}
+                onClick={() => setShotCount(3)}
               />
-              {/* 4 Shots */}
               <ShotButton
                 shots={4}
-                isSelected={selectedShot === 4}
-                onClick={() => setSelectedShot(4)}
+                isSelected={shotCount === 4}
+                onClick={() => setShotCount(4)}
               />
             </div>
 
             {/* Next Button */}
-            <Link
-              href={`/capture?t=${selectedTimer}&s=${selectedShot}`}
-              className="relative inline-block group"
+            <button
+              type="button"
+              onClick={handleNext}
+              disabled={!canProceed}
+              className="relative inline-block group disabled:opacity-40"
               style={{ marginTop: "clamp(2rem, 4vh, 5rem)" }}
             >
               <div className="absolute inset-0 bg-[#3D568F] rounded-xl translate-x-2 translate-y-2 group-hover:bg-[#F2AEBD] transition-colors"></div>
-              <div className="relative px-12 py-5 bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD]transition-colors">
+              <div className="relative px-12 py-5 bg-[#F2DDDC] border-2 border-[#3D568F] rounded-xl group-hover:bg-[#3D568F] group-hover:border-[#F2AEBD] transition-colors">
                 <Image
                   src="/webp-next-button.webp"
                   alt="Next Button"
@@ -306,7 +307,7 @@ export default function SelectPage() {
                   style={{ width: "clamp(4rem, 5vw, 10rem)" }}
                 />
               </div>
-            </Link>
+            </button>
           </div>
         </div>
         <div className="hidden xl:flex fixed top-[5vh] bottom-[5vh] right-[calc(7vw+2rem)] items-center justify-center pointer-events-none z-10">

@@ -1,39 +1,20 @@
 "use client";
 
 import Border from "../../components/border";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import CameraCapture from "../../components/camera";
-import { Suspense } from "react";
+import { usePhotoboothStore } from "../../lib/store";
 
 export default function CapturePage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="h-dvh flex items-center justify-center bg-[#FDFDF5]">
-          <p className="text-[#3D568F] font-bold animate-pulse">
-            Initializing Camera...
-          </p>
-        </div>
-      }
-    >
-      <CaptureContent />
-    </Suspense>
-  );
-}
-function CaptureContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const timerParam = Number(searchParams.get("t"));
-  const shotParam = Number(searchParams.get("s"));
+  const { timer, shotCount, setShots } = usePhotoboothStore();
 
   const cooldown = useMemo(() => {
-    return [3, 5, 10].includes(timerParam) ? timerParam : 5;
-  }, [timerParam]);
+    return [3, 5, 10].includes(timer) ? timer : 5;
+  }, [timer]);
 
   const videoRef = useRef(null);
   const streamRef = useRef(null);
@@ -43,7 +24,7 @@ function CaptureContent() {
   const [shotIndex, setShotIndex] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 
-  const [shots, setShots] = useState([]);
+  const [localShots, setLocalShots] = useState([]);
   const [currentCameraId, setCurrentCameraId] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [currentCameraIndex, setCurrentCameraIndex] = useState(0);
@@ -117,7 +98,7 @@ function CaptureContent() {
     startCamera(deviceId);
   };
 
-  // Capture a single frame -> returns blob URL
+  // Capture a single frame -> returns data URL
   function captureFrameUrl() {
     const video = videoRef.current;
     if (!video) return null;
@@ -202,17 +183,12 @@ function CaptureContent() {
     setIsRunning(true);
 
     // clear old shots
-    shots.forEach((url) => {
-      if (url.startsWith("blob:")) {
-        URL.revokeObjectURL(url);
-      }
-    });
-    setShots([]);
+    setLocalShots([]);
     setShotIndex(0);
 
     const captured = [];
 
-    for (let i = 0; i < shotParam; i++) {
+    for (let i = 0; i < shotCount; i++) {
       setShotIndex(i);
 
       await runCountdown(cooldown);
@@ -229,8 +205,8 @@ function CaptureContent() {
       await new Promise((r) => setTimeout(r, 250));
     }
 
-    sessionStorage.setItem("shots", JSON.stringify(captured));
-    sessionStorage.setItem("cooldown", String(cooldown));
+    // Save to Zustand store (replaces sessionStorage)
+    setShots(captured);
 
     setIsRunning(false);
 
@@ -238,12 +214,7 @@ function CaptureContent() {
   }
 
   function resetAll() {
-    shots.forEach((url) => {
-      if (url.startsWith("blob:")) {
-        URL.revokeObjectURL(url);
-      }
-    });
-    setShots([]);
+    setLocalShots([]);
     setShotIndex(0);
     setCountdown(null);
     setIsRunning(false);
@@ -266,8 +237,8 @@ function CaptureContent() {
           <CameraCapture
             videoRef={videoRef}
             countdown={countdown}
-            shots={shots}
-            shotParam={shotParam}
+            shots={localShots}
+            shotParam={shotCount}
             shotIndex={shotIndex}
             cooldown={cooldown}
             isRunning={isRunning}
