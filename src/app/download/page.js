@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useState, useEffect, useRef } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
 import PhotoStripComposite3 from "../../components/photostrip3";
 import PhotoStripComposite4 from "../../components/photostrip4";
@@ -11,32 +11,20 @@ import "instagram.css";
 import Link from "next/link";
 import { getTemplateDimensions } from "../../lib/templateDimensions";
 import { applyCSSFilterToCanvas } from "../../lib/filterUtils";
+import { usePhotoboothStore } from "../../lib/store";
 
 export default function DownloadPage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="h-dvh flex items-center justify-center bg-[#FDFDF5]">
-          <p className="text-[#3D568F] font-bold animate-pulse">
-            Loading shots...
-          </p>
-        </div>
-      }
-    >
-      <DownloadContent />
-    </Suspense>
-  );
+  return <DownloadContent />;
 }
 
 function DownloadContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const stripRef = useRef(null);
   const emailStatusTimeoutRef = useRef(null);
 
-  const [shots, setShots] = useState([]);
-  const [template, setTemplate] = useState("Frame1");
-  const [selectedFilter, setSelectedFilter] = useState("none");
+  // Read session state from Zustand store
+  const { shots, template, filter: selectedFilter } = usePhotoboothStore();
+
   const [machineScale, setMachineScale] = useState(1);
   const [stripScale, setStripScale] = useState(1);
   const [stripPosition, setStripPosition] = useState(0);
@@ -88,18 +76,7 @@ function DownloadContent() {
     });
   }, []);
 
-  useEffect(() => {
-    const stored = sessionStorage.getItem("shots");
-    if (stored) {
-      setShots(JSON.parse(stored));
-    }
-
-    const templateParam = searchParams.get("template");
-    const filterParam = searchParams.get("filter");
-
-    if (templateParam) setTemplate(templateParam);
-    if (filterParam) setSelectedFilter(filterParam);
-  }, [searchParams]);
+  // shots, template, and filter come directly from the Zustand store — no useEffect needed
 
   useEffect(() => {
     return () => {

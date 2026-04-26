@@ -234,6 +234,17 @@ export async function POST(request) {
                 font-size: 11.5px;
                 color: #aaa;
               }
+              .footer .site-link {
+                display: inline-block;
+                margin-top: 10px;
+                font-size: 12px;
+                color: #7b84c3;
+                text-decoration: none;
+                letter-spacing: 0.3px;
+              }
+              .footer .site-link:hover {
+                text-decoration: underline;
+              }
             </style>
           </head>
           <body>
@@ -260,6 +271,7 @@ export async function POST(request) {
               <div class="footer">
                 <p class="credit">Made by Rey &amp; Rel ദ്ദി◝ ⩊ ◜.ᐟ</p>
                 <p class="note">© ${new Date().getFullYear()} — Hope you had a great time! 🎉</p>
+                <a href="https://cutephotobooth-smoky.vercel.app/" class="site-link" target="_blank" rel="noopener noreferrer">📷 cutephotobooth-smoky.vercel.app</a>
               </div>
             </div>
           </body>

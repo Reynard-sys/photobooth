@@ -1,8 +1,19 @@
+"use client";
+
 import Image from "next/image";
 import Border from "../components/border";
 import Link from "next/link";
+import { useEffect } from "react";
+import { usePhotoboothStore } from "../lib/store";
 
 export default function Home() {
+  const { resetSession } = usePhotoboothStore();
+
+  // Wipe session state whenever user returns to home
+  useEffect(() => {
+    resetSession();
+  }, []);
+
   return (
     <>
       <Border />

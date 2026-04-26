@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import CameraRetake from "../../components/retakeCamera";
 import Link from "next/link";
+import { usePhotoboothStore } from "../../lib/store";
 
 export default function RetakePage() {
   return (
@@ -28,9 +29,15 @@ export default function RetakePage() {
 function RetakeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  // index is still a URL param — it's a per-navigation value, not session state
   const indexParam = Number(searchParams.get("i"));
 
-  const [cooldown, setCooldown] = useState(5);
+  const { timer, replaceShot } = usePhotoboothStore();
+
+  const cooldown = useMemo(() => {
+    return [3, 5, 10].includes(timer) ? timer : 5;
+  }, [timer]);
+
   const [error, setError] = useState(null);
   const [countdown, setCountdown] = useState(null);
   const [isRunning, setIsRunning] = useState(false);
@@ -46,11 +53,6 @@ function RetakeContent() {
     () => (Number.isFinite(indexParam) ? indexParam : -1),
     [indexParam],
   );
-
-  useEffect(() => {
-    const t = Number(sessionStorage.getItem("cooldown"));
-    if ([3, 5, 10].includes(t)) setCooldown(t);
-  }, []);
 
   // Move startCamera outside useEffect so it can be reused
   async function startCamera(deviceId = null) {
@@ -189,13 +191,13 @@ function RetakeContent() {
       return;
     }
 
-    const shots = JSON.parse(sessionStorage.getItem("shots") || "[]");
-    if (!shots || index < 0 || index >= shots.length) {
+    if (index < 0) {
       router.push("/check");
       return;
     }
-    shots[index] = dataUrl;
-    sessionStorage.setItem("shots", JSON.stringify(shots));
+
+    // Update shot in the Zustand store (replaces sessionStorage read/write)
+    replaceShot(index, dataUrl);
 
     setIsRunning(false);
     router.push("/check");
