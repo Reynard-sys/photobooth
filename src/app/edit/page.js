@@ -27,13 +27,12 @@ export default function FinalExportPage() {
     const calculateScale = () => {
       if (typeof window === "undefined") return 1;
 
-      // Use each template's native height so Frame15 (1920px) scales up larger
-      // than the taller 2800px strips — filling the available preview area.
-      const nH = shots.length === 4 ? 3600 : template === "Frame15" ? 1920 : 2800;
+      const { width: nativeWidth, height: nativeHeight } =
+        getTemplateDimensions(template, shots.length);
       const maxWidth = window.innerWidth - 64;
       const maxHeight = window.innerHeight * 0.85;
-      const scaleW = maxWidth / 1200;
-      const scaleH = maxHeight / nH;
+      const scaleW = maxWidth / nativeWidth;
+      const scaleH = maxHeight / nativeHeight;
       // Allow up to 1.5x on large screens so the preview is noticeably bigger
       setCurrentScale(Math.min(scaleW, scaleH, 1.5));
     };
@@ -299,14 +298,9 @@ export default function FinalExportPage() {
     });
   };
 
-  // Native dimensions: Frame15 is 1080×1920; all others are 1200×2800/3600
-  const nativeWidth = template === "Frame15" && shots.length !== 4 ? 1080 : 1200;
-  const nativeHeight =
-    shots.length === 4
-      ? 3600
-      : template === "Frame15"
-        ? 1920
-        : 2800;
+  // Native dimensions: 1200x2800 for 3 photos, 1200x3600 for 4 photos.
+  const { width: nativeWidth, height: nativeHeight } =
+    getTemplateDimensions(template, shots.length);
   const canvasHeight = nativeHeight; // alias used in exporting logic
 
   return (

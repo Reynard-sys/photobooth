@@ -30,13 +30,6 @@ function DownloadContent() {
   const [stripPosition, setStripPosition] = useState(0);
   const [isAnimating, setIsAnimating] = useState(true);
 
-  // Returns the native export dimensions for a given template + shot count
-  const getTemplateDimensions = (tmpl, shotCount) => {
-    if (shotCount === 4) return { width: 1200, height: 3600 };
-    if (tmpl === "Frame15") return { width: 1080, height: 1920 };
-    return { width: 1200, height: 2800 };
-  };
-
   const [email, setEmail] = useState("");
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [emailStatus, setEmailStatus] = useState(null);
@@ -91,8 +84,6 @@ function DownloadContent() {
     const calculateScale = () => {
       if (typeof window === "undefined") return;
 
-      const { width: stripNativeWidth, height: stripNativeHeight } =
-        getTemplateDimensions(template, shots.length);
       // Machine always based on 1200 wide (the machine image is 1200px)
       const machineNativeHeight = shots.length === 4 ? 3600 : 2800;
       const maxWidth = window.innerWidth - 64;
@@ -104,11 +95,6 @@ function DownloadContent() {
       const machineScaleValue = Math.min(scaleW, scaleH, 2);
       setMachineScale(machineScaleValue);
 
-      // Strip scale: use the machine's reference height (2800/3600) for the
-      // height constraint — NOT the strip's native height. This ensures Frame15
-      // (1920px) gets the same scale as normal 2800px strips, preventing it
-      // from rendering too large. Frame15 then naturally renders narrower
-      // (1080 × scale) and sits within the machine opening correctly.
       const maxStripWidth = Math.min(900, maxWidth * 0.7);
       const stripScaleW = maxStripWidth / 1200;
       const stripScaleH = (maxHeight * 0.7) / machineNativeHeight;
@@ -133,10 +119,7 @@ function DownloadContent() {
 
       const easeProgress = 1 - Math.pow(1 - progress / 100, 3);
 
-      // Frame15 (1080x1920) is shorter in height so needs a larger reveal %
-      // to fully slide the strip out of the machine opening
-      const revealAmount =
-        shots.length === 4 ? 135 : template === "Frame15" ? 170 : 145;
+      const revealAmount = shots.length === 4 ? 135 : 145;
 
       setStripPosition(easeProgress * revealAmount);
 
@@ -623,8 +606,7 @@ function DownloadContent() {
   const stripTranslateY =
     -(stripNativeHeight * stripScale) * (1 - stripPosition / 100);
 
-  // Center the strip horizontally in the machine
-  // Machine image is always 1200px wide; strip may be narrower (e.g. Frame15 = 1080)
+  // Center the strip horizontally in the machine.
   const machineWidth = 1200 * machineScale;
   const largeMachineWidth = machineWidth * 1.2;
   const stripWidth = stripNativeWidth * stripScale;
