@@ -7,8 +7,8 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
   const strips = [
     {
       id: "Frame15",
-      assetName: "mnhs",
-      alt: "MNHS",
+      assetName: "kitty",
+      alt: "Kitty",
     },
     {
       id: "Frame1",
