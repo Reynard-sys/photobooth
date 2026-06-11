@@ -7,7 +7,7 @@ const PhotoStripComposite3 = forwardRef(
         width: 1080,
         height: 1920,
         photos: [
-          { x: 99, y: 41, width: 884, height: 497, rotation: 0 },
+          { x: 99, y: 41, width: 887, height: 499, rotation: 0 },
           { x: 100, y: 559, width: 884, height: 497, rotation: 0 },
           { x: 100, y: 1079, width: 884, height: 497, rotation: 0 },
         ],
