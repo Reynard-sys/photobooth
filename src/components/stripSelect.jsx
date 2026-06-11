@@ -6,6 +6,11 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
 
   const strips = [
     {
+      id: "Frame16",
+      assetName: "ui-ux",
+      alt: "UI/UX",
+    },
+    {
       id: "Frame15",
       assetName: "kitty",
       alt: "Kitty",
@@ -128,11 +133,10 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                 onClick={() => onSelectStrip(strip.id)}
               >
                 <div
-                  className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition colors ${
-                    isSelected
-                      ? "bg-[#F2AEBD]"
-                      : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
-                  }`}
+                  className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition colors ${isSelected
+                    ? "bg-[#F2AEBD]"
+                    : "bg-[#3D568F] group-active:bg-[#F2AEBD] xl:group-hover:bg-[#F2AEBD]"
+                    }`}
                 ></div>
                 <div
                   className={`relative border sm:border-2 rounded-xl transition-colors flex items-center justify-center
@@ -143,11 +147,10 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                   xl:w-[8vw] xl:h-[3.5vw]
                   2xl:w-[7vw] 2xl:h-[3.5vw]
                   py-2 sm:py-0.5 lg:py-1 xl:py-2 2xl:py-2
-                  ${
-                    isSelected
+                  ${isSelected
                       ? "bg-[#3D568F] border-[#F2AEBD]"
                       : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] xl:group-hover:bg-[#3D568F] xl:group-hover:border-[#F2AEBD]"
-                  }`}
+                    }`}
                 >
                   <div className="relative w-full h-full flex items-center justify-center p-2">
                     <Image
@@ -156,11 +159,10 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                       width={200}
                       height={50}
                       priority
-                      className={`pointer-events-none object-contain w-full h-full ${
-                        isSelected
-                          ? "hidden"
-                          : "group-active:hidden xl:group-hover:hidden"
-                      }`}
+                      className={`pointer-events-none object-contain w-full h-full ${isSelected
+                        ? "hidden"
+                        : "group-active:hidden xl:group-hover:hidden"
+                        }`}
                     />
                     <Image
                       src={`/webp-hover-${strip.assetName}.webp`}
@@ -168,11 +170,10 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
                       width={200}
                       height={50}
                       priority
-                      className={`pointer-events-none object-contain w-full h-full ${
-                        isSelected
-                          ? "block"
-                          : "hidden group-active:block xl:group-hover:block"
-                      }`}
+                      className={`pointer-events-none object-contain w-full h-full ${isSelected
+                        ? "block"
+                        : "hidden group-active:block xl:group-hover:block"
+                        }`}
                     />
                   </div>
                 </div>

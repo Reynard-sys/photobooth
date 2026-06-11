@@ -9,7 +9,7 @@ export const usePhotoboothStore = create((set) => ({
   shots: [], // array of data URLs (jpeg)
 
   // --- Edit choices ---
-  template: "Frame15",
+  template: "Frame16",
   filter: "none",
 
   // --- Actions ---
@@ -29,7 +29,7 @@ export const usePhotoboothStore = create((set) => ({
       timer: 3,
       shotCount: 3,
       shots: [],
-      template: "Frame15",
+      template: "Frame16",
       filter: "none",
     }),
 }));

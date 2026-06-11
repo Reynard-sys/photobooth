@@ -3,6 +3,15 @@ import { forwardRef } from "react";
 const PhotoStripComposite3 = forwardRef(
   ({ shots, template, isExporting = false, filterClass }, ref) => {
     const templateConfigs = {
+      Frame16: {
+        width: 1080,
+        height: 1920,
+        photos: [
+          { x: 99, y: 41, width: 884, height: 497, rotation: 0 },
+          { x: 100, y: 559, width: 884, height: 497, rotation: 0 },
+          { x: 100, y: 1079, width: 884, height: 497, rotation: 0 },
+        ],
+      },
       Frame15: {
         width: 1200,
         height: 2800,

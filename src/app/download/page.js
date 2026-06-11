@@ -119,7 +119,7 @@ function DownloadContent() {
 
       const easeProgress = 1 - Math.pow(1 - progress / 100, 3);
 
-      const revealAmount = shots.length === 4 ? 135 : 145;
+      const revealAmount = shots.length === 4 ? 135 : template === "Frame16" ? 170 : 145;
 
       setStripPosition(easeProgress * revealAmount);
 
@@ -801,19 +801,17 @@ function DownloadContent() {
                     className="group relative cursor-pointer"
                   >
                     <div
-                      className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${
-                        isSendingEmail
+                      className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${isSendingEmail
                           ? "bg-[#F2AEBD]"
                           : "bg-[#3D568F] group-active:bg-[#F2AEBD] lg:group-hover:bg-[#F2AEBD]"
-                      }`}
+                        }`}
                     ></div>
                     <div
                       className={`relative border-2 sm:border-2 rounded-xl w-[60vw] h-[12vw]
                         md:w-[35vw] md:h-[7vw]
-                        py-3 max-w-90 max-h-40 sm:max-h-18 ${
-                          isSendingEmail
-                            ? "bg-[#3D568F] border-[#F2AEBD]"
-                            : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
+                        py-3 max-w-90 max-h-40 sm:max-h-18 ${isSendingEmail
+                          ? "bg-[#3D568F] border-[#F2AEBD]"
+                          : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
                         }`}
                     >
                       {isSendingEmail ? (
@@ -1041,18 +1039,16 @@ function DownloadContent() {
                     className="group relative cursor-pointer"
                   >
                     <div
-                      className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${
-                        isSendingEmail
+                      className={`absolute inset-0 rounded-xl translate-x-2 translate-y-2 transition-colors ${isSendingEmail
                           ? "bg-[#F2AEBD]"
                           : "bg-[#3D568F] group-active:bg-[#F2AEBD] lg:group-hover:bg-[#F2AEBD]"
-                      }`}
+                        }`}
                     ></div>
                     <div
-                      className={`relative border-2 sm:border-2 rounded-xl w-[50vw] h-[10vw] lg:w-[15vw] lg:h-[3.9vw] xl:w-[12vw] xl:h-[3.8vw] py-4 lg:py-3 p-0 xl:p-5 ${
-                        isSendingEmail
+                      className={`relative border-2 sm:border-2 rounded-xl w-[50vw] h-[10vw] lg:w-[15vw] lg:h-[3.9vw] xl:w-[12vw] xl:h-[3.8vw] py-4 lg:py-3 p-0 xl:p-5 ${isSendingEmail
                           ? "bg-[#3D568F] border-[#F2AEBD]"
                           : "bg-[#F2DDDC] border-[#3D568F] group-active:bg-[#3D568F] group-active:border-[#F2AEBD] lg:group-hover:bg-[#3D568F] lg:group-hover:border-[#F2AEBD]"
-                      }`}
+                        }`}
                     >
                       {isSendingEmail ? (
                         <Image
