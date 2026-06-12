@@ -8,6 +8,6 @@
  */
 export function getTemplateDimensions(template, shotCount) {
   if (shotCount === 4) return { width: 1200, height: 3600 };
-  if (template === "Frame16") return { width: 1080, height: 1920 };
+  if (template === "Frame16" || template === "Frame17") return { width: 1080, height: 1920 };
   return { width: 1200, height: 2800 };
 }

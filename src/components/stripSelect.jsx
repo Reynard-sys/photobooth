@@ -6,6 +6,11 @@ export default function StripSelect({ selectedStrip, onSelectStrip }) {
 
   const strips = [
     {
+      id: "Frame17",
+      assetName: "cloud",
+      alt: "cloud",
+    },
+    {
       id: "Frame16",
       assetName: "ui-ux",
       alt: "UI/UX",
